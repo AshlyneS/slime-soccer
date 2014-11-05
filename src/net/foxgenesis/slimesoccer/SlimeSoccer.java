@@ -3,6 +3,9 @@ package net.foxgenesis.slimesoccer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.foxgenesis.slimesoccer.image.Textures;
+import net.foxgenesis.slimesoccer.ui.Scene;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -17,17 +20,19 @@ public class SlimeSoccer extends BasicGame
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		
+		Textures.init();
 	}
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
-		
+		if(Scene.getCurrentScene() != null)
+			Scene.getCurrentScene().update(gc, i);
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		g.drawString("Howdy!", 10, 10);
+		if(Scene.getCurrentScene() != null)
+			Scene.getCurrentScene().draw(gc, g);
 	}
 
 	public static void main(String[] args)

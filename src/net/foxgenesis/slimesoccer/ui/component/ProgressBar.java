@@ -9,7 +9,7 @@ public class ProgressBar extends Component {
 	private Color foreground,background;
 	private Runnable run;
 	private boolean pText=true;
-	private boolean invert;
+	private boolean invert = false;
 	private String text;
 	
 	public ProgressBar() {
@@ -87,7 +87,7 @@ public class ProgressBar extends Component {
 	
 	@Override
 	public void update(int delta) {
-		if(invert?value <= min:value >= max)
+		if((invert && value <= min) || (!invert && value >= max))
 			if(run != null) {
 				run.run();
 				run = null;

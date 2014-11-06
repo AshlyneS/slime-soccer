@@ -1,5 +1,7 @@
 package net.foxgenesis.slimesoccer;
 
+import java.awt.DisplayMode;
+import java.awt.GraphicsEnvironment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +21,12 @@ public class SlimeSoccer extends BasicGame
 {
 	public static void main(String[] args) {
 		try {
-			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Simple Slick Game"));
+			int refresh = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
 			appgc.setDisplayMode(640, 480, false);
+			if(refresh != DisplayMode.REFRESH_RATE_UNKNOWN)
+				appgc.setTargetFrameRate(refresh-1);
+			appgc.setUpdateOnlyWhenVisible(true);
 			appgc.start();
 		} catch (SlickException ex) {
 			Logger.getLogger(SlimeSoccer.class.getName()).log(Level.SEVERE, null, ex);
@@ -37,7 +43,7 @@ public class SlimeSoccer extends BasicGame
 		Textures.init();
 		Fonts.init();
 		System.out.println("Game loaded!");
-		Scene.setCurrentScene(new Loading(),null);
+		Scene.setCurrentScene(new Loading(), null);
 	}
 
 	@Override

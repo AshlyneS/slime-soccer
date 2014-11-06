@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
+import net.foxgenesis.slimesoccer.input.KeyboardInput;
 import net.foxgenesis.slimesoccer.ui.Loading;
 import net.foxgenesis.slimesoccer.ui.Scene;
 
@@ -41,6 +42,7 @@ public class SlimeSoccer extends BasicGame
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
+		KeyboardInput.update();
 		if(Scene.getCurrentScene() != null)
 			Scene.getCurrentScene().update(gc, i);
 	}

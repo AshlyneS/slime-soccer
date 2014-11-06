@@ -9,7 +9,9 @@ public class ProgressBar extends Component {
 	private Color foreground,background;
 	private Runnable run;
 	private boolean pText=true;
+	private boolean invert;
 	private String text;
+	
 	public ProgressBar() {
 		super();
 		foreground = Color.green;
@@ -29,6 +31,10 @@ public class ProgressBar extends Component {
 	
 	public String getText() {
 		return text;
+	}
+	
+	public void setInvertedPercentage(boolean state) {
+		invert = state;
 	}
 	
 	public void setText(String text) {
@@ -81,7 +87,7 @@ public class ProgressBar extends Component {
 	
 	@Override
 	public void update(int delta) {
-		if(value >= max)
+		if(invert?value <= min:value >= max)
 			if(run != null) {
 				run.run();
 				run = null;

@@ -1,5 +1,7 @@
 package net.foxgenesis.slimesoccer.ui;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 /**
@@ -10,6 +12,7 @@ import org.newdawn.slick.Graphics;
 public abstract class Scene 
 {
 	private static Scene current = null;
+	private static HashMap<String, Scene> stored = new HashMap<>();
 
 	/**
 	 * Gets the current scene that is displayed
@@ -22,12 +25,31 @@ public abstract class Scene
 	/**
 	 * Sets the current scene to be displayed
 	 * @param scene - current scene to be displayed
+	 * @param params - parameters to be set with current scene
 	 */
-	public static void setCurrentScene(Scene scene) {
+	public static void setCurrentScene(Scene scene, HashMap<String, Object> params) {
 		if(current != null)
 			current.unload(scene);
 		current = scene;
-		scene.load();
+		scene.load(params);
+	}
+	
+	/**
+	 * Gets a stored scene with a given key
+	 * @param key - key of scene
+	 * @return requested scene
+	 */
+	public static Scene getScene(String key) {
+		return stored.get(key);
+	}
+	
+	/**
+	 * Stores a scene for later use
+	 * @param key - key stored under
+	 * @param scene - Scene to store
+	 */
+	public static void store(String key, Scene scene) {
+		stored.put(key,scene);
 	}
 
 	/**
@@ -47,7 +69,7 @@ public abstract class Scene
 	/**
 	 * Creates the scene
 	 */
-	abstract void load();
+	abstract void load(HashMap<String, Object> params);
 	
 	/**
 	 * Unloads the scene

@@ -2,6 +2,7 @@ package net.foxgenesis.slimesoccer.ui;
 
 import java.util.HashMap;
 
+import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.GameObject;
 import net.foxgenesis.slimesoccer.objects.Slime;
@@ -16,22 +17,27 @@ public class TestGame extends Scene {
 	@Override
 	public void draw(GameContainer container, Graphics g) {
 		for(GameObject a: objects)
-			a.render(g);;
+			if(a != null)
+				a.render(g);;
 	}
 
 	@Override
 	public void update(GameContainer container, int i) {
 		for(GameObject a:objects) {
-			a.update(i);
-			a.updatePosition(objects);
+			if(a != null) {
+				a.updatePosition(objects);
+				a.update(i);
+			}
 		}
 	}
 
 	@Override
 	void load(HashMap<String, Object> params) {
-		objects[0] = new Slime(Slime.Type.valueOf((String) params.get("player1")));
-		objects[1] = new Slime(Slime.Type.valueOf((String) params.get("player2")));
+		objects[0] = new Slime(Slime.Type.valueOf((String) params.get("player1")), true);
+		objects[1] = new Slime(Slime.Type.valueOf((String) params.get("player2")), false);
 		objects[2] = new Ball();
+		objects[1].getLocation().x = SlimeSoccer.getWidth() - objects[1].getWidth()-10;
+		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 	}
 
 	@Override

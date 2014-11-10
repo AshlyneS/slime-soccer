@@ -25,7 +25,7 @@ public abstract class GameObject {
 	public boolean isSolid() {
 		return true;
 	}
-	
+
 	public boolean isEnviormentControlled() {
 		return false;
 	}
@@ -51,12 +51,12 @@ public abstract class GameObject {
 
 	private void updateX(GameObject[] objects) {
 		for(GameObject a: objects)
-			if(a != this)
+			if(a != null && a != this)
 				if(a.contains(location.x + velocity.x, location.y)) {
 					location.x = a.getLocation().x;
 					velocity.y = isEnviormentControlled()?-velocity.y/2:0f;
 				}
-		if(!outOfBounds(location.x + velocity.x,location.y)) 
+		if(!outOfBounds(location.x + velocity.x,location.y,true,false))
 			location.x += velocity.x;
 		else
 			velocity.x = isEnviormentControlled()?-velocity.x/2:0f;
@@ -64,7 +64,7 @@ public abstract class GameObject {
 
 	private void updateY(GameObject[] objects) {
 		for(GameObject a: objects)
-			if(a != this)
+			if(a != null && a != this)
 				if(a.contains(location.x, location.y + velocity.y)) {
 					location.y = a.getLocation().y;
 					velocity.y = 0f;
@@ -85,10 +85,16 @@ public abstract class GameObject {
 	}
 
 	private boolean outOfBounds(float x, float y) {
-		if(x-width/2 < 0 || x+width > SlimeSoccer.getWidth())
-			return true;
-		else if(y-height/2 < 0 || y+height > SlimeSoccer.getHeight())
-			return true;
+		return outOfBounds(x,y,true,true);
+	}
+
+	private boolean outOfBounds(float x, float y, boolean testX, boolean testY) {
+		if(testX)
+			if(x-width/2 < 0 || x+width > SlimeSoccer.getWidth())
+				return true;
+		if(testY)
+			if(y-height/2 < 0 || y+height > SlimeSoccer.getHeight())
+				return true;
 		return false;
 	}
 }

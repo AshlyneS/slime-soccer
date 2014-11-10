@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
+import net.foxgenesis.slimesoccer.input.KeyboardInput;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -34,18 +36,19 @@ public class Loading extends Scene {
 	}
 	@Override
 	public void draw(GameContainer container, Graphics g) {
+		String title = "Slime Soccer", input = "PRESS SPACE";
 		g.drawImage(background, 0, 0, container.getWidth(), 
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
-				- (float)(hiero.getHeight("Slime Soccer")*2 * Math.sin(0.05 * update2)),50);
+				- (float)(hiero.getHeight(title)*2 * Math.sin(0.05 * update2)),50);
 		g.pushTransform();
 		g.translate(0, -80);
-		hiero.drawString(container.getWidth()/2-hiero.getWidth("Slime Soccer")/2,
-				container.getHeight()/2-hiero.getHeight("Slime Soccer")/2, "Slime Soccer");
+		hiero.drawString(container.getWidth()/2-hiero.getWidth(title)/2,
+				container.getHeight()/2-hiero.getHeight(title)/2, title);
 		if(bar.isVisible())
 			bar.draw(g);
 		else
-			hiero.drawString(container.getWidth()/2-hiero.getWidth("PRESS SPACE")/2,container.getHeight()-100, "PRESS SPACE", update > 15/2?Color.red:Color.orange);
+			hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2,container.getHeight()-100, input, update > 15/2?Color.red:Color.orange);
 		g.popTransform();
 	}
 
@@ -58,9 +61,15 @@ public class Loading extends Scene {
 		bar.setSize(gc.getWidth()/3*2,20);
 		bar.setLocation(gc.getWidth()/2-bar.getWidth()/2,gc.getHeight()-100);
 		bar.update(i);
+		ball.rotate((float)(hiero.getHeight("Slime Soccer")/8 * Math.sin(0.05 * update2)));
 		if(bar.isVisible())
 			bar.setValue(bar.getValue()+1);
-		ball.rotate((float)(hiero.getHeight("Slime Soccer")/8 * Math.sin(0.05 * update2)));
+		else if(KeyboardInput.keys[Keyboard.KEY_SPACE]) {
+			HashMap<String, Object> params = new HashMap<>();
+			params.put("player1", "DEFAULT");
+			params.put("player2", "DEFAULT");
+			Scene.setCurrentScene(new TestGame(), params);
+		}
 	}
 
 	@Override

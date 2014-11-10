@@ -21,6 +21,7 @@ public class SlimeSoccer extends BasicGame
 {
 	public static void main(String[] args) {
 		try {
+			//create v-sync with monitor and start game
 			int refresh = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
 			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
 			appgc.setDisplayMode(640, 480, false);
@@ -32,6 +33,8 @@ public class SlimeSoccer extends BasicGame
 			Logger.getLogger(SlimeSoccer.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+	
+	private static int width, height;
 
 	public SlimeSoccer(String gamename) {
 		super(gamename);
@@ -40,6 +43,8 @@ public class SlimeSoccer extends BasicGame
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		System.out.println("Loading game...");
+		SlimeSoccer.width = gc.getWidth();
+		SlimeSoccer.height = gc.getHeight();
 		Textures.init();
 		Fonts.init();
 		System.out.println("Game loaded!");
@@ -58,6 +63,14 @@ public class SlimeSoccer extends BasicGame
 		g.setAntiAlias(true);
 		if(Scene.getCurrentScene() != null)
 			Scene.getCurrentScene().draw(gc, g);
+	}
+	
+	public static int getWidth() {
+		return width;
+	}
+	
+	public static int getHeight() {
+		return height;
 	}
 }
 

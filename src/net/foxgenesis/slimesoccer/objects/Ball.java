@@ -40,8 +40,9 @@ public class Ball extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		if(MOTION_BLUR) {
-			ball.draw(location.x-(velocity.x*3), location.y-(velocity.y*3), new Color(1f,1f,1f,0.4f));
-			ball.draw(location.x-(velocity.x*2), location.y-(velocity.y*2), new Color(1f,1f,1f,0.5f));
+			ball.draw(location.x-(velocity.x*3), location.y-(velocity.y*3), new Color(1f,1f,1f,0.3f));
+			ball.draw(location.x-(velocity.x*2), location.y-(velocity.y*2), new Color(1f,1f,1f,0.4f));
+			ball.draw(location.x-(velocity.x), location.y-(velocity.y*2), new Color(1f,1f,1f,0.5f));
 		}
 		ball.draw(location.x, location.y);
 	}

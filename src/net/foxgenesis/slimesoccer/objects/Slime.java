@@ -14,7 +14,7 @@ import org.newdawn.slick.Image;
 public class Slime extends GameObject {
 	private final Image img, flipped;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
-	private final boolean controlled;
+	private final boolean controlled, secondary;
 	private boolean canJump = true;
 	private int direction = 0;
 	
@@ -24,10 +24,21 @@ public class Slime extends GameObject {
 	 * @param controlled - is this player controlled
 	 */
 	public Slime(Type type, boolean controlled) {
+		this(type,controlled,false);
+	}
+	
+	/**
+	 * Create a new Slime with a type and controlled parameters
+	 * @param type -  type of slime to make
+	 * @param controlled - is this player controlled
+	 * @param secondaryInput - if to use secondary input controls
+	 */
+	public Slime(Type type, boolean controlled, boolean secondaryInput) {
 		super(100, 100);
 		img = Textures.get(type.img).getScaledCopy((int)getWidth(),(int)getHeight());
 		this.controlled = controlled;
 		this.flipped = img.getFlippedCopy(true, false);
+		this.secondary = secondaryInput;
 	}
 
 	@Override
@@ -45,11 +56,11 @@ public class Slime extends GameObject {
 	@Override
 	public void update(int delta) {
 		if(controlled) {
-			if(KeyboardInput.keys[Keyboard.KEY_D]) {
+			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
 				direction = 1;
 			}
-			else if(KeyboardInput.keys[Keyboard.KEY_A]) {
+			else if(KeyboardInput.keys[secondary?Keyboard.KEY_LEFT:Keyboard.KEY_A]) {
 				velocity.x = velocity.x - SPEED > -MAX_SPEED?velocity.x-=SPEED:-MAX_SPEED;
 				direction = 0;
 			}
@@ -65,7 +76,7 @@ public class Slime extends GameObject {
 							velocity.x -= velocity.x;
 						else
 							velocity.x+=SPEED/2;
-			if(KeyboardInput.keys[Keyboard.KEY_SPACE] && canJump) {
+			if(KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_SPACE] && canJump) {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
 			}

@@ -41,7 +41,7 @@ public class SoccerGame extends Scene {
 	@Override
 	void load(HashMap<String, Object> params) {
 		objects[0] = new Slime(Slime.Type.valueOf(params.get("player1").toString().toUpperCase()), true);
-		objects[1] = new Slime(Slime.Type.valueOf(params.get("player2").toString().toUpperCase()), false);
+		objects[1] = new Slime(Slime.Type.valueOf(params.get("player2").toString().toUpperCase()), true, true);
 		objects[2] = new Ball();
 		objects[1].getLocation().x = SlimeSoccer.getWidth() - objects[1].getWidth()-10;
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;

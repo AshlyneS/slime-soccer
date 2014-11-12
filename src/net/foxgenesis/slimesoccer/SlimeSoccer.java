@@ -21,6 +21,10 @@ public class SlimeSoccer extends BasicGame
 {
 	private static int width, height;
 	
+	/**
+	 * Main method
+	 * @param args - paramaters for program
+	 */
 	public static void main(String[] args) {
 		try {
 			//create v-sync with monitor and start game
@@ -36,10 +40,18 @@ public class SlimeSoccer extends BasicGame
 		}
 	}
 	
+	/**
+	 * Gets the width of the window
+	 * @return window width
+	 */
 	public static int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * Gets the height of the window
+	 * @return window height
+	 */
 	public static int getHeight() {
 		return height;
 	}

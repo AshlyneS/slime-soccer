@@ -14,12 +14,20 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+/**
+ * Loading is the loading screen at the start of the game
+ * @author Seth
+ */
 public class Loading extends Scene {
 
 	private Image background,ball;
 	private AngelCodeFont hiero;
 	private ProgressBar bar;
 	private int update = 0,update2 = 0,speed=1;
+	
+	/**
+	 * Create a new loading screen instance
+	 */
 	public Loading() {
 		super();
 		background = Textures.get("mainBackground");
@@ -69,7 +77,7 @@ public class Loading extends Scene {
 			HashMap<String, Object> params = new HashMap<>();
 			params.put("player1", "DEFAULT");
 			params.put("player2", "DEFAULT");
-			Scene.setCurrentScene(new TestGame(), params);
+			Scene.setCurrentScene(new SoccerGame(), params);
 		}
 	}
 

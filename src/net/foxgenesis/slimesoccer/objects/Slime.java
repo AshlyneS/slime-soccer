@@ -7,15 +7,25 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+/**
+ * Slime is the player object
+ * @author Seth
+ */
 public class Slime extends GameObject {
 	private final Image img, flipped;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	private final boolean controlled;
 	private boolean canJump = true;
 	private int direction = 0;
+	
+	/**
+	 * Create a new Slime with a type and controlled parameters
+	 * @param type -  type of slime to make
+	 * @param controlled - is this player controlled
+	 */
 	public Slime(Type type, boolean controlled) {
 		super(100, 100);
-		img = Textures.get("svetty").getScaledCopy((int)getWidth(),(int)getHeight());
+		img = Textures.get(type.img).getScaledCopy((int)getWidth(),(int)getHeight());
 		this.controlled = controlled;
 		this.flipped = img.getFlippedCopy(true, false);
 	}
@@ -69,8 +79,22 @@ public class Slime extends GameObject {
 		return false;
 	}
 
+	/**
+	 * Type contains the list of Slime types
+	 * @author Seth
+	 */
 	public static enum Type {
-		DEFAULT
+		DEFAULT("svetty");
+		
+		private String img;
+		
+		/**
+		 * Create a new Type with given Image path
+		 * @param img - Image path
+		 */
+		Type(String img) {
+			this.img = img;
+		}
 	}
 
 }

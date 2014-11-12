@@ -7,18 +7,29 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+/**
+ * Ball is the ball
+ * @author Seth
+ */
 public class Ball extends GameObject {
 
 	private Image ball;
 	private final float FRICTION_RESISTANCE_FACTOR = 6;
 	private final boolean MOTION_BLUR = true;
 	
+	/**
+	 * Create a new ball
+	 */
 	public Ball() {
-		this(20,20);
+		this(20);
 	}
 
-	public Ball(float width, float height) {
-		super(width,height);
+	/**
+	 * Create a new ball with a given radius
+	 * @param radius
+	 */
+	public Ball(float radius) {
+		super(radius,radius);
 		ball = Textures.get("soccerball").getScaledCopy((int)width,(int)height);
 		location.x = SlimeSoccer.getWidth()/2;
 		location.y = SlimeSoccer.getHeight()/2;

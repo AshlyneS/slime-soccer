@@ -11,7 +11,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-public class TestGame extends Scene {
+/**
+ * SoccerGame is a scene that contains players and a soccerball
+ * @author Seth
+ */
+public class SoccerGame extends Scene {
 
 	private GameObject[] objects = new GameObject[3];
 
@@ -36,8 +40,8 @@ public class TestGame extends Scene {
 
 	@Override
 	void load(HashMap<String, Object> params) {
-		objects[0] = new Slime(Slime.Type.valueOf((String) params.get("player1")), true);
-		objects[1] = new Slime(Slime.Type.valueOf((String) params.get("player2")), false);
+		objects[0] = new Slime(Slime.Type.valueOf(params.get("player1").toString().toUpperCase()), true);
+		objects[1] = new Slime(Slime.Type.valueOf(params.get("player2").toString().toUpperCase()), false);
 		objects[2] = new Ball();
 		objects[1].getLocation().x = SlimeSoccer.getWidth() - objects[1].getWidth()-10;
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;

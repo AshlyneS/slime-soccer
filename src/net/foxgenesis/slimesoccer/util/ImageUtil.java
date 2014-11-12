@@ -10,7 +10,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.BufferedImageUtil;
 
+/**
+ * Image Utilities
+ * @author Seth
+ */
 public final class ImageUtil {
+	
+	/**
+	 * Convert an image into a BufferedImage
+	 * @param img - image to convert
+	 * @param imgType - type of image to produce
+	 * @return a new BufferedImage
+	 */
 	public static BufferedImage convertToBufferedImage(Image img, int imgType){
 		BufferedImage buffImg = new BufferedImage(img.getWidth(), img.getHeight(), imgType);
 		Graphics g = buffImg.getGraphics();
@@ -23,6 +34,11 @@ public final class ImageUtil {
 		return buffImg;
 	}
 	
+	/**
+	 * Convert a BufferedImage into an Image
+	 * @param img - BufferedImage to convert
+	 * @return new Image
+	 */
 	public static Image toImage(BufferedImage img){
 		try {
 			Texture texture = BufferedImageUtil.getTexture("", img);

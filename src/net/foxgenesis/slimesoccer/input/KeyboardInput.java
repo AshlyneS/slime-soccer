@@ -2,6 +2,11 @@ package net.foxgenesis.slimesoccer.input;
 
 import org.lwjgl.input.Keyboard;
 
+/**
+ * Class that maps the keyboard input into an array of booleans
+ * @author Seth
+ *
+ */
 public final class KeyboardInput {
 	/**
 	 * Array of booleans containing the state of all keys

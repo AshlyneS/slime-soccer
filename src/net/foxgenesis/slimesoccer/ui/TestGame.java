@@ -7,6 +7,7 @@ import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.GameObject;
 import net.foxgenesis.slimesoccer.objects.Slime;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -16,6 +17,8 @@ public class TestGame extends Scene {
 
 	@Override
 	public void draw(GameContainer container, Graphics g) {
+		g.setColor(Color.cyan);
+		g.fillRect(0, 0, SlimeSoccer.getWidth(), SlimeSoccer.getHeight());
 		for(GameObject a: objects)
 			if(a != null)
 				a.render(g);;

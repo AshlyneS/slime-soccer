@@ -8,8 +8,7 @@ public class ProgressBar extends Component {
 	private double value,max,min;
 	private Color foreground,background;
 	private Runnable run;
-	private boolean pText=true;
-	private boolean invert = false;
+	private boolean pText=true, invert = false;
 	private String text;
 	
 	public ProgressBar() {
@@ -105,7 +104,7 @@ public class ProgressBar extends Component {
 		g.drawRect(getX(), getY(), getWidth(), getHeight());
 		if(pText) {
 			g.setColor(Color.white);
-			g.drawString(text, getX()+getWidth()/2-g.getFont().getWidth(text)/2, getY()+getHeight()+5);
+			g.drawString(text, (int) (getX()+getWidth()/2-g.getFont().getWidth(text)/2), getY()+getHeight()+5);
 		}
 	}
 

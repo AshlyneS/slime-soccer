@@ -19,6 +19,8 @@ import org.newdawn.slick.SlickException;
 
 public class SlimeSoccer extends BasicGame
 {
+	private static int width, height;
+	
 	public static void main(String[] args) {
 		try {
 			//create v-sync with monitor and start game
@@ -34,7 +36,13 @@ public class SlimeSoccer extends BasicGame
 		}
 	}
 	
-	private static int width, height;
+	public static int getWidth() {
+		return width;
+	}
+	
+	public static int getHeight() {
+		return height;
+	}
 
 	public SlimeSoccer(String gamename) {
 		super(gamename);
@@ -63,14 +71,6 @@ public class SlimeSoccer extends BasicGame
 		g.setAntiAlias(true);
 		if(Scene.getCurrentScene() != null)
 			Scene.getCurrentScene().draw(gc, g);
-	}
-	
-	public static int getWidth() {
-		return width;
-	}
-	
-	public static int getHeight() {
-		return height;
 	}
 }
 

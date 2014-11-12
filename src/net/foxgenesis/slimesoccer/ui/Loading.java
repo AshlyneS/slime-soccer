@@ -27,6 +27,7 @@ public class Loading extends Scene {
 		hiero = Fonts.get("hiero");
 		bar = new ProgressBar();
 		bar.setVisible(true);
+		bar.setText("This bar doesn't do anything! lawl :P");
 		bar.setAction(new Runnable() {
 			@Override
 			public void run() {

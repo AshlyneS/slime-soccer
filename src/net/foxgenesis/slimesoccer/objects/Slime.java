@@ -1,9 +1,17 @@
 package net.foxgenesis.slimesoccer.objects;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import net.foxgenesis.slimesoccer.SlimeSoccer;
+import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.input.KeyboardInput;
+import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
+import net.foxgenesis.slimesoccer.util.SlimeAbilityUtil;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -13,11 +21,15 @@ import org.newdawn.slick.Image;
  */
 public class Slime extends GameObject {
 	private final Image img, flipped;
+	private final Type type;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	private final boolean controlled, secondary;
-	private boolean canJump = true;
+	private boolean canJump = true,abilityCheck = true;
 	private int direction = 0;
-	
+	private double cooldown = 0.5;
+	private ProgressBar bar;
+	private Timer timer;
+
 	/**
 	 * Create a new Slime with a type and controlled parameters
 	 * @param type -  type of slime to make
@@ -26,7 +38,7 @@ public class Slime extends GameObject {
 	public Slime(Type type, boolean controlled) {
 		this(type,controlled,false);
 	}
-	
+
 	/**
 	 * Create a new Slime with a type and controlled parameters
 	 * @param type -  type of slime to make
@@ -35,26 +47,51 @@ public class Slime extends GameObject {
 	 */
 	public Slime(Type type, boolean controlled, boolean secondaryInput) {
 		super(100, 100);
-		img = Textures.get(type.img).getScaledCopy((int)getWidth(),(int)getHeight());
+		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
+		flipped = img.getFlippedCopy(true,false);
+		this.type = type;
+		timer = new Timer();
+		bar = new ProgressBar();
+		bar.setPrintText(false);
+		bar.setSize(SlimeSoccer.getWidth()/2-60, 20);
+		bar.setBackground(Color.black);
+		bar.setForeground(Color.green);
+		bar.setValue(50);
 		this.controlled = controlled;
-		this.flipped = img.getFlippedCopy(true, false);
 		this.secondary = secondaryInput;
+	}
+	
+	/**
+	 * Gets the type of slime
+	 * @return type of slime
+	 */
+	public Type getType() {
+		return type;
 	}
 
 	@Override
 	public void render(Graphics g) {
 		switch(direction) {
 		case 0:
-			img.draw(location.x,location.y);
+			if(img != null)
+				img.draw(location.x,location.y);
 			break;
 		case 1:
-			flipped.draw(location.x,location.y);
+			if(flipped != null)
+				flipped.draw(location.x,location.y);
 			break;
 		}
+		bar.draw(g);
+		Fonts.get("hiero").drawString(secondary?SlimeSoccer.getWidth()-Fonts.get("hiero").getWidth(type.name())-10:10, 50, type.name());
 	}
 
 	@Override
 	public void update(int delta) {
+		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10:10, 50);
+		bar.update(delta);
+		bar.setValue(bar.getValue()+cooldown);
+		img.rotate(rotation);
+		flipped.rotate(rotation);
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
@@ -76,9 +113,21 @@ public class Slime extends GameObject {
 							velocity.x -= velocity.x;
 						else
 							velocity.x+=SPEED/2;
-			if(KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_SPACE] && canJump) {
+			if(KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
+			}
+			
+			if(abilityCheck && canUseAbility() && KeyboardInput.keys[secondary?Keyboard.KEY_SPACE:Keyboard.KEY_1]) {
+				abilityCheck = false;
+				bar.setValue(bar.getValue()-50);
+				timer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						abilityCheck = true;
+					}
+				}, 1000);
+				type.abilityActivated(this);
 			}
 			if(outOfBounds(location.x,location.y + velocity.y,false,true))
 				canJump = true;
@@ -89,22 +138,35 @@ public class Slime extends GameObject {
 	public boolean isSolid() {
 		return false;
 	}
+	
+	public boolean canUseAbility() {
+		return bar.getValue()>bar.getMaximumValue()/2;
+	}
 
 	/**
 	 * Type contains the list of Slime types
 	 * @author Seth
 	 */
 	public static enum Type {
-		DEFAULT("svetty");
+		DEFAULT("svetty",1000);
 		
 		private String img;
-		
+		private long duration;
 		/**
 		 * Create a new Type with given Image path
 		 * @param img - Image path
 		 */
-		Type(String img) {
+		Type(String img, long duration) {
 			this.img = img;
+			this.duration = duration;
+		}
+		
+		private void abilityActivated(Slime slime) {
+			SlimeAbilityUtil.handelAbility(slime);
+		}
+		
+		public long getDuration() {
+			return duration;
 		}
 	}
 

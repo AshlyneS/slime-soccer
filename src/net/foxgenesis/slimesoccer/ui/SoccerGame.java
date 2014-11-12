@@ -18,6 +18,7 @@ import org.newdawn.slick.Graphics;
 public class SoccerGame extends Scene {
 
 	private GameObject[] objects = new GameObject[3];
+	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2;
 
 	@Override
 	public void draw(GameContainer container, Graphics g) {
@@ -32,7 +33,7 @@ public class SoccerGame extends Scene {
 	public void update(GameContainer container, int i) {
 		for(GameObject a:objects) {
 			if(a != null) {
-				a.updatePosition(objects);
+				a.updatePosition(a instanceof Ball?objects:new GameObject[]{});
 				a.update(i);
 			}
 		}
@@ -43,13 +44,18 @@ public class SoccerGame extends Scene {
 		objects[0] = new Slime(Slime.Type.valueOf(params.get("player1").toString().toUpperCase()), true);
 		objects[1] = new Slime(Slime.Type.valueOf(params.get("player2").toString().toUpperCase()), true, true);
 		objects[2] = new Ball();
-		objects[1].getLocation().x = SlimeSoccer.getWidth() - objects[1].getWidth()-10;
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
+		objects[1].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
+		objects[1].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
 	}
 
 	@Override
 	void unload(Scene scene) {
 
+	}
+	
+	public GameObject[] getObjects() {
+		return objects;
 	}
 
 }

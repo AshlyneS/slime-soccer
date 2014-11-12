@@ -14,7 +14,7 @@ public abstract class GameObject
 	/**
 	 * Gravity factor for all GameObjects
 	 */
-	public static final float GRAVITY_FACTOR = 0.198f;
+	public static final float GRAVITY_FACTOR = 0.098f;
 	
 	/**
 	 * Finals for X_Axis and Y_Axis
@@ -22,6 +22,7 @@ public abstract class GameObject
 	public static final int X_AXIS = 0, Y_AXIS = 1;
 	
 	protected Vector2f location = new Vector2f(), velocity = new Vector2f();
+	protected float rotation = 0f;
 	protected float width,height;
 
 	/**
@@ -32,6 +33,22 @@ public abstract class GameObject
 	public GameObject(float width, float height) {
 		this.width = width;
 		this.height = height;
+	}
+	
+	/**
+	 * Sets the rotation of the object
+	 * @param rotation - object rotation
+	 */
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+	
+	/**
+	 * Gets the rotation of the object
+	 * @return object rotation
+	 */
+	public float getRotation() {
+		return rotation;
 	}
 
 	/**

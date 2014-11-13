@@ -1,4 +1,4 @@
-package net.foxgenesis.slimesoccer.input;
+package net.foxgenesis.slimesoccer.io;
 
 import org.lwjgl.input.Keyboard;
 

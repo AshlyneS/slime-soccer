@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
-import net.foxgenesis.slimesoccer.input.KeyboardInput;
+import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
 import org.lwjgl.input.Keyboard;

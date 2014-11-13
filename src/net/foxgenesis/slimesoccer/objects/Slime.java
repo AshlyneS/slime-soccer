@@ -6,7 +6,7 @@ import java.util.TimerTask;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
-import net.foxgenesis.slimesoccer.input.KeyboardInput;
+import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 import net.foxgenesis.slimesoccer.util.SlimeAbilityUtil;
 
@@ -50,15 +50,17 @@ public class Slime extends GameObject {
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
 		this.type = type;
+		this.controlled = controlled;
+		this.secondary = secondaryInput;
 		timer = new Timer();
 		bar = new ProgressBar();
 		bar.setPrintText(false);
 		bar.setSize(SlimeSoccer.getWidth()/2-60, 20);
-		bar.setBackground(Color.black);
-		bar.setForeground(Color.green);
+		bar.setBackground(secondary?Color.black:Color.green);
+		bar.setForeground(secondary?Color.green:Color.black);
 		bar.setValue(50);
-		this.controlled = controlled;
-		this.secondary = secondaryInput;
+		if(!secondary)
+			bar.setInvertedPercentage(true);
 	}
 	
 	/**
@@ -82,6 +84,7 @@ public class Slime extends GameObject {
 			break;
 		}
 		bar.draw(g);
+		Fonts.get("hiero").drawString(secondary?SlimeSoccer.getWidth()-Fonts.get("hiero").getWidth(type.name())-5:15, 55, type.name(), Color.black);
 		Fonts.get("hiero").drawString(secondary?SlimeSoccer.getWidth()-Fonts.get("hiero").getWidth(type.name())-10:10, 50, type.name());
 	}
 
@@ -89,7 +92,7 @@ public class Slime extends GameObject {
 	public void update(int delta) {
 		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10:10, 50);
 		bar.update(delta);
-		bar.setValue(bar.getValue()+cooldown);
+		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
 		img.rotate(rotation);
 		flipped.rotate(rotation);
 		if(controlled) {
@@ -120,7 +123,7 @@ public class Slime extends GameObject {
 			
 			if(abilityCheck && canUseAbility() && KeyboardInput.keys[secondary?Keyboard.KEY_SPACE:Keyboard.KEY_1]) {
 				abilityCheck = false;
-				bar.setValue(bar.getValue()-50);
+				bar.setValue(bar.getValue()+(secondary?-50:50));
 				timer.schedule(new TimerTask() {
 					@Override
 					public void run() {
@@ -139,8 +142,12 @@ public class Slime extends GameObject {
 		return false;
 	}
 	
+	/**
+	 * Checks if the player can use their ability
+	 * @return if the player can use their ability
+	 */
 	public boolean canUseAbility() {
-		return bar.getValue()>bar.getMaximumValue()/2;
+		return secondary?bar.getValue()>bar.getMaximumValue()/2:bar.getValue()<bar.getMaximumValue()/2;
 	}
 
 	/**

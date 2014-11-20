@@ -20,7 +20,8 @@ import org.newdawn.slick.Image;
  * @author Seth
  */
 public class Slime extends GameObject {
-	private final Image img, flipped;
+	private final Image img;
+	private Image flipped;
 	private final Type type;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	private final boolean controlled, secondary;
@@ -49,6 +50,7 @@ public class Slime extends GameObject {
 		super(100, 100);
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
+		img.rotate(90);
 		this.type = type;
 		this.controlled = controlled;
 		this.secondary = secondaryInput;
@@ -61,6 +63,10 @@ public class Slime extends GameObject {
 		bar.setValue(50);
 		if(!secondary)
 			bar.setInvertedPercentage(true);
+	}
+	
+	public Image[] getImages() {
+		return new Image[]{img,flipped};
 	}
 	
 	/**
@@ -94,7 +100,8 @@ public class Slime extends GameObject {
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
 		img.rotate(rotation);
-		flipped.rotate(rotation);
+		flipped = img.getFlippedCopy(true, false);
+		flipped.rotate(-img.getRotation());
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;

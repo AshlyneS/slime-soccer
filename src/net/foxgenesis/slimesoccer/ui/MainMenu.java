@@ -8,6 +8,7 @@ import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.objects.Slime;
 import net.foxgenesis.slimesoccer.ui.component.Button;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,6 +31,7 @@ public class MainMenu extends Scene{
 		duelPlayer.setFont(Fonts.get("hiero"));
 		duelPlayer.setLocation(SlimeSoccer.getWidth()/2, SlimeSoccer.getHeight()/3);
 		duelPlayer.setForeground(Color.white);
+		duelPlayer.setAnimation(new Animation(new Image[]{Textures.get("svetty"),Textures.get("missing")}, new int[]{300,300}));
 		duelPlayer.setAction(new Button.Action(){
 			@Override
 			public void act(Input input) {

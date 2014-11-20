@@ -9,10 +9,10 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
+import org.newdawn.slick.geom.RoundedRectangle;
 
 /**
  * Button component
- *
  * @author Seth
  */
 public class Button extends Component {
@@ -24,7 +24,7 @@ public class Button extends Component {
 	private int roundedArc = 8,mX,mY;
 	private boolean cursorEntered = false, held = false, drawShadow = true, 
 			visible = true, enabled = true, drawBorder = true, hover = false, 
-			round = false, toolFont = false;
+			round = false, toolFont = false, updateOnHover = true;
 	private Font font;
 	private Timer timer;
 
@@ -40,7 +40,6 @@ public class Button extends Component {
 	}
 	/**
 	 * Creates a new button with a given text
-	 *
 	 * @param text text to be shown on the button
 	 */
 	public Button(String text) {
@@ -56,41 +55,96 @@ public class Button extends Component {
 
 	/**
 	 * Returns weather the button draws its boarders
-	 *
 	 * @return boolean
 	 */
 	public boolean doesDrawBorder() {
 		return drawBorder;
 	}
-	
+
+	/**
+	 * Sets whether the button should only update the animation when hovered over
+	 * @param state - update animation on hover
+	 */
+	public void setUpdateAnimationOnHover(boolean state) {
+		updateOnHover = state;
+	}
+
+	/**
+	 * Gets whether the animation should only update when hovered over
+	 * @return should animation only update on hover
+	 */
+	public boolean getUpdateAnimationOnHover() {
+		return updateOnHover;
+	}
+
+	/**
+	 * Gets the animation of the button
+	 * @return button animation;
+	 */
+	public Animation getAnimation() {
+		return ani;
+	}
+
+	/**
+	 * Get the arc amount
+	 * @return arc amount
+	 */
 	public int getRoundedArc() {
 		return roundedArc;
 	}
-	
+
+	/**
+	 * Sets the arc amount
+	 * @param arc - arc amount
+	 */
 	public void setRoundedArc(int arc) {
 		this.roundedArc = arc;
 	}
 
+	/**
+	 * Checks if the tooltip uses the same font as button text
+	 * @return does tooltip use font
+	 */
 	public boolean doesToolTipUseFont() {
 		return toolFont;
 	}
 
+	/**
+	 * Sets the tooltip to use button font based on state
+	 * @param state - should tooltip use same font
+	 */
 	public void setToolTipUsesFont(boolean state) {
 		toolFont = state;
 	}
 
+	/**
+	 * Gets the font in use
+	 * @return font in use
+	 */
 	public Font getFont() {
 		return font;
 	}
 
+	/**
+	 * Sets the font to use for button and or tooltip text
+	 * @param font - font to use
+	 */
 	public void setFont(Font font) {
 		this.font = font;
 	}
 
+	/**
+	 * Checks if the button is rounded
+	 * @return button is rounded
+	 */
 	public boolean isRounded() {
 		return round;
 	}
 
+	/**
+	 * Sets whether the button should be rounded
+	 * @param state - should button be rounded
+	 */
 	public void setRounded(boolean state) {
 		round = state;
 	}
@@ -112,17 +166,24 @@ public class Button extends Component {
 		return background;
 	}
 
+	/**
+	 * Sets the text's color
+	 * @param color - text color
+	 */
 	public void setForeground(Color color) {
 		this.foreground = color;
 	}
 
+	/**
+	 * Gets the text's color
+	 * @return text color
+	 */
 	public Color getForeground() {
 		return foreground;
 	}
 
 	/**
 	 * Sets the tooltip to be shown when the cursor hovers over the button
-	 *
 	 * @param text
 	 */
 	public void setToolTipText(String text) {
@@ -131,7 +192,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets weather the button should draw it's borders or not
-	 *
 	 * @param state
 	 */
 	public void setDrawBorder(boolean state) {
@@ -140,7 +200,6 @@ public class Button extends Component {
 
 	/**
 	 * Returns weather the button draws a shadow behind it
-	 *
 	 * @return boolean
 	 */
 	public boolean doesDrawShadow() {
@@ -149,7 +208,6 @@ public class Button extends Component {
 
 	/**
 	 * Returns weather the button is click-able or not
-	 *
 	 * @return boolean
 	 */
 	public boolean isEnabled() {
@@ -158,7 +216,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets weather the button should be click-able or not
-	 *
 	 * @param state
 	 */
 	public void setEnabled(boolean state) {
@@ -167,7 +224,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets weather the button should be drawn or not
-	 *
 	 * @param state
 	 */
 	public void setVisible(boolean state) {
@@ -176,7 +232,6 @@ public class Button extends Component {
 
 	/**
 	 * Returns weather the button is visible on the screen
-	 *
 	 * @return boolean
 	 */
 	public boolean isVisible() {
@@ -199,9 +254,16 @@ public class Button extends Component {
 		return true;
 	}
 
+	@Override
+	public void update(int i) {
+		super.update(i);
+		if(ani != null)
+			if(updateOnHover && cursorEntered || !updateOnHover)
+				ani.update(i);
+	}
+
 	/**
 	 * Draws the button with a given Graphics
-	 *
 	 * @param g Graphics to draw with
 	 */
 	public void draw(Graphics g) {
@@ -220,12 +282,13 @@ public class Button extends Component {
 				g.setColor(Color.black);
 				g.drawRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height, round?roundedArc:0);
 			}
-			if(ani != null)
-				ani.draw(getLocation().x-width/2, getLocation().y-height/2, width, height);
-			else {
+			if(background != null) {
 				g.setColor(background);
 				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			}
+			if(ani != null)
+				g.texture(new RoundedRectangle(getLocation().x-width/2,getLocation().y-height/2,width,height,round?roundedArc:0), 
+						ani.getCurrentFrame(), 1, 1, true);
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;
@@ -259,7 +322,6 @@ public class Button extends Component {
 
 	/**
 	 * Draws the button at a given location
-	 *
 	 * @param g Graphics to draw with
 	 * @param x x location on the screen
 	 * @param y y location on the screen
@@ -271,7 +333,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets the action to occur when the button is clicked
-	 *
 	 * @param action
 	 */
 	public void setAction(Action action) {
@@ -280,7 +341,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets the input that the button should listen to
-	 *
 	 * @param input Input to listen to
 	 */
 	public void listen(final Input input) {
@@ -368,7 +428,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets the text to be displayed on the button
-	 *
 	 * @param text text to show
 	 */
 	public void setText(String text) {
@@ -377,7 +436,6 @@ public class Button extends Component {
 
 	/**
 	 * Gets the text shown on the button
-	 *
 	 * @return String
 	 */
 	public String getText() {
@@ -410,7 +468,6 @@ public class Button extends Component {
 
 	/**
 	 * Sets the animation of the button
-	 *
 	 * @param animation Animation to use
 	 */
 	public void setAnimation(Animation animation) {
@@ -426,7 +483,6 @@ public class Button extends Component {
 
 		/**
 		 * runs a specific action
-		 *
 		 * @param input
 		 */
 		public void act(Input input);

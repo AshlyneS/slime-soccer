@@ -216,33 +216,31 @@ public class Button extends Component {
 			}
 			if (drawShadow) {
 				g.setColor(new Color(.5f, .5f, .5f, .5f));
-				g.fillRoundRect(getLocation().x-width/2 + 3, getLocation().y-height/2 + 3, getWidth(), getHeight(), round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2 + 3, getLocation().y-height/2 + 3, width, height, round?roundedArc:0);
 				g.setColor(Color.black);
-				g.drawRoundRect(getLocation().x-width/2, getLocation().y-height/2, getWidth(), getHeight(), round?roundedArc:0);
+				g.drawRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height, round?roundedArc:0);
 			}
 			if(ani != null)
-				ani.draw(getLocation().x-width/2, getLocation().y-height/2, getWidth(), getHeight());
+				ani.draw(getLocation().x-width/2, getLocation().y-height/2, width, height);
 			else {
 				g.setColor(background);
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, this.getWidth(), this.getHeight(),round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			}
 			if (!text.equalsIgnoreCase("")) {
-				int height = g.getFont().getHeight(text);
-				int width = g.getFont().getWidth(text);
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;
 				g.setColor(foreground);
-				g.drawString(text, x, y);
+				g.drawString(text, x+roundedArc, y);
 			}
 			if (cursorEntered && !held && enabled) {
 				g.setColor(new Color(1f, 1f, 1f, 0.5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, getWidth(), getHeight(),round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			} else if (cursorEntered && held && enabled) {
 				g.setColor(new Color(.5f, .5f, .5f, .5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, getWidth(), getHeight(),round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			} else if (!enabled) {
 				g.setColor(new Color(0f, 0f, 0f, .5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, getWidth(), getHeight(),round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			}
 			if (!tooltip.equalsIgnoreCase("") && hover) {
 				g.setFont(original);

@@ -18,7 +18,7 @@ import org.newdawn.slick.Graphics;
 public class SoccerGame extends Scene {
 
 	private GameObject[] objects = new GameObject[3];
-	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2;
+	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, SINGLE_PLAYER=0,DUEL=1,MULTIPLAYER=2;
 
 	@Override
 	public void draw(GameContainer container, Graphics g) {
@@ -41,8 +41,8 @@ public class SoccerGame extends Scene {
 
 	@Override
 	void load(HashMap<String, Object> params) {
-		objects[0] = new Slime(Slime.Type.valueOf(params.get("player1").toString().toUpperCase()), true);
-		objects[1] = new Slime(Slime.Type.valueOf(params.get("player2").toString().toUpperCase()), true, true);
+		objects[0] = new Slime((Slime.Type)params.get("player1"), true);
+		objects[1] = new Slime((Slime.Type)params.get("player1"), (int)params.get("players") == DUEL, true);
 		objects[2] = new Ball();
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[1].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;

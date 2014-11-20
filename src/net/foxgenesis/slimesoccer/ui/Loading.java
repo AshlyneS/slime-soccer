@@ -45,7 +45,7 @@ public class Loading extends Scene {
 	}
 	@Override
 	public void draw(GameContainer container, Graphics g) {
-		String title = "Slime Soccer", input = "PRESS SPACE";
+		String title = "Slime Soccer", input = "PRESS RETURN";
 		g.drawImage(background, 0, 0, container.getWidth(), 
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
@@ -73,12 +73,8 @@ public class Loading extends Scene {
 		ball.rotate((float)(hiero.getHeight("Slime Soccer")/8 * Math.sin(0.05 * update2)));
 		if(bar.isVisible())
 			bar.setValue(bar.getValue()+1);
-		else if(KeyboardInput.keys[Keyboard.KEY_SPACE]) {
-			HashMap<String, Object> params = new HashMap<>();
-			params.put("player1", "DEFAULT");
-			params.put("player2", "DEFAULT");
-			Scene.setCurrentScene(new SoccerGame(), params);
-		}
+		else if(KeyboardInput.keys[Keyboard.KEY_RETURN])
+			Scene.setCurrentScene(new MainMenu(), null);
 	}
 
 	@Override

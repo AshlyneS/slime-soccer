@@ -15,11 +15,13 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 public class SlimeSoccer extends BasicGame
 {
 	private static int width, height;
+	private static Input input;
 	
 	/**
 	 * Main method
@@ -55,6 +57,10 @@ public class SlimeSoccer extends BasicGame
 	public static int getHeight() {
 		return height;
 	}
+	
+	public static Input getInput() {
+		return input;
+	}
 
 	public SlimeSoccer(String gamename) {
 		super(gamename);
@@ -65,6 +71,7 @@ public class SlimeSoccer extends BasicGame
 		System.out.println("Loading game...");
 		SlimeSoccer.width = gc.getWidth();
 		SlimeSoccer.height = gc.getHeight();
+		SlimeSoccer.input = gc.getInput();
 		Textures.init();
 		Fonts.init();
 		System.out.println("Game loaded!");

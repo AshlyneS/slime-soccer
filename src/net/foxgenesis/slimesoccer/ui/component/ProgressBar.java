@@ -20,6 +20,7 @@ public class ProgressBar extends Component {
 	 */
 	public ProgressBar() {
 		super();
+		this.setSmoothMoving(false);
 		foreground = Color.green;
 		background = Color.black;
 		max = 100;
@@ -164,14 +165,14 @@ public class ProgressBar extends Component {
 	public void draw(Graphics g) {
 		super.draw(g);
 		g.setColor(background);
-		g.fillRect(getX(), getY(), getWidth(), getHeight());
+		g.fillRect(getLocation().x, getLocation().y, getWidth(), getHeight());
 		g.setColor(foreground);
-		g.fillRect(getX(), getY(), (int)(getWidth()/max*value), getHeight());
+		g.fillRect(getLocation().x, getLocation().y, (int)(getWidth()/max*value), getHeight());
 		g.setColor(Color.black);
-		g.drawRect(getX(), getY(), getWidth(), getHeight());
+		g.drawRect(getLocation().x, getLocation().y, getWidth(), getHeight());
 		if(pText) {
 			g.setColor(Color.white);
-			g.drawString(text, (int) (getX()+getWidth()/2-g.getFont().getWidth(text)/2), getY()+getHeight()+5);
+			g.drawString(text, getLocation().x+getWidth()/2-g.getFont().getWidth(text)/2, getLocation().y+getHeight()+5);
 		}
 	}
 

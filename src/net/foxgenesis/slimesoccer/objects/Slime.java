@@ -76,11 +76,11 @@ public class Slime extends GameObject {
 		switch(direction) {
 		case 0:
 			if(img != null)
-				img.draw(location.x,location.y);
+				img.draw(location.x,location.y, width, height);
 			break;
 		case 1:
 			if(flipped != null)
-				flipped.draw(location.x,location.y);
+				flipped.draw(location.x,location.y, width, height);
 			break;
 		}
 		bar.draw(g);
@@ -90,7 +90,7 @@ public class Slime extends GameObject {
 
 	@Override
 	public void update(int delta) {
-		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10:10, 50);
+		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
 		img.rotate(rotation);

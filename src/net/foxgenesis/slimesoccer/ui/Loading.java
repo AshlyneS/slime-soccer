@@ -13,7 +13,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 
 /**
  * Loading is the loading screen at the start of the game
@@ -21,11 +20,10 @@ import org.newdawn.slick.SlickException;
  */
 public class Loading extends Scene {
 
-	private Image background,ball,image;
+	private Image background,ball;
 	private AngelCodeFont hiero;
 	private ProgressBar bar;
 	private int update = 0,update2 = 0,speed=1;
-	private boolean getImage = false;
 	
 	/**
 	 * Create a new loading screen instance
@@ -50,7 +48,6 @@ public class Loading extends Scene {
 		String title = "Slime Soccer", input = "PRESS RETURN";
 		g.drawImage(background, 0, 0, container.getWidth(), 
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
-		ball.rotate((float) (Math.cos(0.05 * update2)/2 * ball.getWidth()/2));
 		g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
 				- (float)(hiero.getHeight(title)*2 * Math.sin(0.05 * update2)),50);
 		g.pushTransform();
@@ -60,16 +57,8 @@ public class Loading extends Scene {
 		if(bar.isVisible())
 			bar.draw(g);
 		else
-			hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2+10,container.getHeight()-100, input, update > 15/2?Color.red:Color.orange);
+			hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2,container.getHeight()-100, input, update > 15/2?Color.red:Color.orange);
 		g.popTransform();
-		if(getImage) {
-			try {
-				image = new Image(container.getWidth(),container.getHeight());
-				g.copyArea(image, 0, 0);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
@@ -85,12 +74,7 @@ public class Loading extends Scene {
 		if(bar.isVisible())
 			bar.setValue(bar.getValue()+1);
 		else if(KeyboardInput.keys[Keyboard.KEY_RETURN])
-			getImage = true;
-		if(image != null) {
-			HashMap<String, Object> params = new HashMap<>();
-			params.put("image",image);
-			Scene.setCurrentScene(new MainMenu(), params);
-		}
+			Scene.setCurrentScene(new MainMenu(), null);
 	}
 
 	@Override

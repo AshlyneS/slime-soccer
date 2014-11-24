@@ -3,13 +3,14 @@ package net.foxgenesis.slimesoccer.ui;
 import java.util.HashMap;
 
 import net.foxgenesis.slimesoccer.SlimeSoccer;
+import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.GameObject;
 import net.foxgenesis.slimesoccer.objects.Slime;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 /**
  * SoccerGame is a scene that contains players and a soccerball
@@ -19,11 +20,11 @@ public class SoccerGame extends Scene {
 
 	private GameObject[] objects = new GameObject[3];
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, SINGLE_PLAYER=0,DUEL=1,MULTIPLAYER=2;
-
+	private Image background;
 	@Override
 	public void draw(GameContainer container, Graphics g) {
-		g.setColor(Color.cyan);
-		g.fillRect(0, 0, SlimeSoccer.getWidth(), SlimeSoccer.getHeight());
+		g.drawImage(background, 0, 0, container.getWidth(), 
+				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		for(GameObject a: objects)
 			if(a != null)
 				a.render(g);;
@@ -47,6 +48,7 @@ public class SoccerGame extends Scene {
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[1].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[1].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
+		background = Textures.get((String) params.get("background"));
 	}
 
 	@Override

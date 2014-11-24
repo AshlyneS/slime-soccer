@@ -22,9 +22,17 @@ public class Button extends Component {
 	private Color foreground = Color.black, background = Color.white;
 	private Animation ani;
 	private int roundedArc = 8,mX,mY;
-	private boolean cursorEntered = false, held = false, drawShadow = true, 
-			visible = true, enabled = true, drawBorder = true, hover = false, 
-			round = false, toolFont = false, updateOnHover = true;
+	protected boolean cursorEntered = false;
+	private boolean held = false;
+	private boolean drawShadow = true;
+	private boolean visible = true;
+	private boolean enabled = true;
+	private boolean drawBorder = true;
+	private boolean hover = false;
+	private boolean drawHoverScreen = true;
+	private boolean round = false;
+	private boolean toolFont = false;
+	private boolean updateOnHover = true;
 	private Font font;
 	private Timer timer;
 
@@ -59,6 +67,22 @@ public class Button extends Component {
 	 */
 	public boolean doesDrawBorder() {
 		return drawBorder;
+	}
+	
+	/**
+	 * Returns whether the button draws a screen on hover
+	 * @return draw screen on hover
+	 */
+	public boolean doesDrawHoverScreen() {
+		return drawHoverScreen;
+	}
+	
+	/**
+	 * Sets whether the button draws a screen on hover
+	 * @param state - should draw screen
+	 */
+	public void setDrawHoverScreen(boolean state) {
+		drawHoverScreen = state;
 	}
 
 	/**
@@ -295,7 +319,7 @@ public class Button extends Component {
 				g.setColor(foreground);
 				g.drawString(text, x+roundedArc, y);
 			}
-			if (cursorEntered && !held && enabled) {
+			if (cursorEntered && !held && enabled && drawHoverScreen) {
 				g.setColor(new Color(1f, 1f, 1f, 0.5f));
 				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			} else if (cursorEntered && held && enabled) {
@@ -306,7 +330,8 @@ public class Button extends Component {
 				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
 			}
 			if (!tooltip.equalsIgnoreCase("") && hover) {
-				g.setFont(original);
+				if(!toolFont)
+					g.setFont(original);
 				int height = g.getFont().getHeight(tooltip);
 				int width = g.getFont().getWidth(tooltip)+roundedArc;
 				float x = mX-width/2;
@@ -317,6 +342,7 @@ public class Button extends Component {
 				g.drawRoundRect(x, y, width + 5, height + 5,round?roundedArc:0);
 				g.drawString(tooltip, x+roundedArc/2, y+roundedArc/2-2);
 			}
+			g.setFont(original);
 		}
 	}
 

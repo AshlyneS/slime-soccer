@@ -50,7 +50,6 @@ public class Slime extends GameObject {
 		super(100, 100);
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
-		img.rotate(90);
 		this.type = type;
 		this.controlled = controlled;
 		this.secondary = secondaryInput;
@@ -99,7 +98,7 @@ public class Slime extends GameObject {
 		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
-		img.rotate(rotation);
+		img.setRotation(this.getRotation());
 		flipped = img.getFlippedCopy(true, false);
 		flipped.rotate(-img.getRotation());
 		if(controlled) {

@@ -14,7 +14,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 /**
  * @author Seth
@@ -34,18 +33,13 @@ public class MainMenu extends Scene{
 		super();
 		background = Textures.get("gradientBackground");
 		duelPlayer = createButton("Duel");
-		duelPlayer.listen(SlimeSoccer.getInput());
 		duelPlayer.setToolTipText("Play a game against a human");
 		duelPlayer.getLocation().y = SlimeSoccer.getHeight()/4;
-		duelPlayer.setRounded(true);
-		duelPlayer.setDrawHoverScreen(false);
-		duelPlayer.setFont(Fonts.get("hiero"));
 		duelPlayer.setLocation(SlimeSoccer.getWidth()/4, SlimeSoccer.getHeight()/4);
-		duelPlayer.setForeground(Color.white);
 		duelPlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("buttonBlack")}, new int[]{300,300}));
 		duelPlayer.setAction(new Button.Action(){
 			@Override
-			public void act(Input input) {
+			public void act(int button, int x, int y, int clickCount) {
 				HashMap<String, Object> params = new HashMap<>();
 				params.put("player1", Slime.Type.DEFAULT);
 				params.put("player2", Slime.Type.DEFAULT);
@@ -56,19 +50,14 @@ public class MainMenu extends Scene{
 		});
 
 		singlePlayer = createButton("Single Player");
-		singlePlayer.listen(SlimeSoccer.getInput());
 		singlePlayer.setToolTipText("Play a game against a computer");
 		singlePlayer.getLocation().y = SlimeSoccer.getHeight()/4;
 		singlePlayer.getLocation().x = SlimeSoccer.getWidth();
-		singlePlayer.setRounded(true);
-		singlePlayer.setDrawHoverScreen(false);
-		singlePlayer.setFont(Fonts.get("hiero"));
 		singlePlayer.setLocation(SlimeSoccer.getWidth()/4*2, SlimeSoccer.getHeight()/4*2);
-		singlePlayer.setForeground(Color.white);
 		singlePlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("missing")}, new int[]{300,300}));
 		singlePlayer.setAction(new Button.Action(){
 			@Override
-			public void act(Input input) {
+			public void act(int button, int x, int y, int clickCount) {
 				HashMap<String, Object> params = new HashMap<>();
 				params.put("player1", Slime.Type.DEFAULT);
 				params.put("player2", Slime.Type.DEFAULT);
@@ -79,18 +68,13 @@ public class MainMenu extends Scene{
 		});
 
 		multiPlayer = createButton("Multiplayer");
-		multiPlayer.listen(SlimeSoccer.getInput());
 		multiPlayer.setToolTipText("Play a game against a human over the internet");
 		multiPlayer.getLocation().y = SlimeSoccer.getHeight()/4;
-		multiPlayer.setRounded(true);
-		multiPlayer.setFont(Fonts.get("hiero"));
 		multiPlayer.setLocation(SlimeSoccer.getWidth()/4*3, SlimeSoccer.getHeight()/4*3);
-		multiPlayer.setForeground(Color.white);
-		multiPlayer.setDrawHoverScreen(false);
 		multiPlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("missing")}, new int[]{300,300}));
 		multiPlayer.setAction(new Button.Action(){
 			@Override
-			public void act(Input input) {
+			public void act(int button, int x, int y, int clickCount) {
 				HashMap<String, Object> params = new HashMap<>();
 				params.put("player1", Slime.Type.DEFAULT);
 				params.put("player2", Slime.Type.DEFAULT);
@@ -101,10 +85,8 @@ public class MainMenu extends Scene{
 		});
 
 		info = createButton("i");
-		info.listen(SlimeSoccer.getInput());
 		info.setToolTipText("Information");
-		info.setRounded(true);
-		info.setSmoothMoving(true);
+		info.setFont(null);
 		info.setForeground(Color.black);
 		info.getLocation().x = SlimeSoccer.getWidth();
 		info.setLocation(20, SlimeSoccer.getHeight()-15);
@@ -147,11 +129,13 @@ public class MainMenu extends Scene{
 
 	@Override
 	void unload(Scene scene) {
-
+		singlePlayer.mute(SlimeSoccer.getInput());
+		multiPlayer.mute(SlimeSoccer.getInput());
+		duelPlayer.mute(SlimeSoccer.getInput());
 	}
 	
 	private Button createButton(String title) {
-		return new Button(title){
+		Button b = new Button(title){
 			@Override
 			public void draw(Graphics g) {
 				float exp = (float)Math.sin(Math.toRadians(update));
@@ -170,6 +154,13 @@ public class MainMenu extends Scene{
 				super.draw(g);
 			}
 		};
+		b.setRounded(true);
+		b.setDrawHoverScreen(false);
+		b.setFont(Fonts.get("hiero"));
+		b.setSmoothMoving(true);
+		b.listen(SlimeSoccer.getInput());
+		b.setForeground(Color.white);
+		return b;
 	}
 
 }

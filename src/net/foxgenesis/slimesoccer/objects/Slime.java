@@ -95,6 +95,7 @@ public class Slime extends GameObject {
 
 	@Override
 	public void update(int delta) {
+		super.update(delta);
 		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));

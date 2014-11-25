@@ -26,7 +26,7 @@ public class Loading extends Scene {
 	private ProgressBar bar;
 	private int update = 0,update2 = 0,speed=1;
 	private boolean getImage = false;
-	
+
 	/**
 	 * Create a new loading screen instance
 	 */
@@ -45,6 +45,7 @@ public class Loading extends Scene {
 			}
 		});
 	}
+
 	@Override
 	public void draw(GameContainer container, Graphics g) {
 		String title = "Slime Soccer", input = "PRESS RETURN";
@@ -78,13 +79,13 @@ public class Loading extends Scene {
 			update = 0;
 		if((update2 += speed) >= 360)
 			speed = -speed;
+		if(bar.isVisible())
+			bar.setValue(bar.getValue()+1);
 		bar.setSize(gc.getWidth()/3*2,20);
 		bar.setLocation(gc.getWidth()/2-bar.getWidth()/2,gc.getHeight()-100);
 		bar.update(i);
 		ball.rotate((float)(hiero.getHeight("Slime Soccer")/8 * Math.sin(0.05 * update2)));
-		if(bar.isVisible())
-			bar.setValue(bar.getValue()+1);
-		else if(KeyboardInput.keys[Keyboard.KEY_RETURN])
+		if(!bar.isVisible() && KeyboardInput.keys[Keyboard.KEY_RETURN])
 			getImage = true;
 		if(image != null) {
 			HashMap<String, Object> params = new HashMap<>();

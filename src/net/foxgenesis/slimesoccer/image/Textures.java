@@ -57,5 +57,9 @@ public final class Textures {
 	public static boolean contains(String string) {
 		return textures.containsKey(string);
 	}
+	
+	public static String[] getKeyList() {
+		return textures.keySet().toArray(new String[]{});
+	}
 }
 

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
+import net.foxgenesis.slimesoccer.objects.Bounds;
 import net.foxgenesis.slimesoccer.ui.Loading;
 import net.foxgenesis.slimesoccer.ui.Scene;
 
@@ -22,6 +23,7 @@ public class SlimeSoccer extends BasicGame
 {
 	private static int width, height;
 	private static Input input;
+	public static boolean PIXEL_COLLISION = true;
 	
 	/**
 	 * Main method
@@ -77,6 +79,7 @@ public class SlimeSoccer extends BasicGame
 		SlimeSoccer.height = gc.getHeight();
 		SlimeSoccer.input = gc.getInput();
 		Textures.init();
+		Bounds.init();
 		Fonts.init();
 		System.out.println("Game loaded!");
 		Scene.setCurrentScene(new Loading(), null);

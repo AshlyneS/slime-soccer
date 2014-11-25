@@ -21,7 +21,7 @@ public class Button extends Component {
 	private String text, tooltip = "";
 	private Color foreground = Color.black, background = Color.white;
 	private Animation ani;
-	private int roundedArc = 8,mX,mY;
+	private int roundedArc = 8,mX,mY,padding=2;
 	protected boolean cursorEntered = false;
 	private boolean held = false;
 	private boolean drawShadow = true;
@@ -33,6 +33,7 @@ public class Button extends Component {
 	private boolean round = false;
 	private boolean toolFont = false;
 	private boolean updateOnHover = true;
+	private MouseListener listener;
 	private Font font;
 	private Timer timer;
 
@@ -45,6 +46,76 @@ public class Button extends Component {
 		this.text = text;
 		timer = new Timer();
 		this.ani = ani;
+		listener = new MouseListener() {
+			@Override
+			public void inputEnded() {}
+
+			@Override
+			public void inputStarted() {}
+
+			@Override
+			public boolean isAcceptingInput() {
+				return isVisible() && isEnabled();
+			}
+
+			@Override
+			public void setInput(Input input) {}
+
+			@Override
+			public void mouseClicked(int button, int x, int y, int clickCount) {
+				if (button == Input.MOUSE_LEFT_BUTTON)
+					if (contains(x, y))
+						if (action != null && enabled && visible)
+							action.act(button,x,y,clickCount);
+			}
+
+			@Override
+			public void mouseDragged(int oldx, int oldy, int newx, int newy) {}
+
+			@Override
+			public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+				mX = newx;
+				mY = newy;
+				if (cursorEntered && !contains(newx, newy)) {
+					cursorEntered = false;
+					hover = false;
+					mouseLeft();
+				} else if (contains(newx, newy) && cursorEntered == false) {
+					cursorEntered = true;
+					mouseEntered();
+					timer = new Timer();
+					timer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							if (cursorEntered)
+								hover = true;
+						}
+					}, 2000);
+				}
+			}
+
+			@Override
+			public void mousePressed(int button, int x, int y) {
+				if (cursorEntered)
+					if (button == Input.MOUSE_LEFT_BUTTON) {
+						held = true;
+						mousePressedAndHeld();
+					}
+			}
+
+			@Override
+			public void mouseReleased(int button, int x, int y) {
+				if (cursorEntered) {
+					if (button == Input.MOUSE_LEFT_BUTTON) {
+						held = false;
+						mouseLetGo();
+					}
+				}
+			}
+
+			@Override
+			public void mouseWheelMoved(int change) {}
+		};
 	}
 	/**
 	 * Creates a new button with a given text
@@ -68,7 +139,23 @@ public class Button extends Component {
 	public boolean doesDrawBorder() {
 		return drawBorder;
 	}
-	
+
+	/**
+	 * Gets the current padding for the button
+	 * @return button padding
+	 */
+	public int getPadding() {
+		return padding;
+	}
+
+	/**
+	 * Sets the current padding for the button
+	 * @param padding - how much padding
+	 */
+	public void setPadding(int padding) {
+		this.padding = padding;
+	}
+
 	/**
 	 * Returns whether the button draws a screen on hover
 	 * @return draw screen on hover
@@ -76,7 +163,7 @@ public class Button extends Component {
 	public boolean doesDrawHoverScreen() {
 		return drawHoverScreen;
 	}
-	
+
 	/**
 	 * Sets whether the button draws a screen on hover
 	 * @param state - should draw screen
@@ -302,16 +389,16 @@ public class Button extends Component {
 			}
 			if (drawShadow) {
 				g.setColor(new Color(.5f, .5f, .5f, .5f));
-				g.fillRoundRect(getLocation().x-width/2 + 3, getLocation().y-height/2 + 3, width, height, round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2 + 3-padding, getLocation().y-height/2 + 3-padding, width+padding, height+padding, round?roundedArc:0);
 				g.setColor(Color.black);
-				g.drawRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height, round?roundedArc:0);
+				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding, round?roundedArc:0);
 			}
 			if(background != null) {
 				g.setColor(background);
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			}
 			if(ani != null)
-				g.texture(new RoundedRectangle(getLocation().x-width/2,getLocation().y-height/2,width,height,round?roundedArc:0), 
+				g.texture(new RoundedRectangle(getLocation().x-width/2-padding,getLocation().y-height/2-padding,width+padding,height+padding,round?roundedArc:0), 
 						ani.getCurrentFrame(), 1, 1, true);
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
@@ -321,13 +408,13 @@ public class Button extends Component {
 			}
 			if (cursorEntered && !held && enabled && drawHoverScreen) {
 				g.setColor(new Color(1f, 1f, 1f, 0.5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			} else if (cursorEntered && held && enabled) {
 				g.setColor(new Color(.5f, .5f, .5f, .5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			} else if (!enabled) {
 				g.setColor(new Color(0f, 0f, 0f, .5f));
-				g.fillRoundRect(getLocation().x-width/2, getLocation().y-height/2, width, height,round?roundedArc:0);
+				g.fillRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			}
 			if (!tooltip.equalsIgnoreCase("") && hover) {
 				if(!toolFont)
@@ -369,87 +456,12 @@ public class Button extends Component {
 	 * Sets the input that the button should listen to
 	 * @param input Input to listen to
 	 */
-	public void listen(final Input input) {
-		input.addMouseListener(new MouseListener() {
-			@Override
-			public void inputEnded() {
-			}
+	public void listen(Input input) {
+		input.addMouseListener(listener);
+	}
 
-			@Override
-			public void inputStarted() {
-			}
-
-			@Override
-			public boolean isAcceptingInput() {
-				return isVisible() && isEnabled();
-			}
-
-			@Override
-			public void setInput(Input input) {
-			}
-
-			@Override
-			public void mouseClicked(int button, int x, int y, int clickCount) {
-				if (button == Input.MOUSE_LEFT_BUTTON) {
-					if (contains(x, y)) {
-						if (action != null && enabled && visible) {
-							action.act(input);
-						} else;
-					} else;
-				} else if (button == Input.MOUSE_RIGHT_BUTTON) {
-					System.out.println(input.getMouseX() + "\t" + input.getMouseY());
-				}
-			}
-
-			@Override
-			public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-			}
-
-			@Override
-			public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-				mX = newx;
-				mY = newy;
-				if (cursorEntered && !contains(newx, newy)) {
-					cursorEntered = false;
-					hover = false;
-					mouseLeft();
-				} else if (contains(newx, newy) && cursorEntered == false) {
-					cursorEntered = true;
-					mouseEntered();
-					timer = new Timer();
-					timer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							if (cursorEntered)
-								hover = true;
-						}
-					}, 2000);
-				}
-			}
-
-			@Override
-			public void mousePressed(int button, int x, int y) {
-				if (cursorEntered)
-					if (button == Input.MOUSE_LEFT_BUTTON) {
-						held = true;
-						mousePressedAndHeld();
-					}
-			}
-
-			@Override
-			public void mouseReleased(int button, int x, int y) {
-				if (cursorEntered) {
-					if (button == Input.MOUSE_LEFT_BUTTON) {
-						held = false;
-						mouseLetGo();
-					}
-				}
-			}
-
-			@Override
-			public void mouseWheelMoved(int change) {
-			}
-		});
+	public void mute(Input input) {
+		input.removeMouseListener(listener);
 	}
 
 	/**
@@ -506,11 +518,6 @@ public class Button extends Component {
 	}
 
 	public static interface Action {
-
-		/**
-		 * runs a specific action
-		 * @param input
-		 */
-		public void act(Input input);
+		public void act(int button, int x, int y, int clickCount);
 	}
 }

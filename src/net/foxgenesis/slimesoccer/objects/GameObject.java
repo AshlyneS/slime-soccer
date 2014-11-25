@@ -3,6 +3,7 @@ package net.foxgenesis.slimesoccer.objects;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -15,15 +16,16 @@ public abstract class GameObject
 	 * Gravity factor for all GameObjects
 	 */
 	public static final float GRAVITY_FACTOR = 0.098f;
-	
+
 	/**
 	 * Finals for X_Axis and Y_Axis
 	 */
 	public static final int X_AXIS = 0, Y_AXIS = 1;
-	
+
 	protected Vector2f location = new Vector2f(), velocity = new Vector2f();
 	protected float rotation = 0f;
 	protected float width,height;
+	protected Polygon bounds;
 
 	/**
 	 * Create a new GameObject with given width and height
@@ -33,8 +35,14 @@ public abstract class GameObject
 	public GameObject(float width, float height) {
 		this.width = width;
 		this.height = height;
+		bounds = new Polygon();
+		bounds.setClosed(true);
+		bounds.addPoint(location.x,location.y);
+		bounds.addPoint(location.x,location.y+height);
+		bounds.addPoint(location.x+width,location.y+height);
+		bounds.addPoint(location.x+width,location.y);
 	}
-	
+
 	/**
 	 * Sets the rotation of the object
 	 * @param rotation - object rotation
@@ -42,7 +50,7 @@ public abstract class GameObject
 	public void setRotation(float rotation) {
 		this.rotation = rotation;
 	}
-	
+
 	/**
 	 * Gets the rotation of the object
 	 * @return object rotation
@@ -56,13 +64,19 @@ public abstract class GameObject
 	 * @param g - graphics to draw with
 	 */
 	public abstract void render(Graphics g);
-	
+
 	/**
 	 * Called on frame udpate
 	 * @param delta - delay from last frame
 	 */
-	public abstract void update(int delta);
+	public void update(int delta) {
+		bounds.setLocation(location);
+	}
 	
+	public Polygon getBounds() {
+		return bounds;
+	}
+
 	/**
 	 * Called on collide with another GameObject
 	 * @param a - GameObject collided with
@@ -166,10 +180,7 @@ public abstract class GameObject
 	 * @return if point is within bounds
 	 */
 	public boolean contains(float x, float y) {
-		if(x >= location.x && x <= location.x + width)
-			if(y >= location.y && y <= location.y + height) 
-				return true;
-		return false;
+		return bounds.contains(x, y);
 	}
 
 	/**

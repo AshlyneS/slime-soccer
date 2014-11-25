@@ -16,6 +16,7 @@ public class Ball extends GameObject {
 	private Image ball;
 	private final float FRICTION_RESISTANCE_FACTOR = 6;
 	private final boolean MOTION_BLUR = true;
+	
 	/**
 	 * Create a new ball
 	 */
@@ -48,7 +49,6 @@ public class Ball extends GameObject {
 
 	@Override
 	public void update(int delta) {
-		super.update(delta);
 		ball.rotate(velocity.x/2 * width);
 		if(location.y + height >= SlimeSoccer.getHeight())
 			if(velocity.x > 0)
@@ -61,12 +61,6 @@ public class Ball extends GameObject {
 					velocity.x -= velocity.x;
 				else
 					velocity.x+=GameObject.GRAVITY_FACTOR/FRICTION_RESISTANCE_FACTOR;
-	}
-
-	@Override
-	public void updatePosition(GameObject[] objects) {
-		super.updatePosition(objects);
-		bounds.setLocation(location);
 	}
 
 	@Override
@@ -88,10 +82,10 @@ public class Ball extends GameObject {
 				velocity.y = a.getVelocity().y*2;
 		}
 	}
-
+	
 	@Override
 	public boolean contains(float x, float y) {
 		return Math.pow(x - location.x+width/2,2) + Math.pow(y - location.y+height/2,2)
-				<= Math.pow(getWidth()/2, 2);
+				<= Math.pow(getWidth()/2, 2); //check if the point is inside the circle
 	}
 }

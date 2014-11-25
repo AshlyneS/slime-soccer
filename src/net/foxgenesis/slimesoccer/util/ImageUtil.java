@@ -15,7 +15,7 @@ import org.newdawn.slick.util.BufferedImageUtil;
  * @author Seth
  */
 public final class ImageUtil {
-
+	
 	/**
 	 * Convert an image into a BufferedImage
 	 * @param img - image to convert
@@ -33,7 +33,7 @@ public final class ImageUtil {
 			}
 		return buffImg;
 	}
-
+	
 	/**
 	 * Convert a BufferedImage into an Image
 	 * @param img - BufferedImage to convert

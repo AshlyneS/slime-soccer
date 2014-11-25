@@ -19,12 +19,12 @@ import org.newdawn.slick.Image;
 public class SoccerGame extends Scene {
 
 	private GameObject[] objects = new GameObject[3];
+        private Image background;
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, SINGLE_PLAYER=0,DUEL=1,MULTIPLAYER=2;
-	private Image background;
+
 	@Override
 	public void draw(GameContainer container, Graphics g) {
-		g.drawImage(background, 0, 0, container.getWidth(), 
-				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
+            g.drawImage(background, 0, 0, container.getWidth(), container.getHeight(), 0 , 0, background.getWidth(), background.getHeight());
 		for(GameObject a: objects)
 			if(a != null)
 				a.render(g);;
@@ -43,12 +43,13 @@ public class SoccerGame extends Scene {
 	@Override
 	void load(HashMap<String, Object> params) {
 		objects[0] = new Slime((Slime.Type)params.get("player1"), true);
-		objects[1] = new Slime((Slime.Type)params.get("player1"), (int)params.get("players") == DUEL, true);
+		objects[1] = new Slime((Slime.Type)params.get("player2"), (int)params.get("players") == DUEL, true);
 		objects[2] = new Ball();
 		objects[0].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[1].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[1].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
-		background = Textures.get((String) params.get("background"));
+                
+                background = Textures.get((String) params.get("background")); 
 	}
 
 	@Override

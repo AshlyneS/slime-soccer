@@ -15,7 +15,7 @@ public class Ball extends GameObject {
 
 	private Image ball;
 	private final float FRICTION_RESISTANCE_FACTOR = 6;
-	private final boolean MOTION_BLUR = true;
+	private final boolean MOTION_BLUR = false;
 	/**
 	 * Create a new ball
 	 */

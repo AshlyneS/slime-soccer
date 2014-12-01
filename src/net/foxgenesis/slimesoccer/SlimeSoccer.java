@@ -24,7 +24,7 @@ public class SlimeSoccer extends BasicGame
 	private static int width, height;
 	private static Input input;
 	public static boolean PIXEL_COLLISION = true;
-	
+
 	/**
 	 * Main method
 	 * @param args - paramaters for program
@@ -33,7 +33,13 @@ public class SlimeSoccer extends BasicGame
 		try {
 			//create v-sync with monitor and start game
 			int refresh = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
-			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
+			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer")){
+				@Override
+				public void destroy() {
+					super.destroy();
+					System.out.println("closing game...");
+				}
+			};
 			if(refresh != DisplayMode.REFRESH_RATE_UNKNOWN) {
 				appgc.setTargetFrameRate(refresh);
 				System.out.println("created v-sync of " + refresh);
@@ -47,7 +53,7 @@ public class SlimeSoccer extends BasicGame
 			Logger.getLogger(SlimeSoccer.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
+
 	/**
 	 * Gets the width of the window
 	 * @return window width
@@ -55,7 +61,7 @@ public class SlimeSoccer extends BasicGame
 	public static int getWidth() {
 		return width;
 	}
-	
+
 	/**
 	 * Gets the height of the window
 	 * @return window height
@@ -63,7 +69,7 @@ public class SlimeSoccer extends BasicGame
 	public static int getHeight() {
 		return height;
 	}
-	
+
 	public static Input getInput() {
 		return input;
 	}

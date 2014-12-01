@@ -31,7 +31,12 @@ public final class Bounds {
 			try{
 				if(a.getName().endsWith(".bnd")) {
 					System.out.println("\t  |found bounds: [" + a.getName().substring(0,a.getName().lastIndexOf(".")) + "]");
-					bounds.put(a.getName().substring(0,a.getName().lastIndexOf(".")), parse(Files.readAllLines(a.toPath(), Charset.defaultCharset()).get(0)));
+					String name = a.getName().substring(0,a.getName().lastIndexOf(".bnd"));
+					String b = Files.readAllLines(a.toPath(), Charset.defaultCharset()).get(0);
+					System.out.println("reading : " + b);
+					bounds.put(name, parse(b));
+					if(bounds.get(name) == null)
+						System.err.println("WARNING: Bounds[" + name + "] returned null!");
 				}
 			} catch(IOException e) {
 				e.printStackTrace();
@@ -42,6 +47,10 @@ public final class Bounds {
 
 	public static Polygon get(String key) {
 		return bounds.get(key);
+	}
+	
+	public static boolean contains(String key) {
+		return bounds.containsKey(key);
 	}
 
 	public static boolean[][] getBoundsForImage(Image image) {
@@ -63,18 +72,22 @@ public final class Bounds {
 	}
 
 	private static boolean closeToBlack(Color color) {
-		int s = color.getRed() + color.getBlue() + color.getGreen()/3;
-		return s <= 255 && s > 76;
+		double s = 0.2126*color.getRed() + 0.0722*color.getBlue() + 0.7152*color.getGreen()/3;
+		//System.out.println(s);
+		return s < 128;
 	}
 
 	public static Polygon parse(String p) {
-		if(p.startsWith("Polygon{")) {
-			p = p.substring("Polygon{".length()).substring(0, p.length()-1);
-			String[] points = p.split("|");
+		if(p.startsWith("Bounds{")) {
+			String b = p.substring("Bounds{".length());
+			b = b.substring(0, b.length()-1);
+			String[] points = b.split("\\$");
 			Polygon poly = new Polygon();
 			poly.setClosed(true);
 			for(String a:points) {
 				String[] d = a.split(",");
+				if(d.length != 2 || (d[0].equals("") || d[1].equals("")))
+					System.err.println(a);
 				int x = Integer.parseInt(d[0]),y = Integer.parseInt(d[1]);
 				poly.addPoint(x,y);
 			}

@@ -180,7 +180,7 @@ public abstract class GameObject
 	 * @return if point is within bounds
 	 */
 	public boolean contains(float x, float y) {
-		return bounds.contains(x, y);
+		return getBounds().contains(x, y);
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class SlimeSoccer extends BasicGame
 			}
 			else
 				appgc.setTargetFrameRate(60);
-			appgc.setDisplayMode(840, 480, false);
+			appgc.setDisplayMode(640, 480, false);
 			appgc.setUpdateOnlyWhenVisible(true);
 			appgc.start();
 		} catch (SlickException ex) {

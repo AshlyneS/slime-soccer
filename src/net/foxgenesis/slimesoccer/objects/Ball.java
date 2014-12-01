@@ -2,6 +2,7 @@ package net.foxgenesis.slimesoccer.objects;
 
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.image.Textures;
+import net.foxgenesis.slimesoccer.ui.SoccerGame;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -64,12 +65,6 @@ public class Ball extends GameObject {
 	}
 
 	@Override
-	public void updatePosition(GameObject[] objects) {
-		super.updatePosition(objects);
-		bounds.setLocation(location);
-	}
-
-	@Override
 	public boolean isSolid() {
 		return false;
 	}
@@ -86,6 +81,17 @@ public class Ball extends GameObject {
 				velocity.x = a.getVelocity().x*2;
 			else if(axis == GameObject.Y_AXIS)
 				velocity.y = a.getVelocity().y*2;
+		}
+		else if(a instanceof Goal) {
+			Goal g = (Goal)a;
+			switch(g.getSide()) {
+			case SoccerGame.GOAL_LEFT:
+				break;
+			case SoccerGame.GOAL_RIGHT:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

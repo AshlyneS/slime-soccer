@@ -5,7 +5,6 @@ import java.util.HashMap;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
-import net.foxgenesis.slimesoccer.objects.Slime;
 import net.foxgenesis.slimesoccer.ui.component.Button;
 import net.foxgenesis.slimesoccer.util.TextBounce;
 
@@ -20,11 +19,13 @@ import org.newdawn.slick.SlickException;
  * Main menu for the game
  */
 public class MainMenu extends Scene{
-	private Image background;
+	private Image background, image;
 	private FadingTransition trans;
 	private Button duelPlayer, singlePlayer, multiPlayer, info;
 	private TextBounce title;
 	private int update = 0;
+	private boolean getImage = false;
+	private int selection = -1;
 
 	/**
 	 * Create the main menu
@@ -40,12 +41,8 @@ public class MainMenu extends Scene{
 		duelPlayer.setAction(new Button.Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				selection = SoccerGame.DUEL;
+				getImage = true;
 			}
 		});
 
@@ -58,12 +55,8 @@ public class MainMenu extends Scene{
 		singlePlayer.setAction(new Button.Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				selection = SoccerGame.DUEL;
+				getImage = true;
 			}
 		});
 
@@ -75,12 +68,8 @@ public class MainMenu extends Scene{
 		multiPlayer.setAction(new Button.Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				selection = SoccerGame.DUEL;
+				getImage = true;
 			}
 		});
 
@@ -107,6 +96,14 @@ public class MainMenu extends Scene{
 		multiPlayer.draw(g);
 		info.draw(g);
 		title.render(g);
+		if(getImage) {
+			try {
+				image = new Image(container.getWidth(),container.getHeight());
+				g.copyArea(image, 0, 0);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -119,6 +116,11 @@ public class MainMenu extends Scene{
 		multiPlayer.update(i);
 		info.update(i);
 		title.update(i);
+		if(image != null && selection != -1) {
+			HashMap<String, Object> params = new HashMap<>();
+			params.put("image",image);
+			Scene.setCurrentScene(new CharacterSelection(selection), params);
+		}
 	}
 
 	@Override

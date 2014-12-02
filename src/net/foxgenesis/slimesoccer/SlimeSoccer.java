@@ -33,13 +33,7 @@ public class SlimeSoccer extends BasicGame
 		try {
 			//create v-sync with monitor and start game
 			int refresh = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
-			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer")){
-				@Override
-				public void destroy() {
-					super.destroy();
-					System.out.println("closing game...");
-				}
-			};
+			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
 			if(refresh != DisplayMode.REFRESH_RATE_UNKNOWN) {
 				appgc.setTargetFrameRate(refresh);
 				System.out.println("created v-sync of " + refresh);

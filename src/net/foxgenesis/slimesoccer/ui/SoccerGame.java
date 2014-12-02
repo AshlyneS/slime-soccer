@@ -22,9 +22,11 @@ public class SoccerGame extends Scene {
 	private GameObject[] objects = new GameObject[5];
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
 	private Image background;
+	private final int gameType;
 	
-	public SoccerGame() {
+	public SoccerGame(int gameType) {
 		super();
+		this.gameType = gameType;
 		objects[BALL] = new Ball();
 		objects[GOAL_LEFT] = new Goal(GOAL_LEFT);
 		objects[GOAL_RIGHT] = new Goal(GOAL_RIGHT);
@@ -44,12 +46,15 @@ public class SoccerGame extends Scene {
 
 	@Override
 	public void update(GameContainer container, int i) {
-		for(GameObject a:objects) {
+		for(GameObject a:objects)
 			if(a != null) {
 				a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
 				a.update(i);
 			}
-		}
+	}
+	
+	public int getGameType() {
+		return gameType;
 	}
 
 	@Override

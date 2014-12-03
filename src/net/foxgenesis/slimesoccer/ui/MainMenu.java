@@ -5,8 +5,9 @@ import java.util.HashMap;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
-import net.foxgenesis.slimesoccer.objects.Slime;
 import net.foxgenesis.slimesoccer.ui.component.Button;
+import net.foxgenesis.slimesoccer.ui.component.Button.Action;
+import net.foxgenesis.slimesoccer.ui.component.PopUp;
 import net.foxgenesis.slimesoccer.util.TextBounce;
 
 import org.newdawn.slick.Animation;
@@ -20,11 +21,14 @@ import org.newdawn.slick.SlickException;
  * Main menu for the game
  */
 public class MainMenu extends Scene{
-	private Image background;
+	private Image background, image;
 	private FadingTransition trans;
 	private Button duelPlayer, singlePlayer, multiPlayer, info;
 	private TextBounce title;
 	private int update = 0;
+	private boolean getImage = false;
+	private int selection = -1;
+	private PopUp infoPop;
 
 	/**
 	 * Create the main menu
@@ -37,52 +41,52 @@ public class MainMenu extends Scene{
 		duelPlayer.getLocation().y = SlimeSoccer.getHeight()/4;
 		duelPlayer.setLocation(SlimeSoccer.getWidth()/4, SlimeSoccer.getHeight()/4);
 		duelPlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("buttonBlack")}, new int[]{300,300}));
-		duelPlayer.setAction(new Button.Action(){
+		duelPlayer.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				if(!infoPop.isVisible()) {
+					selection = SoccerGame.DUEL;
+					getImage = true;
+				}
 			}
 		});
 
 		singlePlayer = createButton("Single Player");
 		singlePlayer.setToolTipText("Play a game against a computer");
 		singlePlayer.getLocation().y = SlimeSoccer.getHeight()/4;
+		singlePlayer.setEnabled(false);
 		singlePlayer.getLocation().x = SlimeSoccer.getWidth();
 		singlePlayer.setLocation(SlimeSoccer.getWidth()/4*2, SlimeSoccer.getHeight()/4*2);
 		singlePlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("missing")}, new int[]{300,300}));
-		singlePlayer.setAction(new Button.Action(){
+		singlePlayer.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				if(!infoPop.isVisible()) {
+					selection = SoccerGame.SINGLE_PLAYER;
+					getImage = true;
+				}
 			}
 		});
 
 		multiPlayer = createButton("Multiplayer");
 		multiPlayer.setToolTipText("Play a game against a human over the internet");
 		multiPlayer.getLocation().y = SlimeSoccer.getHeight()/4;
+		multiPlayer.setEnabled(false);
 		multiPlayer.setLocation(SlimeSoccer.getWidth()/4*3, SlimeSoccer.getHeight()/4*3);
 		multiPlayer.setAnimation(new Animation(new Image[]{Textures.get("mainBackground"),Textures.get("missing")}, new int[]{300,300}));
-		multiPlayer.setAction(new Button.Action(){
+		multiPlayer.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("player1", Slime.Type.DEFAULT);
-				params.put("player2", Slime.Type.DEFAULT);
-				params.put("players", SoccerGame.DUEL);
-				params.put("background","grassField");
-				Scene.setCurrentScene(new SoccerGame(), params);
+				if(!infoPop.isVisible()) {
+					selection = SoccerGame.MULTIPLAYER;
+					getImage = true;
+				}
 			}
 		});
+
+		infoPop = new PopUp("<Info \nText>", PopUp.Type.DIALOG);
+		infoPop.setLocation(SlimeSoccer.getWidth()/2-infoPop.getWidth()/2,SlimeSoccer.getHeight()/2-infoPop.getHeight()/2);
+		infoPop.listen(SlimeSoccer.getInput());
 
 		info = createButton("i");
 		info.setToolTipText("Information");
@@ -91,7 +95,10 @@ public class MainMenu extends Scene{
 		info.getLocation().x = SlimeSoccer.getWidth();
 		info.setLocation(20, SlimeSoccer.getHeight()-15);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//test
+=======
+>>>>>>> parent of 40bd5ed... merging with old
 		info.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
@@ -100,8 +107,11 @@ public class MainMenu extends Scene{
 				}
 			}
 		});
+<<<<<<< HEAD
 =======
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 40bd5ed... merging with old
 
 		try {
 			title = new TextBounce("Slime Soccer", SlimeSoccer.getWidth()/2-Fonts.get("hiero").getWidth("Slime Soccer")/2-20, 50, Fonts.get("hiero"), 0.09f, 2);
@@ -119,6 +129,16 @@ public class MainMenu extends Scene{
 		multiPlayer.draw(g);
 		info.draw(g);
 		title.render(g);
+		if(infoPop.getLocation().y != SlimeSoccer.getHeight()+30)
+			infoPop.draw(g);
+		if(getImage) {
+			try {
+				image = new Image(container.getWidth(),container.getHeight());
+				g.copyArea(image, 0, 0);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -126,11 +146,17 @@ public class MainMenu extends Scene{
 		if(++update == 90)
 			update = 0;
 		trans.update(i);
+		infoPop.update(i);
 		duelPlayer.update(i);
 		singlePlayer.update(i);
 		multiPlayer.update(i);
 		info.update(i);
 		title.update(i);
+		if(image != null && selection != -1) {
+			HashMap<String, Object> params = new HashMap<>();
+			params.put("image",image);
+			Scene.setCurrentScene(new CharacterSelection(selection), params);
+		}
 	}
 
 	@Override
@@ -144,8 +170,9 @@ public class MainMenu extends Scene{
 		singlePlayer.mute(SlimeSoccer.getInput());
 		multiPlayer.mute(SlimeSoccer.getInput());
 		duelPlayer.mute(SlimeSoccer.getInput());
+		infoPop.mute(SlimeSoccer.getInput());
 	}
-	
+
 	private Button createButton(String title) {
 		Button b = new Button(title){
 			@Override

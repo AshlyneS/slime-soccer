@@ -22,22 +22,40 @@ public class SoccerGame extends Scene {
 	private GameObject[] objects = new GameObject[5];
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
 	private Image background;
-	
-	public SoccerGame() {
+	private final int gameType;
+	private Thread collThread;
+
+	public SoccerGame(int gameType) {
 		super();
+<<<<<<< HEAD
 <<<<<<< HEAD
 		//test
 		this.gameType = gameType;
 =======
 >>>>>>> origin/master
+=======
+		this.gameType = gameType;
+>>>>>>> parent of 40bd5ed... merging with old
 		objects[BALL] = new Ball();
-		objects[GOAL_LEFT] = new Goal(GOAL_LEFT);
-		objects[GOAL_RIGHT] = new Goal(GOAL_RIGHT);
-		objects[GOAL_LEFT].getLocation().y = SlimeSoccer.getHeight()-objects[GOAL_LEFT].getHeight();
-		objects[GOAL_RIGHT].getLocation().y = SlimeSoccer.getHeight()-objects[GOAL_RIGHT].getHeight();
-		objects[GOAL_RIGHT].getLocation().x = SlimeSoccer.getWidth()-objects[GOAL_RIGHT].getWidth();
+		collThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true) {
+					for(GameObject a:objects)
+						if(a != null) {
+							a.update(0);
+							a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
+						}
+					try {
+						Thread.sleep(1000/60); //update 60 times per second
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		},"Collision Thread");
 	}
-	
+
 	@Override
 	public void draw(GameContainer container, Graphics g) {
 		g.drawImage(background, 0, 0, container.getWidth(), 
@@ -49,29 +67,35 @@ public class SoccerGame extends Scene {
 
 	@Override
 	public void update(GameContainer container, int i) {
-		for(GameObject a:objects) {
-			if(a != null) {
-				a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
-				a.update(i);
-			}
-		}
+		
+	}
+
+	public int getGameType() {
+		return gameType;
 	}
 
 	@Override
 	void load(HashMap<String, Object> params) {
 		objects[PLAYER1] = new Slime((Slime.Type)params.get("player1"), true);
-		objects[PLAYER2] = new Slime((Slime.Type)params.get("player1"), (int)params.get("players") == DUEL, true);
+		objects[PLAYER2] = new Slime((Slime.Type)params.get("player2"), (int)params.get("players") == DUEL, true);
+		objects[GOAL_LEFT] = new Goal(GOAL_LEFT, (Slime)objects[PLAYER2]);
+		objects[GOAL_RIGHT] = new Goal(GOAL_RIGHT, (Slime)objects[PLAYER1]);
+		objects[GOAL_LEFT].getLocation().y = SlimeSoccer.getHeight()-objects[GOAL_LEFT].getHeight();
+		objects[GOAL_RIGHT].getLocation().y = SlimeSoccer.getHeight()-objects[GOAL_RIGHT].getHeight();
+		objects[GOAL_RIGHT].getLocation().x = SlimeSoccer.getWidth()-objects[GOAL_RIGHT].getWidth();
 		objects[PLAYER1].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[PLAYER2].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[PLAYER2].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
 		background = Textures.get((String) params.get("background"));
+		collThread.start();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	void unload(Scene scene) {
-
+		collThread.stop();
 	}
-	
+
 	public GameObject[] getObjects() {
 		return objects;
 	}

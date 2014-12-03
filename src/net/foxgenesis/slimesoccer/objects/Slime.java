@@ -12,6 +12,7 @@ import net.foxgenesis.slimesoccer.util.SlimeAbilityUtil;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -27,9 +28,11 @@ public class Slime extends GameObject {
 	private final boolean controlled, secondary;
 	private boolean canJump = true,abilityCheck = true;
 	private int direction = 0;
+	private Font font;
 	private double cooldown = 0.5;
 	private ProgressBar bar;
 	private Timer timer;
+	private int goals = 0;
 
 	/**
 	 * Create a new Slime with a type and controlled parameters
@@ -51,6 +54,7 @@ public class Slime extends GameObject {
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
 		this.type = type;
+		font = Fonts.get("hiero");
 		this.controlled = controlled;
 		this.secondary = secondaryInput;
 		timer = new Timer();
@@ -66,6 +70,14 @@ public class Slime extends GameObject {
 	
 	public Image[] getImages() {
 		return new Image[]{img,flipped};
+	}
+	
+	public int getGoalCount() {
+		return goals;
+	}
+	
+	public void setGoalCount(int count) {
+		goals = count;
 	}
 	
 	/**
@@ -89,8 +101,11 @@ public class Slime extends GameObject {
 			break;
 		}
 		bar.draw(g);
-		Fonts.get("hiero").drawString(secondary?SlimeSoccer.getWidth()-Fonts.get("hiero").getWidth(type.name())-5:15, 55, type.name(), Color.black);
-		Fonts.get("hiero").drawString(secondary?SlimeSoccer.getWidth()-Fonts.get("hiero").getWidth(type.name())-10:10, 50, type.name());
+		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
+		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name());
+		
+		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth()) + font.getWidth(""+goals)/2 + (secondary?-25:-30), 55, ""+goals, Color.black);
+		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth())+font.getWidth(""+goals)/2 + (secondary?-30:-35), 50, ""+goals);
 	}
 
 	@Override
@@ -162,7 +177,12 @@ public class Slime extends GameObject {
 	 * @author Seth
 	 */
 	public static enum Type {
-		DEFAULT("svetty",1000);
+		DEFAULT("svetty",1000),
+		GOAL("goal",1000),
+		TEST2("svetty",1000),
+		TEST3("svetty",1000),
+		TEST4("svetty",1000),
+		TEST5("svetty",1000);
 		
 		private String img;
 		private long duration;
@@ -177,6 +197,10 @@ public class Slime extends GameObject {
 		
 		private void abilityActivated(Slime slime) {
 			SlimeAbilityUtil.handelAbility(slime);
+		}
+		
+		public String getTextureName() {
+			return img;
 		}
 		
 		public long getDuration() {

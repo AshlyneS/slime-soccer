@@ -19,7 +19,7 @@ import org.newdawn.slick.Image;
  */
 public class SoccerGame extends Scene {
 
-	private GameObject[] objects = new GameObject[5];
+	private GameObject[] objects;
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
 	private Image background;
 	private final int gameType;
@@ -29,7 +29,6 @@ public class SoccerGame extends Scene {
 		super();
 		//test
 		this.gameType = gameType;
-		objects[BALL] = new Ball();
 		collThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -69,6 +68,10 @@ public class SoccerGame extends Scene {
 
 	@Override
 	void load(HashMap<String, Object> params) {
+		//TODO change map objects based on params
+		background = Textures.get((String) params.get("background"));
+		objects = new GameObject[5];
+		objects[BALL] = new Ball();
 		objects[PLAYER1] = new Slime((Slime.Type)params.get("player1"), true);
 		objects[PLAYER2] = new Slime((Slime.Type)params.get("player2"), (int)params.get("players") == DUEL, true);
 		objects[GOAL_LEFT] = new Goal(GOAL_LEFT, (Slime)objects[PLAYER2]);
@@ -79,7 +82,6 @@ public class SoccerGame extends Scene {
 		objects[PLAYER1].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[PLAYER2].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[PLAYER2].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
-		background = Textures.get((String) params.get("background"));
 		collThread.start();
 	}
 

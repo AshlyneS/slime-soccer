@@ -67,26 +67,26 @@ public class Slime extends GameObject {
 		if(!secondary)
 			bar.setInvertedPercentage(true);
 	}
-	
+
 	public Image[] getImages() {
 		return new Image[]{img,flipped};
 	}
-	
+
 	public int getGoalCount() {
 		return goals;
 	}
-	
+
 	public void setGoalCount(int count) {
 		goals = count;
 	}
-        
-        public void changeJump() {
-            if(indianJump)
-                indianJump = false; 
-            else
-                indianJump = true; 
-        }
-	
+
+	public void changeJump() {
+		if(indianJump)
+			indianJump = false; 
+		else
+			indianJump = true; 
+	}
+
 	/**
 	 * Gets the type of slime
 	 * @return type of slime
@@ -110,7 +110,7 @@ public class Slime extends GameObject {
 		bar.draw(g);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name());
-		
+
 		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth()) + font.getWidth(""+goals)/2 + (secondary?-25:-30), 55, ""+goals, Color.black);
 		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth())+font.getWidth(""+goals)/2 + (secondary?-30:-35), 50, ""+goals);
 	}
@@ -149,7 +149,7 @@ public class Slime extends GameObject {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
 			}
-			
+
 			if(abilityCheck && canUseAbility() && KeyboardInput.keys[secondary?Keyboard.KEY_SPACE:Keyboard.KEY_1]) {
 				abilityCheck = false;
 				bar.setValue(bar.getValue()+(secondary?-50:50));
@@ -159,10 +159,10 @@ public class Slime extends GameObject {
 						abilityCheck = true;
 					}
 				}, 1000);
-                                if(secondary)
-                                    type.secondAbilityActivated(this);
-                                else
-                                    type.firstAbilityActivated(this);
+				if(secondary)
+					type.secondAbilityActivated(this);
+				else
+					type.firstAbilityActivated(this);
 			}
 			if(outOfBounds(location.x,location.y + velocity.y,false,true))
 				canJump = true;
@@ -173,7 +173,7 @@ public class Slime extends GameObject {
 	public boolean isSolid() {
 		return false;
 	}
-	
+
 	/**
 	 * Checks if the player can use their ability
 	 * @return if the player can use their ability
@@ -192,9 +192,9 @@ public class Slime extends GameObject {
 		SPONGE("spongeslime",1000),
 		DISCO("discoslime",1000),
 		INDIAN("indianslime",1000),
-                NATURE("natureslime", 1000),
+		NATURE("natureslime", 1000),
 		TEST5("svetty",1000);
-		
+
 		private String img;
 		private long duration;
 		/**
@@ -205,21 +205,21 @@ public class Slime extends GameObject {
 			this.img = img;
 			this.duration = duration;
 		}
-		
+
 		private void firstAbilityActivated(Slime slime) {
 			SlimeAbilityUtil.handleFirstAbility(slime);
 		}
-                
-                private void secondAbilityActivated(Slime slime) {
+
+		private void secondAbilityActivated(Slime slime) {
 			SlimeAbilityUtil.handleSecondAbility(slime);
 		}
-                
-               
-		
+
+
+
 		public String getTextureName() {
 			return img;
 		}
-		
+
 		public long getDuration() {
 			return duration;
 		}

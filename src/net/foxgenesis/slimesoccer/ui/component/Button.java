@@ -20,10 +20,10 @@ public class Button extends Component {
 	private Action action;
 	private String text, tooltip = "";
 	private Color foreground = Color.black, background = Color.white;
-	private Animation ani, icon;
+	private Animation ani;
 	private int roundedArc = 8,mX,mY,padding=2;
 	protected boolean cursorEntered = false;
-	protected boolean held = false;
+	private boolean held = false;
 	private boolean drawShadow = true;
 	private boolean visible = true;
 	private boolean enabled = true;
@@ -42,11 +42,10 @@ public class Button extends Component {
 	 * @param text - text to be displayed
 	 * @param ani - animation for background
 	 */
-	public Button(String text, Animation ani, Animation icon) {
+	public Button(String text, Animation ani) {
 		this.text = text;
 		timer = new Timer();
 		this.ani = ani;
-		this.icon = icon;
 		listener = new MouseListener() {
 			@Override
 			public void inputEnded() {}
@@ -118,11 +117,6 @@ public class Button extends Component {
 			public void mouseWheelMoved(int change) {}
 		};
 	}
-
-	public Button(String text, Animation ani) {
-		this(text,ani,null);
-	}
-
 	/**
 	 * Creates a new button with a given text
 	 * @param text text to be shown on the button
@@ -144,14 +138,6 @@ public class Button extends Component {
 	 */
 	public boolean doesDrawBorder() {
 		return drawBorder;
-	}
-
-	public void setIcon(Animation icon) {
-		this.icon = icon;
-	}
-
-	public Animation getIcon() {
-		return icon;
 	}
 
 	/**
@@ -382,12 +368,9 @@ public class Button extends Component {
 	@Override
 	public void update(int i) {
 		super.update(i);
-		if(updateOnHover && cursorEntered || !updateOnHover) {
-			if(ani != null)
+		if(ani != null)
+			if(updateOnHover && cursorEntered || !updateOnHover)
 				ani.update(i);
-			if(icon != null)
-				icon.update(i);
-		}
 	}
 
 	/**
@@ -417,12 +400,6 @@ public class Button extends Component {
 			if(ani != null)
 				g.texture(new RoundedRectangle(getLocation().x-width/2-padding,getLocation().y-height/2-padding,width+padding,height+padding,round?roundedArc:0), 
 						ani.getCurrentFrame(), 1, 1, true);
-			if(icon != null)
-				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
-			if(drawBorder) {
-				g.setColor(Color.black);
-				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
-			}
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;

@@ -68,7 +68,7 @@ public class SlimeSoccer extends BasicGame
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		music = new Music("music/cactus.mp3");
+		music = new Music("music/cactus.ogg");
 		System.out.println("Loading game...");
 		SlimeSoccer.width = gc.getWidth();
 		SlimeSoccer.height = gc.getHeight();

@@ -1,5 +1,7 @@
 package net.foxgenesis.slimesoccer;
 
+import java.awt.DisplayMode;
+import java.awt.GraphicsEnvironment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +23,7 @@ public class SlimeSoccer extends BasicGame
 {
 	private static int width, height;
 	private static Input input;
-	public static boolean PIXEL_COLLISION = false;
+	public static boolean PIXEL_COLLISION = true;
 
 	/**
 	 * Main method
@@ -29,14 +31,26 @@ public class SlimeSoccer extends BasicGame
 	 */
 	public static void main(String[] args) {
 		try {
-			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
-			appgc.setTargetFrameRate(60);
+			//create v-sync with monitor and start game
+			int refresh = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate();
+			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer")){
+				@Override
+				public void destroy() {
+					super.destroy();
+					System.out.println("closing game...");
+				}
+			};
+			if(refresh != DisplayMode.REFRESH_RATE_UNKNOWN) {
+				appgc.setTargetFrameRate(refresh);
+				System.out.println("created v-sync of " + refresh);
+			}
+			else
+				appgc.setTargetFrameRate(60);
 			appgc.setDisplayMode(640, 480, false);
 			appgc.setUpdateOnlyWhenVisible(true);
 			appgc.start();
 		} catch (SlickException ex) {
 			Logger.getLogger(SlimeSoccer.class.getName()).log(Level.SEVERE, null, ex);
-			System.exit(1);
 		}
 	}
 

@@ -23,7 +23,7 @@ public class Button extends Component {
 	private Animation ani, icon;
 	private int roundedArc = 8,mX,mY,padding=2;
 	protected boolean cursorEntered = false;
-	private boolean held = false;
+	protected boolean held = false;
 	private boolean drawShadow = true;
 	private boolean visible = true;
 	private boolean enabled = true;
@@ -419,6 +419,10 @@ public class Button extends Component {
 						ani.getCurrentFrame(), 1, 1, true);
 			if(icon != null)
 				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
+			if(drawBorder) {
+				g.setColor(Color.black);
+				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
+			}
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;

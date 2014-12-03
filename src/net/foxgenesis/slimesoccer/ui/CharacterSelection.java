@@ -22,12 +22,12 @@ public class CharacterSelection extends Scene {
 	private Image background, image;
 	private boolean getImage = false;
 	private final int gameType;
-	private int selecting = 0,update=0;
+	private int selecting = 0,update=0, selected = 0;
 	private final Font font;
 	private FadingTransition trans;
 	private Button[] buttons;
 	private Button go;
-	
+
 	public CharacterSelection(int gameType) {
 		super();
 		background = Textures.get("mainBackground");
@@ -55,25 +55,39 @@ public class CharacterSelection extends Scene {
 		};
 		go.setRounded(true);
 		go.setDrawHoverScreen(false);
+		go.listen(SlimeSoccer.getInput());
+		go.getLocation().x = SlimeSoccer.getWidth()-60;
+		go.getLocation().y = SlimeSoccer.getHeight()-go.getHeight()-40;
+		go.setBackground(Color.green.brighter());
+		go.setForeground(Color.white);
+		go.setAction(new Action() {
+			@Override
+			public void act(int button, int x, int y, int clickCount) {
+				buttons[selected].setBackground(Color.white);
+				selected = -1;
+				if(++selecting > 1)
+					getImage = true;
+			}
+		});
+
 		Type[] types = Type.values();
 		buttons = new Button[types.length];
+		int count = 0, col = 0, perColumn = 5;
 		for(int i=0; i<types.length; i++) {
-			buttons[i] = assignButton(types[i]);
-			buttons[i].getLocation().x = 120;
-			buttons[i].getLocation().y = 120+(i*10);
+			buttons[i] = assignButton(types[i], i);
+			if(i % perColumn == 0)
+				col++;
+			if(count > perColumn-1)
+				count = 0;
+			float loc = 120+(count*40);
+			buttons[i].getLocation().y = loc;
+			buttons[i].getLocation().x = 150*(col);
+			count++;
 		}
 	}
-	
-	private Button assignButton(final Type type) {
+
+	private Button assignButton(final Type type, final int num) {
 		Button button = new Button(type.name()){
-			@Override
-			public void mouseEntered() {
-				
-			}
-			@Override
-			public void mouseLeft() {
-				
-			}
 			@Override
 			public void draw(Graphics g) {
 				float exp = (float)Math.sin(Math.toRadians(update));
@@ -99,6 +113,10 @@ public class CharacterSelection extends Scene {
 					t1 = type;
 				else
 					t2 = type;
+				if(selected != -1)
+					buttons[selected].setBackground(Color.white);
+				buttons[num].setBackground(Color.yellow);
+				selected = num;
 			}
 		});
 		button.setDrawHoverScreen(false);
@@ -107,7 +125,7 @@ public class CharacterSelection extends Scene {
 		button.listen(SlimeSoccer.getInput());
 		return button;
 	}
-	
+
 	@Override
 	public void draw(GameContainer container, Graphics g) {
 		g.drawImage(background, 0, 0, container.getWidth(), 
@@ -115,8 +133,11 @@ public class CharacterSelection extends Scene {
 		trans.draw(container, g);
 		for(Button a:buttons) 
 			a.draw(g);
+		go.draw(g);
 		String title = (selecting==0?"P1":"P2")+" Selecting: ";
 		font.drawString(SlimeSoccer.getWidth()/2-font.getWidth(title)/2,font.getHeight(title)/2+10,title);
+		if(selected != -1)
+			buttons[selected].getIcon().draw(SlimeSoccer.getWidth()/2+font.getWidth(title)/2,font.getHeight(title)+10-buttons[selected].getIcon().getHeight()/2);
 		if(getImage) {
 			try {
 				image = new Image(container.getWidth(),container.getHeight());
@@ -132,6 +153,7 @@ public class CharacterSelection extends Scene {
 		if(++update == 90)
 			update = 0;
 		trans.update(i);
+		go.update(i);
 		for(Button a:buttons)
 			a.update(i);
 		if(image != null) {
@@ -154,6 +176,7 @@ public class CharacterSelection extends Scene {
 	void unload(Scene scene) {
 		for(Button a: buttons)
 			a.mute(SlimeSoccer.getInput());
+		go.mute(SlimeSoccer.getInput());
 	}
 
 }

@@ -177,7 +177,12 @@ public class Slime extends GameObject {
 	 * @author Seth
 	 */
 	public static enum Type {
-		DEFAULT("svetty",1000);
+		DEFAULT("svetty",1000),
+		GOAL("goal",1000),
+		TEST2("svetty",1000),
+		TEST3("svetty",1000),
+		TEST4("svetty",1000),
+		TEST5("svetty",1000);
 		
 		private String img;
 		private long duration;

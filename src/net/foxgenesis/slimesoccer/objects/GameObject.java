@@ -72,7 +72,7 @@ public abstract class GameObject
 	public void update(int delta) {
 		bounds.setLocation(location);
 	}
-	
+
 	public Polygon getBounds() {
 		return bounds;
 	}
@@ -138,11 +138,18 @@ public abstract class GameObject
 	 */
 	public void updatePosition(GameObject[] objects) {
 		if(!isSolid()) {
-			GameObject x = updateX(objects), y = updateY(objects);
-			if(x != null)
-				onCollide(x,0);
-			if(y != null)
-				onCollide(y,1);
+			if(SlimeSoccer.PIXEL_COLLISION)
+				for(GameObject a: objects)
+					if(a.bounds.intersects(bounds))
+						onCollide(a,-1);
+					else;
+			else {
+				GameObject x = updateX(objects), y = updateY(objects);
+				if(x != null)
+					onCollide(x,0);
+				if(y != null)
+					onCollide(y,1);
+			}
 		}
 	}
 

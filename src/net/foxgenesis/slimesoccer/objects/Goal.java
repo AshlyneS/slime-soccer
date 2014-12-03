@@ -9,10 +9,12 @@ import org.newdawn.slick.Image;
 public class Goal extends GameObject {
 	private final int side;
 	private Image img;
+	private final Slime slime;
 
-	public Goal(int side) {
+	public Goal(int side, Slime slime) {
 		super(Textures.get("goal").getWidth(), Textures.get("goal").getHeight());
-		this.img = Textures.get("goalBounds").getScaledCopy((int)width,(int)height);
+		this.slime = slime;
+		this.img = Textures.get("goal").getScaledCopy((int)width,(int)height);
 		if(side == SoccerGame.GOAL_RIGHT) {
 			img = img.getFlippedCopy(true, false);
 		}
@@ -25,6 +27,10 @@ public class Goal extends GameObject {
 
 	public int getSide() {
 		return side;
+	}
+	
+	public void addGoal() {
+		slime.setGoalCount(slime.getGoalCount()+1);
 	}
 
 	@Override

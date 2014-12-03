@@ -27,6 +27,7 @@ public class SoccerGame extends Scene {
 
 	public SoccerGame(int gameType) {
 		super();
+		//test
 		this.gameType = gameType;
 		objects[BALL] = new Ball();
 		collThread = new Thread(new Runnable() {

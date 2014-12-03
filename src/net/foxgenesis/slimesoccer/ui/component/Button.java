@@ -421,6 +421,7 @@ public class Button extends Component {
 				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
 			if(drawBorder) {
 				g.setColor(Color.black);
+				//test
 				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			}
 			if (!text.equalsIgnoreCase("")) {

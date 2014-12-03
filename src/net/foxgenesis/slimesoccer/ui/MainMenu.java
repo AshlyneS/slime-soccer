@@ -94,6 +94,7 @@ public class MainMenu extends Scene{
 		info.setForeground(Color.black);
 		info.getLocation().x = SlimeSoccer.getWidth();
 		info.setLocation(20, SlimeSoccer.getHeight()-15);
+		//test
 		info.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {

@@ -1,29 +1,15 @@
-# README #
+# Slime Soccer #
+## v1.0 ##
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### What is Slime Soccerr? ###
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Slime Soccer is blah blah blah
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Not available yet!
 
-### Contribution guidelines ###
+### Who do I talk to about issues or suggestions? ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
+* [fox_news](mailto:fox_news@foxgenesis.net)
 * Other community or team contact

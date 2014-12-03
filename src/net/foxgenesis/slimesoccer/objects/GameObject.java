@@ -131,6 +131,21 @@ public abstract class GameObject
 	public float getHeight() {
 		return height;
 	}
+        
+        public void modifyHeight(float h)
+        {
+            height = h;
+        }
+        
+        public void modifyWidth(float w)
+        {
+            width = w; 
+        }
+        
+         public void moveY(float x)
+                {
+                    location.y = x; 
+                }
 
 	/**
 	 * Update the position of the object

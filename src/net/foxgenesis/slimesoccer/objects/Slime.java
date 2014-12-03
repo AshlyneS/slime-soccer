@@ -26,7 +26,7 @@ public class Slime extends GameObject {
 	private final Type type;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	private final boolean controlled, secondary;
-	private boolean canJump = true,abilityCheck = true;
+	private boolean canJump = true,abilityCheck = true, indianJump = true;
 	private int direction = 0;
 	private Font font;
 	private double cooldown = 0.5;
@@ -79,6 +79,13 @@ public class Slime extends GameObject {
 	public void setGoalCount(int count) {
 		goals = count;
 	}
+        
+        public void changeJump() {
+            if(indianJump)
+                indianJump = false; 
+            else
+                indianJump = true; 
+        }
 	
 	/**
 	 * Gets the type of slime
@@ -152,7 +159,10 @@ public class Slime extends GameObject {
 						abilityCheck = true;
 					}
 				}, 1000);
-				type.abilityActivated(this);
+                                if(secondary)
+                                    type.secondAbilityActivated(this);
+                                else
+                                    type.firstAbilityActivated(this);
 			}
 			if(outOfBounds(location.x,location.y + velocity.y,false,true))
 				canJump = true;
@@ -177,11 +187,12 @@ public class Slime extends GameObject {
 	 * @author Seth
 	 */
 	public static enum Type {
-		DEFAULT("svetty",1000),
+		DEFAULT("defaultslime",1000),
 		GOAL("goal",1000),
-		TEST2("svetty",1000),
-		TEST3("svetty",1000),
-		TEST4("svetty",1000),
+		SPONGE("spongeslime",1000),
+		DISCO("discoslime",1000),
+		INDIAN("indianslime",1000),
+                NATURE("natureslime", 1000),
 		TEST5("svetty",1000);
 		
 		private String img;
@@ -195,9 +206,15 @@ public class Slime extends GameObject {
 			this.duration = duration;
 		}
 		
-		private void abilityActivated(Slime slime) {
-			SlimeAbilityUtil.handelAbility(slime);
+		private void firstAbilityActivated(Slime slime) {
+			SlimeAbilityUtil.handleFirstAbility(slime);
 		}
+                
+                private void secondAbilityActivated(Slime slime) {
+			SlimeAbilityUtil.handleSecondAbility(slime);
+		}
+                
+               
 		
 		public String getTextureName() {
 			return img;

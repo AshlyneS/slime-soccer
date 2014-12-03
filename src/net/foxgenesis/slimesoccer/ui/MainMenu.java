@@ -94,11 +94,6 @@ public class MainMenu extends Scene{
 		info.setForeground(Color.black);
 		info.getLocation().x = SlimeSoccer.getWidth();
 		info.setLocation(20, SlimeSoccer.getHeight()-15);
-<<<<<<< HEAD
-<<<<<<< HEAD
-		//test
-=======
->>>>>>> parent of 40bd5ed... merging with old
 		info.setAction(new Action(){
 			@Override
 			public void act(int button, int x, int y, int clickCount) {
@@ -107,12 +102,6 @@ public class MainMenu extends Scene{
 				}
 			}
 		});
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
-=======
->>>>>>> parent of 40bd5ed... merging with old
-
 		try {
 			title = new TextBounce("Slime Soccer", SlimeSoccer.getWidth()/2-Fonts.get("hiero").getWidth("Slime Soccer")/2-20, 50, Fonts.get("hiero"), 0.09f, 2);
 		} catch (SlickException e) {

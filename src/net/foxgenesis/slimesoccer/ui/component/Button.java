@@ -417,24 +417,12 @@ public class Button extends Component {
 			if(ani != null)
 				g.texture(new RoundedRectangle(getLocation().x-width/2-padding,getLocation().y-height/2-padding,width+padding,height+padding,round?roundedArc:0), 
 						ani.getCurrentFrame(), 1, 1, true);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of 40bd5ed... merging with old
 			if(icon != null)
 				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
 			if(drawBorder) {
 				g.setColor(Color.black);
-<<<<<<< HEAD
-				//test
 				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
 			}
-=======
->>>>>>> origin/master
-=======
-				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
-			}
->>>>>>> parent of 40bd5ed... merging with old
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;

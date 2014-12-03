@@ -27,15 +27,8 @@ public class SoccerGame extends Scene {
 
 	public SoccerGame(int gameType) {
 		super();
-<<<<<<< HEAD
-<<<<<<< HEAD
 		//test
 		this.gameType = gameType;
-=======
->>>>>>> origin/master
-=======
-		this.gameType = gameType;
->>>>>>> parent of 40bd5ed... merging with old
 		objects[BALL] = new Ball();
 		collThread = new Thread(new Runnable() {
 			@Override

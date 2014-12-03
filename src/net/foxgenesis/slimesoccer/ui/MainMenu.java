@@ -84,7 +84,8 @@ public class MainMenu extends Scene{
 			}
 		});
 
-		infoPop = new PopUp("<Info \nText>", PopUp.Type.DIALOG);
+		
+		infoPop = new PopUp("Welcome to Slime Soccer!\nCurrently only Duel gamemode is available.", PopUp.Type.DIALOG);
 		infoPop.setLocation(SlimeSoccer.getWidth()/2-infoPop.getWidth()/2,SlimeSoccer.getHeight()/2-infoPop.getHeight()/2);
 		infoPop.listen(SlimeSoccer.getInput());
 

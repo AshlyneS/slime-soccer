@@ -187,7 +187,10 @@ public abstract class GameObject
 	 * @return if point is within bounds
 	 */
 	public boolean contains(float x, float y) {
-		return getBounds().contains(x, y);
+		if(x >= location.x && x <= location.x + width)
+			if(y >= location.y && y <= location.y + height) 
+				return true;
+		return false;
 	}
 
 	/**

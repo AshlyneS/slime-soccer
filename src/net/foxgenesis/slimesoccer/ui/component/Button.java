@@ -427,7 +427,7 @@ public class Button extends Component {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;
 				g.setColor(foreground);
-				g.drawString(text, x+roundedArc, y);
+				g.drawString(text, x+roundedArc-padding, y);
 			}
 			if (cursorEntered && !held && enabled && drawHoverScreen) {
 				g.setColor(new Color(1f, 1f, 1f, 0.5f));

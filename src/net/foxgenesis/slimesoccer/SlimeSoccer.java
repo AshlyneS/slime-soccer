@@ -15,6 +15,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 
 public class SlimeSoccer extends BasicGame
@@ -22,6 +23,7 @@ public class SlimeSoccer extends BasicGame
 	private static int width, height;
 	private static Input input;
 	public static boolean PIXEL_COLLISION = false;
+	private Music music;
 
 	/**
 	 * Main method
@@ -66,6 +68,7 @@ public class SlimeSoccer extends BasicGame
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
+		music = new Music("music/cactus.mp3");
 		System.out.println("Loading game...");
 		SlimeSoccer.width = gc.getWidth();
 		SlimeSoccer.height = gc.getHeight();
@@ -75,6 +78,7 @@ public class SlimeSoccer extends BasicGame
 		Fonts.init();
 		System.out.println("Game loaded!");
 		Scene.setCurrentScene(new Loading(), null);
+		music.loop();
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class MainMenu extends Scene{
 			}
 		});
 
-		singlePlayer = createButton("Single Player");
+		singlePlayer = createButton("Single Player", false);
 		singlePlayer.setToolTipText("Play a game against a computer");
 		singlePlayer.getLocation().y = SlimeSoccer.getHeight()/4;
 		singlePlayer.setEnabled(false);
@@ -68,7 +68,7 @@ public class MainMenu extends Scene{
 			}
 		});
 
-		multiPlayer = createButton("Multiplayer");
+		multiPlayer = createButton("Multiplayer", false);
 		multiPlayer.setToolTipText("Play a game against a human over the internet");
 		multiPlayer.getLocation().y = SlimeSoccer.getHeight()/4;
 		multiPlayer.setEnabled(false);
@@ -153,6 +153,11 @@ public class MainMenu extends Scene{
 	void load(HashMap<String, Object> params) {
 		if(params.containsKey("image"))
 			trans = new FadingTransition((Image) params.get("image"));
+		infoPop.listen(SlimeSoccer.getInput());
+		info.listen(SlimeSoccer.getInput());
+		singlePlayer.listen(SlimeSoccer.getInput());
+		multiPlayer.listen(SlimeSoccer.getInput());
+		duelPlayer.listen(SlimeSoccer.getInput());
 	}
 
 	@Override
@@ -161,9 +166,16 @@ public class MainMenu extends Scene{
 		multiPlayer.mute(SlimeSoccer.getInput());
 		duelPlayer.mute(SlimeSoccer.getInput());
 		infoPop.mute(SlimeSoccer.getInput());
+		info.mute(SlimeSoccer.getInput());
+		image = null;
+		getImage = false;
 	}
 
 	private Button createButton(String title) {
+		return createButton(title,true);
+	}
+	
+	private Button createButton(String title, final boolean enabled) {
 		Button b = new Button(title){
 			@Override
 			public void draw(Graphics g) {
@@ -181,13 +193,21 @@ public class MainMenu extends Scene{
 					g.setColor(Color.white);
 				}
 				super.draw(g);
+				if(!enabled) {
+					float f = g.getLineWidth();
+					g.setLineWidth(2f);
+					g.setColor(Color.red);
+					g.drawLine(getLocation().x-width/2, getLocation().y-height/2,getLocation().x+width/2, getLocation().y+height/2);
+					g.drawLine(getLocation().x-width/2, getLocation().y+height/2,getLocation().x+width/2, getLocation().y-height/2);
+					g.setColor(Color.white);
+					g.setLineWidth(f);
+				}
 			}
 		};
 		b.setRounded(true);
 		b.setDrawHoverScreen(false);
 		b.setFont(Fonts.get("hiero"));
 		b.setSmoothMoving(true);
-		b.listen(SlimeSoccer.getInput());
 		b.setForeground(Color.white);
 		return b;
 	}

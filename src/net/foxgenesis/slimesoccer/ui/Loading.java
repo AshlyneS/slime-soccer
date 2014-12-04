@@ -90,7 +90,7 @@ public class Loading extends Scene {
 		if(image != null) {
 			HashMap<String, Object> params = new HashMap<>();
 			params.put("image",image);
-			Scene.setCurrentScene(new MainMenu(), params);
+			Scene.setCurrentScene(Scene.getScene("mainMenu"), params);
 		}
 	}
 

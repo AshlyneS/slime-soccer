@@ -61,6 +61,7 @@ public class Slime extends GameObject {
 		bar = new ProgressBar();
 		bar.setPrintText(false);
 		bar.setSize(SlimeSoccer.getWidth()/2-60, 20);
+		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.setBackground(secondary?Color.black:Color.green);
 		bar.setForeground(secondary?Color.green:Color.black);
 		bar.setValue(50);
@@ -97,6 +98,7 @@ public class Slime extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
+		bar.draw(g);
 		switch(direction) {
 		case 0:
 			if(img != null)
@@ -107,18 +109,16 @@ public class Slime extends GameObject {
 				flipped.draw(location.x,location.y, width, height);
 			break;
 		}
-		bar.draw(g);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name());
 
-		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth()) + font.getWidth(""+goals)/2 + (secondary?-25:-30), 55, ""+goals, Color.black);
-		font.drawString(bar.getLocation().x + (secondary?0:bar.getWidth())+font.getWidth(""+goals)/2 + (secondary?-30:-35), 50, ""+goals);
+		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, Color.black);
+		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals);
 	}
 
 	@Override
 	public void update(int delta) {
 		super.update(delta);
-		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
 		img.setRotation(this.getRotation());

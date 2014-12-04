@@ -8,6 +8,7 @@ import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.objects.Bounds;
 import net.foxgenesis.slimesoccer.ui.Loading;
+import net.foxgenesis.slimesoccer.ui.MainMenu;
 import net.foxgenesis.slimesoccer.ui.Scene;
 
 import org.newdawn.slick.AppGameContainer;
@@ -35,6 +36,7 @@ public class SlimeSoccer extends BasicGame
 			appgc.setTargetFrameRate(60);
 			appgc.setDisplayMode(640, 480, false);
 			appgc.setUpdateOnlyWhenVisible(true);
+			appgc.setIcons(new String[]{"textures/icon32.png","textures/icon24.png","textures/icon16.png"});
 			appgc.start();
 		} catch (SlickException ex) {
 			Logger.getLogger(SlimeSoccer.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,6 +79,7 @@ public class SlimeSoccer extends BasicGame
 		Bounds.init();
 		Fonts.init();
 		System.out.println("Game loaded!");
+		Scene.store("mainMenu", new MainMenu());
 		Scene.setCurrentScene(new Loading(), null);
 		music.loop();
 	}

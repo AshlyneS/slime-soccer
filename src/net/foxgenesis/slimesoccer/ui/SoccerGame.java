@@ -73,7 +73,7 @@ public class SoccerGame extends Scene {
 		objects = new GameObject[5];
 		objects[BALL] = new Ball();
 		objects[PLAYER1] = new Slime((Slime.Type)params.get("player1"), true);
-		objects[PLAYER2] = new Slime((Slime.Type)params.get("player2"), (int)params.get("players") == DUEL, true);
+		objects[PLAYER2] = new Slime((Slime.Type)params.get("player2"), gameType == DUEL, true);
 		objects[GOAL_LEFT] = new Goal(GOAL_LEFT, (Slime)objects[PLAYER2]);
 		objects[GOAL_RIGHT] = new Goal(GOAL_RIGHT, (Slime)objects[PLAYER1]);
 		objects[GOAL_LEFT].getLocation().y = SlimeSoccer.getHeight()-objects[GOAL_LEFT].getHeight();

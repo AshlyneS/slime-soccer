@@ -1,14 +1,19 @@
 package net.foxgenesis.slimesoccer.ui;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.image.Textures;
+import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.GameObject;
 import net.foxgenesis.slimesoccer.objects.Goal;
 import net.foxgenesis.slimesoccer.objects.Slime;
+import net.foxgenesis.slimesoccer.ui.component.SoccerGameMenu;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -24,22 +29,28 @@ public class SoccerGame extends Scene {
 	private Image background;
 	private final int gameType;
 	private Thread collThread;
+	private SoccerGameMenu menu;
+	private Timer timer;
+	private boolean canFire = true;
 
 	public SoccerGame(int gameType) {
 		super();
-		//test
+		menu = new SoccerGameMenu();
+		menu.listen(SlimeSoccer.getInput());
 		this.gameType = gameType;
+		timer = new Timer();
 		collThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while(true) {
-					for(GameObject a:objects)
-						if(a != null) {
-							a.update(0);
-							a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
-						}
+					if(!menu.isVisible())
+						for(GameObject a:objects)
+							if(a != null) {
+								a.update(0);
+								a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
+							}
 					try {
-						Thread.sleep(1000/60); //update 60 times per second
+						Thread.sleep(1000/60); //update collisions 60 times per second
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -54,12 +65,17 @@ public class SoccerGame extends Scene {
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		for(GameObject a: objects)
 			if(a != null)
-				a.render(g);;
+				a.render(g);
+		menu.draw(g);
 	}
 
 	@Override
 	public void update(GameContainer container, int i) {
-		
+		menu.update(i);
+		if(canFire && KeyboardInput.keys[Keyboard.KEY_ESCAPE]) {
+			fire();
+			menu.setVisible(!menu.isVisible());
+		}
 	}
 
 	public int getGameType() {
@@ -83,16 +99,28 @@ public class SoccerGame extends Scene {
 		objects[PLAYER2].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[PLAYER2].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
 		collThread.start();
+		SlimeSoccer.appgc.setTargetFrameRate(1000);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	void unload(Scene scene) {
 		collThread.stop();
+		menu.mute(SlimeSoccer.getInput());
 	}
 
 	public GameObject[] getObjects() {
 		return objects;
+	}
+	
+	private void fire() {
+		canFire = false;
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				canFire = true;
+			}
+		}, 400);
 	}
 
 }

@@ -25,6 +25,7 @@ public class SlimeSoccer extends BasicGame
 	private static Input input;
 	public static boolean PIXEL_COLLISION = false;
 	private Music music;
+	public static AppGameContainer appgc;
 
 	/**
 	 * Main method
@@ -32,7 +33,7 @@ public class SlimeSoccer extends BasicGame
 	 */
 	public static void main(String[] args) {
 		try {
-			AppGameContainer appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
+			appgc = new AppGameContainer(new SlimeSoccer("Slime Soccer"));
 			appgc.setTargetFrameRate(60);
 			appgc.setDisplayMode(640, 480, false);
 			appgc.setUpdateOnlyWhenVisible(true);

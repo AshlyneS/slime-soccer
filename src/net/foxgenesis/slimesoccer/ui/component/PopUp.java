@@ -9,17 +9,19 @@ import org.newdawn.slick.Input;
 
 public class PopUp extends Component {
 
-	private String text;
-	private static final Color fadeScreen = new Color(0.7f,0.7f,0.7f,0.5f), body = Color.lightGray, header = Color.gray;
+	protected String text, title;
+	protected static final Color fadeScreen = new Color(0.7f,0.7f,0.7f,0.5f), body = Color.lightGray, header = Color.gray;
 	private final Type type;
-	private final Button[] buttons;
+	protected final Button[] buttons;
 	public static final int EXIT = 0, OK = 1, YES = 2, NO = 3;
-	private ActionHandler handler;
+	protected ActionHandler handler;
+	protected boolean autoSize = true;
 
-	public PopUp(String text, Type type) {
+	public PopUp(String text, String title, Type type) {
 		super();
 		this.text = text;
 		this.type = type;
+		this.title = title;
 		buttons = new Button[2];
 		buttons[EXIT] = new Button("X"){
 			@Override
@@ -52,6 +54,10 @@ public class PopUp extends Component {
 				a.setSmoothMoving(false);
 		setSmoothMoving(false);
 		setVisible(false);
+	}
+
+	public PopUp(String text, Type type) {
+		this(text,"",type);
 	}
 
 	public String getText() {
@@ -107,24 +113,27 @@ public class PopUp extends Component {
 			return;
 		g.setColor(fadeScreen);
 		g.fillRect(0, 0, SlimeSoccer.getWidth(), SlimeSoccer.getHeight());
-		setSize(g.getFont().getWidth(text)+20,g.getFont().getHeight(text) + 20 + buttons[EXIT].height);
+		if(autoSize)
+			setSize(g.getFont().getWidth(text)+20,g.getFont().getHeight(text) + 20 + buttons[EXIT].height);
 		g.setColor(body);
 		g.fillRect(getLocation().x,getLocation().y,width,height);
 		g.setColor(Color.black);
 		g.drawRect(getLocation().x,getLocation().y,width,height);
 		g.setColor(header);
 		g.fillRect(getLocation().x+1,getLocation().y+1,width-1,buttons[EXIT].height+buttons[EXIT].getPadding());
-		for(Button a:buttons)
-			if(a != null)
-				a.draw(g);
+		g.setColor(Color.white);
+		g.drawString(title, getLocation().x+5, getLocation().y+3);
 		g.setColor(Color.black);
 		g.drawString(text, getLocation().x+width/2-g.getFont().getWidth(text)/2, getLocation().y+height/2-g.getFont().getHeight(text)/2+buttons[EXIT].height/2);
 		g.drawRect(getLocation().x,getLocation().y,width,buttons[EXIT].height+buttons[EXIT].getPadding());
+		for(Button a:buttons)
+			if(a != null)
+				a.draw(g);
 	}
 
 	public static enum Type {
 		DIALOG,
-		MESSAGE;
+		MENU;
 	}
 
 	public static interface ActionHandler {

@@ -99,7 +99,7 @@ public class CharacterSelection extends Scene {
 		back.listen(SlimeSoccer.getInput());
 		back.getLocation().x = 60;
 		back.getLocation().y = SlimeSoccer.getHeight()-back.getHeight()-40;
-		back.setForeground(Color.white);
+		back.setForeground(Color.black);
 		back.setAction(new Action() {
 			@Override
 			public void act(int button, int x, int y, int clickCount) {

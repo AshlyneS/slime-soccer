@@ -28,6 +28,7 @@ public class Button extends Component {
 	private boolean visible = true;
 	private boolean enabled = true;
 	private boolean drawBorder = true;
+	private boolean raised = true;
 	private boolean hover = false;
 	private boolean drawHoverScreen = true;
 	private boolean round = false;
@@ -36,6 +37,7 @@ public class Button extends Component {
 	private MouseListener listener;
 	private Font font;
 	private Timer timer;
+	private static Color b = new Color(0f,0f,0f,0.5f),w = new Color(1f,1f,1f,0.5f);
 
 	/**
 	 * Creates a new button with given text and background
@@ -144,6 +146,14 @@ public class Button extends Component {
 	 */
 	public boolean doesDrawBorder() {
 		return drawBorder;
+	}
+
+	public void setRaisedBorder(boolean state) {
+		raised = state;
+	}
+
+	public boolean isBorderRaised() {
+		return raised;
 	}
 
 	public void setIcon(Animation icon) {
@@ -402,7 +412,7 @@ public class Button extends Component {
 			if (!text.equalsIgnoreCase("")) {
 				int height = g.getFont().getHeight(text);
 				int width = g.getFont().getWidth(text);
-				this.setSize(width + 5+roundedArc, height + 5);
+				this.setSize(width + 5 + roundedArc + padding, height + 5 + padding);
 			}
 			if (drawShadow) {
 				g.setColor(new Color(.5f, .5f, .5f, .5f));
@@ -419,10 +429,19 @@ public class Button extends Component {
 						ani.getCurrentFrame(), 1, 1, true);
 			if(icon != null)
 				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
-			if(drawBorder) {
-				g.setColor(Color.black);
-				g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
-			}
+			if(drawBorder)
+				if(raised && !round) {
+					g.setColor(cursorEntered?w:b);
+					g.drawLine(getLocation().x-width/2-padding, getLocation().y+height/2+padding, getLocation().x+width/2+padding, getLocation().y+height/2+padding);
+					g.drawLine(getLocation().x+width/2+padding, getLocation().y-height/2-padding, getLocation().x+width/2+padding, getLocation().y+height/2+padding);
+					g.setColor(cursorEntered?b:w);
+					g.drawLine(getLocation().x-width/2-padding, getLocation().y-height/2-padding, getLocation().x-width/2-padding, getLocation().y+height/2+padding);
+					g.drawLine(getLocation().x-width/2-padding, getLocation().y-height/2-padding, getLocation().x+width/2+padding, getLocation().y-height/2-padding);
+				}
+				else {
+					g.setColor(Color.black);
+					g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);
+				}
 			if (!text.equalsIgnoreCase("")) {
 				float x = getLocation().x - width/2;
 				float y = getLocation().y - height/2;

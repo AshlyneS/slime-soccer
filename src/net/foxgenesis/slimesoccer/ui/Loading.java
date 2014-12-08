@@ -7,6 +7,7 @@ import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.objects.Bounds;
+import net.foxgenesis.slimesoccer.sound.Sounds;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
 import org.lwjgl.LWJGLException;
@@ -58,6 +59,8 @@ public class Loading extends Scene {
 
 				updateString = "Loading pixel collision bounds...";
 				Bounds.init();
+				
+				Sounds.init();
 
 				step = (int) bar.getMaximumValue();
 

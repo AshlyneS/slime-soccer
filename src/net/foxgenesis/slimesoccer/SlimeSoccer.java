@@ -7,6 +7,7 @@ import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
 import net.foxgenesis.slimesoccer.objects.Bounds;
+import net.foxgenesis.slimesoccer.sound.Sounds;
 import net.foxgenesis.slimesoccer.ui.Loading;
 import net.foxgenesis.slimesoccer.ui.MainMenu;
 import net.foxgenesis.slimesoccer.ui.Scene;
@@ -81,6 +82,7 @@ public class SlimeSoccer extends BasicGame
 			Fonts.init();
 			SlimeSoccer.music = new Music("music/cactus.ogg");
 			Bounds.init();
+			Sounds.init();
 			SlimeSoccer.music.loop();
 			Scene.store("mainMenu", new MainMenu());
 		}

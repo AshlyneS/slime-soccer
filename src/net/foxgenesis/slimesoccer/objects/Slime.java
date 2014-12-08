@@ -53,6 +53,7 @@ public class Slime extends GameObject {
 		super(100, 100);
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
+                img.rotate(90);
 		this.type = type;
 		font = Fonts.get("hiero");
 		this.controlled = controlled;
@@ -124,6 +125,7 @@ public class Slime extends GameObject {
 		img.setRotation(this.getRotation());
 		flipped = img.getFlippedCopy(true, false);
 		flipped.rotate(-img.getRotation());
+                
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
@@ -134,6 +136,8 @@ public class Slime extends GameObject {
 				direction = 0;
 			}
 			else
+                           // if(indianJump)
+                            //{
 				if(canJump)
 					if(velocity.x > 0)
 						if(velocity.x - SPEED/2 < 0)
@@ -145,10 +149,13 @@ public class Slime extends GameObject {
 							velocity.x -= velocity.x;
 						else
 							velocity.x+=SPEED/2;
+                                if(indianJump)
+                                {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
 			}
+                            }
 
 			if(abilityCheck && canUseAbility() && KeyboardInput.keys[secondary?Keyboard.KEY_SPACE:Keyboard.KEY_1]) {
 				abilityCheck = false;
@@ -193,6 +200,7 @@ public class Slime extends GameObject {
 		DISCO("discoslime",1000),
 		INDIAN("indianslime",1000),
 		NATURE("natureslime", 1000),
+                RUNNER("runnerslime", 1000),
 		TEST5("svetty",1000);
 
 		private String img;

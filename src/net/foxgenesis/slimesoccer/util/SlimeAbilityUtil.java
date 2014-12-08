@@ -18,7 +18,7 @@ public final class SlimeAbilityUtil {
                                 if(!abilityUsed)
                                 {
                                    
-                                    System.out.println("sponge left");
+                                    //ystem.out.println("sponge left");
                                     
                                     p1.modifyHeight(300);
                                     p1.modifyWidth(300);
@@ -41,14 +41,15 @@ public final class SlimeAbilityUtil {
                                     
                                 
                                     //    p1.getImage().setRotation(90); 
-                                    
+                                    p1.moveX(200);
                                     p1.modifyWidth(200);
                                     abilityUsed = true;
                                 }
                                 else
                                 {
-                                    p1.modifyHeight(100);
+                                    p1.modifyWidth(100);
                                     p1.setRotation(0);
+                                    abilityUsed = false; 
                                 }
                                 break;
                             case INDIAN:
@@ -65,6 +66,18 @@ public final class SlimeAbilityUtil {
                                 
                                 }
                                 break;
+                            case RUNNER:
+                                if(!abilityUsed)
+                                {
+                                    p1.moveX(150);
+                                    
+                                    abilityUsed = true;
+                                }
+                                else
+                                {
+                                    abilityUsed = false;
+                                }
+                            break;
                             case DEFAULT:  
                                 break;
                             }
@@ -102,14 +115,18 @@ public final class SlimeAbilityUtil {
                                 if(!abilityUsed)
                                 {    
                                     System.out.println("disco right");
+                                    p2.moveX(200);
                                     p2.modifyWidth(200);
+                                    
                                 //    p2.discoRotation(90);
                                     abilityUsed = true;
                                 }
                                 else
                                 {
-                                    p2.modifyHeight(100);
+                                    p2.modifyWidth(100);
+                                    
                                     p2.setRotation(0);
+                                    abilityUsed = false; 
                                 }
                                 break;
                             case INDIAN:
@@ -124,6 +141,18 @@ public final class SlimeAbilityUtil {
                                     p1.changeJump();
                                     abilityUsed = false;
                                 
+                                }
+                                break;
+                          case RUNNER:
+                                if(!abilityUsed)
+                                {
+                                    p1.moveX(150);
+                                    
+                                    abilityUsed = true;
+                                }
+                                else
+                                {
+                                    abilityUsed = false;
                                 }
                                 break;
                             case DEFAULT:  

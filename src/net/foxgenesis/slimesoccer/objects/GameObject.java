@@ -143,6 +143,10 @@ public abstract class GameObject
 	public void moveY(float x) {
 		location.y = x; 
 	}
+        
+        public void moveX(float x) {
+		location.x = x; 
+	}
 
 	/**
 	 * Update the position of the object

@@ -1,5 +1,8 @@
 package net.foxgenesis.slimesoccer.objects;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.image.Textures;
 
@@ -16,6 +19,9 @@ public class Ball extends GameObject {
 	private Image ball;
 	private final float FRICTION_RESISTANCE_FACTOR = 6;
 	private final boolean MOTION_BLUR = true;
+	private final float radius;
+	private final Timer timer;
+	private boolean paused = false;
 	/**
 	 * Create a new ball
 	 */
@@ -29,11 +35,12 @@ public class Ball extends GameObject {
 	 */
 	public Ball(float radius) {
 		super(radius,radius);
+		this.radius = radius;
+		timer = new Timer();
 		ball = Textures.get("soccerball").getScaledCopy((int)width,(int)height);
-		location.x = SlimeSoccer.getWidth()/2;
-		location.y = SlimeSoccer.getHeight()/2;
-		velocity.x = 11f;
-		velocity.y = 11f;
+		location.x = SlimeSoccer.getWidth()/2-radius/2;
+		location.y = SlimeSoccer.getHeight()/2-radius/2;
+		velocity.x = velocity.y = 0f;
 	}
 
 	@Override
@@ -65,7 +72,7 @@ public class Ball extends GameObject {
 
 	@Override
 	public boolean isSolid() {
-		return false;
+		return paused;
 	}
 
 	@Override
@@ -86,7 +93,25 @@ public class Ball extends GameObject {
 				velocity.y = a.getVelocity().y*2;
 		}
 		else if(a instanceof Goal) {
-			((Goal)a).addGoal();
+			Goal g = (Goal)a;
+			if(axis == GameObject.X_AXIS)
+				if(g.contains(location.x, location.y,radius)) {
+					location.x = SlimeSoccer.getWidth()/2-radius/2;
+					location.y = SlimeSoccer.getHeight()/2-radius/2;
+					velocity.x = velocity.y = 0f;
+					paused = true;
+					timer.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							paused = false;
+						}
+					}, 2000);
+					g.addGoal();
+				}
+				else;
+			else {
+				velocity.y = -velocity.y/2;
+			}
 		}
 	}
 

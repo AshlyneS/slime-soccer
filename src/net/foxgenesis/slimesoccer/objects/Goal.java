@@ -32,6 +32,21 @@ public class Goal extends GameObject {
 	public void addGoal() {
 		slime.setGoalCount(slime.getGoalCount()+1);
 	}
+	
+	@Override
+	public boolean contains(float x, float y) {
+		if(x > location.x && x < location.x + width)
+			if(y > location.y && y < location.y + height)
+				return true;
+		return false;
+	}
+	
+	public boolean contains(float x, float y, float radius) {
+		if(x + radius > location.x && x - radius < location.x + width)
+			if(y + radius > location.y && y - radius < location.y + height)
+				return true;
+		return false;
+	}
 
 	@Override
 	public void render(Graphics g) {

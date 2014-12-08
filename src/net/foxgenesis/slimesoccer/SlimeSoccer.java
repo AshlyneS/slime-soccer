@@ -24,8 +24,9 @@ public class SlimeSoccer extends BasicGame
 	private static int width, height;
 	private static Input input;
 	public static boolean PIXEL_COLLISION = false;
-	private Music music;
+	public static Music music;
 	public static AppGameContainer appgc;
+	public static boolean multiThreadLoading = false;
 
 	/**
 	 * Main method
@@ -71,18 +72,20 @@ public class SlimeSoccer extends BasicGame
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		music = new Music("music/cactus.ogg");
 		System.out.println("Loading game...");
 		SlimeSoccer.width = gc.getWidth();
 		SlimeSoccer.height = gc.getHeight();
 		SlimeSoccer.input = gc.getInput();
-		Textures.init();
-		Bounds.init();
-		Fonts.init();
+		if(!multiThreadLoading) {
+			Textures.init();
+			Fonts.init();
+			SlimeSoccer.music = new Music("music/cactus.ogg");
+			Bounds.init();
+			SlimeSoccer.music.loop();
+			Scene.store("mainMenu", new MainMenu());
+		}
 		System.out.println("Game loaded!");
-		Scene.store("mainMenu", new MainMenu());
 		Scene.setCurrentScene(new Loading(), null);
-		music.loop();
 	}
 
 	@Override

@@ -16,7 +16,6 @@ public class PopUp extends Component {
 	public static final int EXIT = 0, OK = 1, YES = 2, NO = 3;
 	protected ActionHandler handler;
 	protected boolean autoSize = true;
-
 	public PopUp(String text, String title, Type type) {
 		super();
 		this.text = text;
@@ -34,6 +33,7 @@ public class PopUp extends Component {
 			}
 		};
 		buttons[EXIT].setBackground(Color.red.darker(0.15f));
+		buttons[EXIT].setRaisedBorder(false);
 		buttons[EXIT].setDrawHoverScreen(false);
 		buttons[EXIT].drawShadow(false);
 		buttons[EXIT].setForeground(Color.white);

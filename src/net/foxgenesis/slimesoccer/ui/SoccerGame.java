@@ -11,12 +11,14 @@ import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.GameObject;
 import net.foxgenesis.slimesoccer.objects.Goal;
 import net.foxgenesis.slimesoccer.objects.Slime;
+import net.foxgenesis.slimesoccer.ui.component.PopUp.ActionHandler;
 import net.foxgenesis.slimesoccer.ui.component.SoccerGameMenu;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 /**
  * SoccerGame is a scene that contains players and a soccerball
@@ -26,37 +28,46 @@ public class SoccerGame extends Scene {
 
 	private GameObject[] objects;
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
-	private Image background;
+	private Image background, image;
 	private final int gameType;
-	private Thread collThread;
+	//private Thread collThread;
 	private SoccerGameMenu menu;
 	private Timer timer;
-	private boolean canFire = true;
+	private boolean canFire = true, getImage = false, toMain = false;
 
 	public SoccerGame(int gameType) {
 		super();
 		menu = new SoccerGameMenu();
 		menu.listen(SlimeSoccer.getInput());
-		this.gameType = gameType;
-		timer = new Timer();
-		collThread = new Thread(new Runnable() {
+		menu.setActionHandler(new ActionHandler() {
 			@Override
-			public void run() {
-				while(true) {
-					if(!menu.isVisible())
-						for(GameObject a:objects)
-							if(a != null) {
-								a.update(0);
-								a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
-							}
-					try {
-						Thread.sleep(1000/60); //update collisions 60 times per second
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+			public void actionEvent(int button) {
+				if(button == SoccerGameMenu.MAIN_MENU) {
+					toMain = true;
+					getImage = true;
 				}
 			}
-		},"Collision Thread");
+		});
+		this.gameType = gameType;
+		timer = new Timer();
+//		collThread = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				while(true) {
+//					if(!menu.isVisible())
+//						for(GameObject a:objects)
+//							if(a != null) {
+//								a.update(0);
+//								a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
+//							}
+//					try {
+//						Thread.sleep(1000/60); //update collisions 60 times per second
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//		},"Collision Thread");
 	}
 
 	@Override
@@ -67,14 +78,33 @@ public class SoccerGame extends Scene {
 			if(a != null)
 				a.render(g);
 		menu.draw(g);
+		if(getImage) {
+			try {
+				image = new Image(container.getWidth(),container.getHeight());
+				g.copyArea(image, 0, 0);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void update(GameContainer container, int i) {
+		if(!menu.isVisible())
+			for(GameObject a:objects)
+				if(a != null) {
+					a.update(0);
+					a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
+				}
 		menu.update(i);
 		if(canFire && KeyboardInput.keys[Keyboard.KEY_ESCAPE]) {
 			fire();
 			menu.setVisible(!menu.isVisible());
+		}
+		if(image != null) {
+			HashMap<String, Object> params = new HashMap<>();
+			params.put("image",image);
+			Scene.setCurrentScene(toMain?Scene.getScene("mainMenu"):null, params);
 		}
 	}
 
@@ -98,21 +128,20 @@ public class SoccerGame extends Scene {
 		objects[PLAYER1].getLocation().x = objects[0].getLocation().y = objects[0].getWidth()*2;
 		objects[PLAYER2].getLocation().x =  SlimeSoccer.getWidth()-objects[1].getWidth()*2;
 		objects[PLAYER2].getLocation().y =  SlimeSoccer.getHeight()-objects[1].getHeight()*2;
-		collThread.start();
-		SlimeSoccer.appgc.setTargetFrameRate(1000);
+		//collThread.start();
+		//SlimeSoccer.appgc.setTargetFrameRate(1000);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	void unload(Scene scene) {
-		collThread.stop();
+		//collThread.stop();
 		menu.mute(SlimeSoccer.getInput());
 	}
 
 	public GameObject[] getObjects() {
 		return objects;
 	}
-	
+
 	private void fire() {
 		canFire = false;
 		timer.schedule(new TimerTask() {

@@ -2,7 +2,9 @@ package net.foxgenesis.slimesoccer.util;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
@@ -15,7 +17,7 @@ import org.newdawn.slick.util.BufferedImageUtil;
  * @author Seth
  */
 public final class ImageUtil {
-
+	
 	/**
 	 * Convert an image into a BufferedImage
 	 * @param img - image to convert
@@ -50,5 +52,11 @@ public final class ImageUtil {
 		} catch (SlickException e) {
 			return null;
 		} 
+	}
+
+	public static byte[] readImage(File file) throws IOException {
+		if(file.isFile())
+			return Files.readAllBytes(file.toPath());
+		return null;
 	}
 }

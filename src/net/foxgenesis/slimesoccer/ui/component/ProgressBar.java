@@ -9,12 +9,12 @@ import org.newdawn.slick.Graphics;
  * @author Seth
  */
 public class ProgressBar extends Component {
-	private double value,max,min;
+	private double value,max,min,smooth;
 	private Color foreground,background;
 	private Runnable run;
-	private boolean pText=true, invert = false;
+	private boolean pText=true, invert = false, smoothValue = true;
 	private String text;
-	
+
 	/**
 	 * Create a new progress bar
 	 */
@@ -27,7 +27,7 @@ public class ProgressBar extends Component {
 		min = 0;
 		text="Loading...";
 	}
-	
+
 	/**
 	 * Gets the maximum value of the progress bar
 	 * @return maximum value
@@ -35,7 +35,7 @@ public class ProgressBar extends Component {
 	public double getMaximumValue() {
 		return max;
 	}
-	
+
 	/**
 	 * Sets whether to display text under the loading bar
 	 * @param state - display state
@@ -43,7 +43,7 @@ public class ProgressBar extends Component {
 	public void setPrintText(boolean state) {
 		this.pText = state;
 	}
-	
+
 	/**
 	 * Gets the text under the loading bar
 	 * @return loading text
@@ -51,7 +51,15 @@ public class ProgressBar extends Component {
 	public String getText() {
 		return text;
 	}
-	
+
+	public void setSmoothValues(boolean state) {
+		smoothValue = state;
+	}
+
+	public boolean isSmoothValues() {
+		return smoothValue;
+	}
+
 	/**
 	 * Sets whether to use inverted percentage
 	 * @param state - inverted state
@@ -59,7 +67,7 @@ public class ProgressBar extends Component {
 	public void setInvertedPercentage(boolean state) {
 		invert = state;
 	}
-	
+
 	/**
 	 * Sets the text to display under the loading bar
 	 * @param text - text to display
@@ -67,7 +75,7 @@ public class ProgressBar extends Component {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
 	/**
 	 * Gets the minimum value
 	 * @return minimum value
@@ -75,7 +83,7 @@ public class ProgressBar extends Component {
 	public double getMinimumValue() {
 		return min;
 	}
-	
+
 	/**
 	 * Sets the maximum value
 	 * @param value - maximum value
@@ -83,7 +91,7 @@ public class ProgressBar extends Component {
 	public void setMaximumValue(double value) {
 		this.max = value;
 	}
-	
+
 	/**
 	 * Sets the minimum value
 	 * @param value
@@ -91,7 +99,7 @@ public class ProgressBar extends Component {
 	public void setMinimumValue(double value) {
 		this.min = value;
 	}
-	
+
 	/**
 	 * Sets the current value of the progress bar
 	 * @param value
@@ -101,9 +109,12 @@ public class ProgressBar extends Component {
 			value = max;
 		else if(value < min)
 			value = min;
-		this.value = value;
+		if(smoothValue)
+			smooth = value;
+		else 
+			this.value = value;
 	}
-	
+
 	/**
 	 * Sets the action to run when value is equal to maximum value
 	 * @param run
@@ -111,7 +122,7 @@ public class ProgressBar extends Component {
 	public void setAction(Runnable run) {
 		this.run = run;
 	}
-	
+
 	/**
 	 * Gets the current value of the progress bar
 	 * @return
@@ -119,7 +130,7 @@ public class ProgressBar extends Component {
 	public double getValue() {
 		return value;
 	}
-	
+
 	/**
 	 * Sets the foreground of the loading bar
 	 * @param color
@@ -127,7 +138,7 @@ public class ProgressBar extends Component {
 	public void setForeground(Color color) {
 		this.foreground = color;
 	}
-	
+
 	/**
 	 * Sets the background of the loading bar
 	 * @param color
@@ -135,7 +146,7 @@ public class ProgressBar extends Component {
 	public void setBackground(Color color) {
 		this.background = color;
 	}
-	
+
 	/**
 	 * Gets the background of the loading bar
 	 * @return bar background
@@ -143,7 +154,7 @@ public class ProgressBar extends Component {
 	public Color getBackground() {
 		return background;
 	}
-	
+
 	/**
 	 * Gets the foreground of the loading bar
 	 * @return bar foreground
@@ -151,7 +162,7 @@ public class ProgressBar extends Component {
 	public Color getForeground() {
 		return foreground;
 	}
-	
+
 	@Override
 	public void update(int delta) {
 		if((invert && value <= min) || (!invert && value >= max))
@@ -159,6 +170,10 @@ public class ProgressBar extends Component {
 				run.run();
 				run = null;
 			}
+		if(value < smooth)
+			value+=1;
+		else if(value > smooth)
+			value-=1;
 	}
 
 	@Override

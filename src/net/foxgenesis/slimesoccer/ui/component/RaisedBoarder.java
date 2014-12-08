@@ -9,6 +9,11 @@ public class RaisedBoarder {
 	private float x=-1,y=-1,width=-1,height=-1;
 	private Component component;
 	private boolean invert = false;
+	protected static Color blackFade = new Color(0f,0f,0f,0.5f), whiteFade = new Color(1f,1f,1f,0.5f);
+	
+	public RaisedBoarder(Component component) {
+		this(component, blackFade, whiteFade);
+	}
 	
 	public RaisedBoarder(Component component, Color top, Color bottom) {
 		this(component, top,top,bottom,bottom);
@@ -93,10 +98,10 @@ public class RaisedBoarder {
 		g.setColor(!invert?bottom:top);
 		g.drawLine(x, y+height, x+width, y+height); //bottom
 		g.setColor(!invert?right:left);
-		g.drawLine(x+width, y-height, x+width, y+height); //right
+		g.drawLine(x+width, y, x+width, y+height); //right
 		g.setColor(!invert?left:right);
-		g.drawLine(x, y-height, x, y+height); //left
+		g.drawLine(x, y, x, y+height); //left
 		g.setColor(!invert?top:bottom);
-		g.drawLine(x-width, y, x+width, y); //top
+		g.drawLine(x, y, x+width, y); //top
 	}
 }

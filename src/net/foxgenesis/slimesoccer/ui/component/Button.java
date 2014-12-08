@@ -37,8 +37,8 @@ public class Button extends Component {
 	private MouseListener listener;
 	private Font font;
 	private Timer timer;
-	private static Color b = new Color(0f,0f,0f,0.5f),w = new Color(1f,1f,1f,0.5f);
-
+	private RaisedBoarder boarder = new RaisedBoarder(this);
+	
 	/**
 	 * Creates a new button with given text and background
 	 * @param text - text to be displayed
@@ -398,6 +398,9 @@ public class Button extends Component {
 			if(icon != null)
 				icon.update(i);
 		}
+		boarder.setFixedLocation(getLocation().x-width/2-padding, getLocation().y-height/2-padding);
+		boarder.setFixedSize(width+padding, height+padding);
+		boarder.setInvertedColors(!cursorEntered);
 	}
 
 	/**
@@ -430,14 +433,8 @@ public class Button extends Component {
 			if(icon != null)
 				icon.draw(getLocation().x-width-(32/2)-padding, getLocation().y-(32/2)-padding,32,32);
 			if(drawBorder)
-				if(raised && !round) {
-					g.setColor(cursorEntered?w:b);
-					g.drawLine(getLocation().x-width/2-padding, getLocation().y+height/2+padding, getLocation().x+width/2+padding, getLocation().y+height/2+padding);
-					g.drawLine(getLocation().x+width/2+padding, getLocation().y-height/2-padding, getLocation().x+width/2+padding, getLocation().y+height/2+padding);
-					g.setColor(cursorEntered?b:w);
-					g.drawLine(getLocation().x-width/2-padding, getLocation().y-height/2-padding, getLocation().x-width/2-padding, getLocation().y+height/2+padding);
-					g.drawLine(getLocation().x-width/2-padding, getLocation().y-height/2-padding, getLocation().x+width/2+padding, getLocation().y-height/2-padding);
-				}
+				if(raised && !round)
+					boarder.draw(g);
 				else {
 					g.setColor(Color.black);
 					g.drawRoundRect(getLocation().x-width/2-padding, getLocation().y-height/2-padding, width+padding, height+padding,round?roundedArc:0);

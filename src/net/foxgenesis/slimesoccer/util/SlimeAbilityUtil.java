@@ -41,6 +41,7 @@ public final class SlimeAbilityUtil {
                                     
                                 
                                     //    p1.getImage().setRotation(90); 
+                                    
                                     p1.modifyWidth(200);
                                     abilityUsed = true;
                                 }

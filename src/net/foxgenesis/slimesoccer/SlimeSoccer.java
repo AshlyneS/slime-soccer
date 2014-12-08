@@ -27,7 +27,7 @@ public class SlimeSoccer extends BasicGame
 	public static boolean PIXEL_COLLISION = false;
 	public static Music music;
 	public static AppGameContainer appgc;
-	public static boolean multiThreadLoading = false;
+	public static boolean multiThreadLoading = true;
 
 	/**
 	 * Main method

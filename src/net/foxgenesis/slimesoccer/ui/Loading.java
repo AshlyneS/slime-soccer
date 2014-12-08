@@ -6,13 +6,10 @@ import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
-import net.foxgenesis.slimesoccer.objects.Bounds;
 import net.foxgenesis.slimesoccer.sound.Sounds;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.SharedDrawable;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -20,7 +17,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.loading.LoadingList;
 
 /**
  * Loading is the loading screen at the start of the game
@@ -35,43 +31,6 @@ public class Loading extends Scene {
 	private boolean getImage = false;
 	private int step = 0;
 	private String updateString = "Loading...";
-	private Thread thread = new Thread(new Runnable() {
-		@Override
-		public void run() {
-			try {
-
-				LoadingList.setDeferredLoading(false);
-				SharedDrawable sharedDrawable = new SharedDrawable(GameContainer.getSharedContext());
-				sharedDrawable.makeCurrent();
-
-				updateString = "Loading textures...";
-				Textures.init();
-				step = (int)bar.getMaximumValue()/4;
-
-				updateString = "Loading fonts...";
-				Fonts.init();
-				step = (int)bar.getMaximumValue()/2;
-
-				updateString = "Loading music...";
-				SlimeSoccer.music = new Music("music/cactus.ogg");
-
-				step = (int)bar.getMaximumValue()/4*3;
-
-				updateString = "Loading pixel collision bounds...";
-				Bounds.init();
-				
-				Sounds.init();
-
-				step = (int) bar.getMaximumValue();
-
-				SlimeSoccer.music.loop();
-				sharedDrawable.releaseContext();
-				sharedDrawable.destroy();
-			} catch( LWJGLException | SlickException e ) {
-				e.printStackTrace();
-			}
-		}
-	});
 
 	/**
 	 * Create a new loading screen instance
@@ -84,8 +43,9 @@ public class Loading extends Scene {
 		hiero = new AngelCodeFont("fonts/hiero.fnt", new Image("textures/hiero.png"));
 		bar = new ProgressBar();
 		bar.setVisible(true);
-
+		bar.setMaximumValue(4);
 		bar.setText("This bar doesn't do anything! lawl :P");
+		bar.setText("loading textures...");
 		bar.setAction(new Runnable() {
 			@Override
 			public void run() {
@@ -127,11 +87,30 @@ public class Loading extends Scene {
 			update = 0;
 		if((update2 += speed) >= 360)
 			speed = -speed;
-		if(bar.isVisible())
-			if(SlimeSoccer.multiThreadLoading)
-				bar.setValue(step);
-			else
-				bar.setValue(bar.getValue()+1);
+		switch(step) {
+		case 0:
+			updateString = "loading fonts...";
+			Textures.init();
+			break;
+		case 1:
+			updateString = "loading music...";
+			Fonts.init();
+			break;
+		case 2:
+			updateString = "loading sounds...";
+			try {
+				SlimeSoccer.music = new Music("music/cactus.ogg");
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+			break;
+		case 3:
+			Sounds.init();
+			SlimeSoccer.music.loop();
+			Scene.store("mainMenu", new MainMenu());
+			break;
+		}
+		bar.setValue(step+=1);
 		bar.setSize(gc.getWidth()/3*2,20);
 		bar.setText(updateString);
 		bar.setLocation(gc.getWidth()/2-bar.getWidth()/2,gc.getHeight()-100);
@@ -148,8 +127,6 @@ public class Loading extends Scene {
 
 	@Override
 	void load(HashMap<String, Object> params) {
-		if(SlimeSoccer.multiThreadLoading)
-			thread.start();
 	}
 
 	@Override

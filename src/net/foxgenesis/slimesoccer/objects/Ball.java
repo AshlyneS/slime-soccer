@@ -93,17 +93,17 @@ public class Ball extends GameObject {
 				velocity.y = a.getVelocity().y*2;
 		}
 		else if(a instanceof Goal) {
-			Goal g = (Goal)a;
+			final Goal g = (Goal)a;
 			if(axis == GameObject.X_AXIS)
 				if(g.contains(location.x, location.y,radius)) {
 					location.x = SlimeSoccer.getWidth()/2-radius/2;
 					location.y = SlimeSoccer.getHeight()/2-radius/2;
 					velocity.x = velocity.y = 0f;
-					paused = true;
+					Slime.paused = paused = true;
 					timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
-							paused = false;
+							Slime.paused = paused = false;
 						}
 					}, 2000);
 					g.addGoal();

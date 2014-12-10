@@ -6,6 +6,7 @@ import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
+import net.foxgenesis.slimesoccer.objects.Bounds;
 import net.foxgenesis.slimesoccer.sound.Sounds;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
@@ -29,8 +30,8 @@ public class Loading extends Scene {
 	private ProgressBar bar;
 	private int update = 0,update2 = 0,speed=1;
 	private boolean getImage = false;
-	private int step = 0;
-	private String updateString = "Loading...";
+	private int step = -1;
+	private String updateString = "Loading textures...";
 
 	/**
 	 * Create a new loading screen instance
@@ -43,7 +44,7 @@ public class Loading extends Scene {
 		hiero = new AngelCodeFont("fonts/hiero.fnt", new Image("textures/hiero.png"));
 		bar = new ProgressBar();
 		bar.setVisible(true);
-		bar.setMaximumValue(4);
+		bar.setMaximumValue(5);
 		bar.setText("This bar doesn't do anything! lawl :P");
 		bar.setText("loading textures...");
 		bar.setAction(new Runnable() {
@@ -105,10 +106,13 @@ public class Loading extends Scene {
 			}
 			break;
 		case 3:
+			updateString = "loading object bounds...";
 			Sounds.init();
 			SlimeSoccer.music.loop();
 			Scene.store("mainMenu", new MainMenu());
 			break;
+		case 4:
+			Bounds.init();
 		}
 		bar.setValue(step+=1);
 		bar.setSize(gc.getWidth()/3*2,20);

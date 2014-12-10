@@ -25,7 +25,7 @@ public class Slime extends GameObject {
 	private Image flipped;
 	private final Type type;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
-	private final boolean controlled, secondary;
+	protected final boolean controlled, secondary;
 	private boolean canJump = true,abilityCheck = true, indianJump = true;
 	private int direction = 0;
 	private Font font;
@@ -33,6 +33,7 @@ public class Slime extends GameObject {
 	private ProgressBar bar;
 	private Timer timer;
 	private int goals = 0;
+	protected static boolean paused;
 
 	/**
 	 * Create a new Slime with a type and controlled parameters
@@ -178,7 +179,7 @@ public class Slime extends GameObject {
 
 	@Override
 	public boolean isSolid() {
-		return false;
+		return paused;
 	}
 
 	/**

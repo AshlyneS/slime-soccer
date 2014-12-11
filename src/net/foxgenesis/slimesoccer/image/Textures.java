@@ -20,11 +20,6 @@ public final class Textures {
 	public static void init(){
 		System.out.println("loading all textures...");
 		loadFiles(new File("textures"));
-		try {
-			confetti = Textures.createGif("falling confetti.gif", 30);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 		System.out.println("textures loaded!");
 	}
 
@@ -113,7 +108,7 @@ public final class Textures {
 				for(int i=0; i<img.getWidth(); i++)
 					for(int j=0; j<img.getHeight(); j++) {
 						Color c = img.getColor(i,j);
-						if(c.getRed() + c.getBlue() + c.getGreen() < 475) {
+						if(c.getRed() + c.getBlue() + c.getGreen() < 600) {
 							g.setColor(img.getColor(i,j));
 							g.fillRect(i,j,1,1);
 						}

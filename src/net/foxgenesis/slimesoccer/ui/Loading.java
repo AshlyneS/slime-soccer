@@ -43,7 +43,7 @@ public class Loading extends Scene {
 		hiero = new AngelCodeFont("fonts/hiero.fnt", new Image("textures/hiero.png"));
 		bar = new ProgressBar();
 		bar.setVisible(true);
-		bar.setMaximumValue(5);
+		bar.setMaximumValue(6);
 		bar.setText("This bar doesn't do anything! lawl :P");
 		bar.setText("loading textures...");
 		bar.setAction(new Runnable() {
@@ -89,14 +89,22 @@ public class Loading extends Scene {
 			speed = -speed;
 		switch(step) {
 		case 0:
-			updateString = "loading fonts...";
+			updateString = "loading animations...";
 			Textures.init();
 			break;
 		case 1:
+			updateString = "loading fonts...";
+			try {
+				Textures.confetti = Textures.createGif("falling confetti.gif", 30);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+			break;
+		case 2:
 			updateString = "loading music...";
 			Fonts.init();
 			break;
-		case 2:
+		case 3:
 			updateString = "loading sounds...";
 			try {
 				SlimeSoccer.music = new Music("music/cactus.ogg");
@@ -104,13 +112,14 @@ public class Loading extends Scene {
 				e.printStackTrace();
 			}
 			break;
-		case 3:
-			updateString = "loading sounds...";
+		case 4:
+			updateString = "loading main menu...";
 			Sounds.init();
 			break;
-		case 4:
+		case 5:
 			SlimeSoccer.music.loop();
 			Scene.store("mainMenu", new MainMenu());
+			break;
 		}
 		bar.setValue(step+=1);
 		bar.setSize(gc.getWidth()/3*2,20);

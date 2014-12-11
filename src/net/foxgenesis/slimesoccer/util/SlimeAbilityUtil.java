@@ -46,8 +46,7 @@ public final class SlimeAbilityUtil {
 				}, user.getType());
 				break;
 			case DISCO: 
-				//    p1.getImage().setRotation(90); 
-				user.getLocation().x = 200;
+				user.setRotation(90);
 				user.setSize(200,user.getHeight());
 				undo(new Runnable() {
 					@Override
@@ -87,28 +86,37 @@ public final class SlimeAbilityUtil {
 				b.getVelocity().x *= 1.5f; 
 				b.getVelocity().y *= 1.5f;
 				break;
-                        case ICE:
-                                b.getVelocity().x *= .3f;
-                                b.getVelocity().y *= .3f; 
-                                break;
-                        case MONK:
-                                b.getVelocity().x = -b.getVelocity().x; 
-                                break; 
-                        case WATER:
-                            b.getVelocity().y = b.getVelocity().y > 0?-11f:-8f;
-                                break;
-                        case BOXER:
-                            float xD = Math.abs(user.getLocation().x-target.getLocation().x);
-                            if(xD < 200) {
-                                target.setPaused(true);
-                                undo(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        target.setPaused(false);
-                                    }
-                                },user.getType());
-                            }
-                        break;
+			case ICE:
+				b.getVelocity().x *= .3f;
+				b.getVelocity().y *= .3f; 
+				break;
+			case MONK:
+				b.getVelocity().x = -b.getVelocity().x; 
+				break; 
+			case WATER:
+				b.getVelocity().y = b.getVelocity().y > 0?-11f:-8f;
+				break;
+			case BOXER:
+				float xD = Math.abs(user.getLocation().x-target.getLocation().x);
+				if(xD < 200) {
+					target.setPaused(true);
+					undo(new Runnable() {
+						@Override
+						public void run() {
+							target.setPaused(false);
+						}
+					},user.getType());
+				}
+				break;
+			case TEST5:
+				game.getObjects()[SoccerGame.BALL2] = new Ball();
+				undo(new Runnable() {
+					@Override
+					public void run() {
+						game.getObjects()[5] = null;
+					}
+				},user.getType());
+				break;
 			case DEFAULT:  
 				break;
 			default:

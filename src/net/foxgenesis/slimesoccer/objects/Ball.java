@@ -81,38 +81,38 @@ public class Ball extends GameObject {
 	}
 
 	@Override
-	public void onCollide(GameObject a, int axis) {
-		if(a instanceof Slime) {
-			if(axis == -1){
-				velocity.x = a.getVelocity().x*2;
-				velocity.y = a.getVelocity().y*2;
-			}
-			else if(axis == GameObject.X_AXIS)
-				velocity.x = a.getVelocity().x*2;
-			else if(axis == GameObject.Y_AXIS)
-				velocity.y = a.getVelocity().y*2;
-		}
-		else if(a instanceof Goal) {
-			final Goal g = (Goal)a;
-			if(axis == GameObject.X_AXIS)
-				if(g.contains(location.x, location.y,radius)) {
-					location.x = SlimeSoccer.getWidth()/2-radius/2;
-					location.y = SlimeSoccer.getHeight()/2-radius/2;
-					velocity.x = velocity.y = 0f;
-					Slime.paused = paused = true;
-					timer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							Slime.paused = paused = false;
-						}
-					}, 2000);
-					g.addGoal();
+	public void onCollide(GameObject[] b, int axis) {
+		for(GameObject a:b)
+			if(a instanceof Slime) {
+				if(axis == -1){
+					velocity.x = a.getVelocity().x*2;
+					velocity.y = a.getVelocity().y*2;
 				}
-				else;
-			else {
-				velocity.y = -velocity.y/2;
+				else if(axis == GameObject.X_AXIS)
+					velocity.x = a.getVelocity().x*2;
+				else if(axis == GameObject.Y_AXIS)
+					velocity.y = a.getVelocity().y*2;
 			}
-		}
+			else if(a instanceof Goal) {
+				final Goal g = (Goal)a;
+				if(axis == GameObject.X_AXIS)
+					if(g.contains(location.x, location.y,radius)) {
+						location.x = SlimeSoccer.getWidth()/2-radius/2;
+						location.y = SlimeSoccer.getHeight()/2-radius/2;
+						velocity.x = velocity.y = 0f;
+						Slime.paused = paused = true;
+						timer.schedule(new TimerTask() {
+							@Override
+							public void run() {
+								Slime.paused = paused = false;
+							}
+						}, 2000);
+						g.addGoal();
+					}
+					else;
+				else
+					velocity.y = -velocity.y/2;
+			}
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package net.foxgenesis.slimesoccer.objects;
 
+import java.util.ArrayList;
+
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 
 import org.newdawn.slick.Graphics;
@@ -93,10 +95,10 @@ public abstract class GameObject
 
 	/**
 	 * Called on collide with another GameObject
-	 * @param a - GameObject collided with
+	 * @param x - GameObject collided with
 	 * @param axis - axis on which it collided (call twice for both axis)
 	 */
-	public void onCollide(GameObject a, int axis){}
+	public void onCollide(GameObject[] x, int axis){}
 
 	/**
 	 * Gets the location of the object
@@ -152,7 +154,7 @@ public abstract class GameObject
 	 */
 	public void updatePosition(GameObject[] objects) {
 		if(!isSolid()) {
-			GameObject x = updateX(objects), y = updateY(objects);
+			GameObject[] x = updateX(objects), y = updateY(objects);
 			if(x != null)
 				onCollide(x,0);
 			if(y != null)
@@ -160,30 +162,34 @@ public abstract class GameObject
 		}
 	}
 
-	private GameObject updateX(GameObject[] objects) {
+	private GameObject[] updateX(GameObject[] objects) {
+		ArrayList<GameObject> output = new ArrayList<GameObject>();
 		for(GameObject a: objects)
 			if(a != null && a != this)
 				if(a.contains(location.x + velocity.x, location.y))
-					return a;
-		if(!outOfBounds(location.x + velocity.x,location.y,true,false))
-			location.x += velocity.x;
-		else
-			velocity.x = isEnviormentControlled()?-velocity.x/2:0f;
-		return null;
+					output.add(a);
+		if(output.isEmpty())
+			if(!outOfBounds(location.x + velocity.x,location.y,true,false))
+				location.x += velocity.x;
+			else
+				velocity.x = isEnviormentControlled()?-velocity.x/2:0f;
+		return output.toArray(new GameObject[]{});
 	}
 
-	private GameObject updateY(GameObject[] objects) {
+	private GameObject[] updateY(GameObject[] objects) {
+		ArrayList<GameObject> output = new ArrayList<GameObject>();
 		for(GameObject a: objects)
 			if(a != null && a != this)
 				if(a.contains(location.x, location.y + velocity.y))
-					return a;
-		if(!outOfBounds(location.x,location.y + velocity.y)) {
-			velocity.y += GRAVITY_FACTOR;
-			location.y += velocity.y;
-		}
-		else
-			velocity.y = isEnviormentControlled()?-velocity.y/2:0f;
-		return null;
+					output.add(a);
+		if(output.isEmpty())
+			if(!outOfBounds(location.x,location.y + velocity.y)) {
+				velocity.y += GRAVITY_FACTOR;
+				location.y += velocity.y;
+			}
+			else
+				velocity.y = isEnviormentControlled()?-velocity.y/2:0f;
+		return output.toArray(new GameObject[]{});
 	}
 
 	/**

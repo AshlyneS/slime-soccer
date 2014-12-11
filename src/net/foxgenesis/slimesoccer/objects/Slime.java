@@ -101,7 +101,7 @@ public class Slime extends GameObject {
 	public void changeJump() {
 		indianJump = !indianJump;
 	}
-	
+
 	/**
 	 * Set the display opacity for the slime
 	 * @param opacity - display opacity
@@ -153,22 +153,23 @@ public class Slime extends GameObject {
 	public int getDirection() {
 		return direction;
 	}
-        
-        @Override
-        public void updatePosition(GameObject[] objects) {
-            if(!pausedMove)
-                super.updatePosition(objects);
-        }
+
+	@Override
+	public void updatePosition(GameObject[] objects) {
+		if(!pausedMove)
+			super.updatePosition(objects);
+	}
 
 	@Override
 	public void update(int delta) {
 		super.update(delta);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
+		img.setCenterOfRotation(img.getWidth()/2,img.getHeight()/2);
 		img.setRotation(this.getRotation());
 		flipped = img.getFlippedCopy(true, false);
+		flipped.setCenterOfRotation(flipped.getWidth()/2,flipped.getHeight()/2);
 		flipped.rotate(-img.getRotation());
-
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
@@ -180,18 +181,18 @@ public class Slime extends GameObject {
 			}
 			else
 				// if(indianJump)
-				//{
-				if(canJump)
-					if(velocity.x > 0)
-						if(velocity.x - SPEED/2 < 0)
-							velocity.x -= velocity.x;
-						else
-							velocity.x-=SPEED/2;
-					else if(velocity.x < 0)
-						if(velocity.x + SPEED/2 > 0)
-							velocity.x -= velocity.x;
-						else
-							velocity.x+=SPEED/2;
+					//{
+					if(canJump)
+						if(velocity.x > 0)
+							if(velocity.x - SPEED/2 < 0)
+								velocity.x -= velocity.x;
+							else
+								velocity.x-=SPEED/2;
+						else if(velocity.x < 0)
+							if(velocity.x + SPEED/2 > 0)
+								velocity.x -= velocity.x;
+							else
+								velocity.x+=SPEED/2;
 			if(indianJump && KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
@@ -217,14 +218,14 @@ public class Slime extends GameObject {
 	public boolean isSolid() {
 		return paused;
 	}
-        
-        /**
-         * Sets whether the slime should move or not
-         * @param state - should slime move
-         */
-        public void setPaused(boolean state) {
-            pausedMove = state;
-        }
+
+	/**
+	 * Sets whether the slime should move or not
+	 * @param state - should slime move
+	 */
+	public void setPaused(boolean state) {
+		pausedMove = state;
+	}
 
 	/**
 	 * Checks if the slime is using secondary controls
@@ -257,11 +258,11 @@ public class Slime extends GameObject {
 		GHOST("ghostslime", 1000),
 		FIRE("fireslime", 1000),
 		TRAFFIC("trafficslime", 1000),
-                ICE("iceeslime", 1000),
-                MONK("monkslime", 1000),
-                WATER("waterslime", 1000),
-                BOXER("boxerslime", 1000),
-		TEST5("svetty",1000);
+		ICE("iceeslime", 1000),
+		MONK("monkslime", 1000),
+		WATER("waterslime", 1000),
+		BOXER("boxerslime", 1000),
+		TEST5("svetty",6000);
 
 		private String img;
 		private long duration;

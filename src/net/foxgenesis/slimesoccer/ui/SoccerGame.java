@@ -27,7 +27,7 @@ import org.newdawn.slick.SlickException;
 public class SoccerGame extends Scene {
 
 	private GameObject[] objects;
-	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
+	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, BALL2 = 5 ,SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
 	private Image background, image;
 	private final int gameType;
 	private SoccerGameMenu menu;
@@ -75,7 +75,7 @@ public class SoccerGame extends Scene {
 			for(GameObject a:objects)
 				if(a != null) {
 					a.update(0);
-					a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
+					a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[BALL2],objects[BALL],objects[GOAL_LEFT],objects[GOAL_RIGHT]});
 				}
 		menu.update(i);
 		if(canFire && KeyboardInput.keys[Keyboard.KEY_ESCAPE]) {
@@ -101,7 +101,7 @@ public class SoccerGame extends Scene {
 	void load(HashMap<String, Object> params) {
 		//TODO change map objects based on params
 		background = Textures.get((String) params.get("background"));
-		objects = new GameObject[5];
+		objects = new GameObject[6];
 		objects[BALL] = new Ball();
 		objects[PLAYER1] = new Slime((Slime.Type)params.get("player1"), true);
 		objects[PLAYER2] = new Slime((Slime.Type)params.get("player2"), gameType == DUEL, true);

@@ -69,15 +69,34 @@ public final class SlimeAbilityUtil {
                             case RUNNER:
                                 if(!abilityUsed)
                                 {
-                                    p1.moveX(150);
+                                    System.out.println("runner left");
+                                    if(p1.facingRight())
+                                        p1.moveX(200);
+                                    else
+                                        p1.moveX(200);
                                     
                                     abilityUsed = true;
                                 }
                                 else
                                 {
-                                    abilityUsed = false;
+                                    //abilityUsed = false;
                                 }
                             break;
+                                case GHOST:
+                              if(!abilityUsed)
+                                {
+                                    System.out.println("ghost right"); 
+                                    
+                                        p2.moveX(-200);
+                                   
+                                    abilityUsed = true;
+                                 }
+                                else
+                                {
+                                    p2.moveX(100);
+                                    abilityUsed = false;
+                                }
+                                break;
                             case DEFAULT:  
                                 break;
                             }
@@ -146,12 +165,31 @@ public final class SlimeAbilityUtil {
                           case RUNNER:
                                 if(!abilityUsed)
                                 {
-                                    p1.moveX(150);
+                                    System.out.println("runner right"); 
+                                    if(p2.facingRight())
+                                        p2.moveX(200);
+                                    else
+                                        p2.moveX(200);
                                     
                                     abilityUsed = true;
                                 }
                                 else
                                 {
+                                    //abilityUsed = false;
+                                }
+                                break;
+                          case GHOST:
+                              if(!abilityUsed)
+                                {
+                                    System.out.println("ghost right"); 
+                                    
+                                        p1.moveX(-200);
+                                   
+                                    abilityUsed = true;
+                                 }
+                                else
+                                {
+                                    p1.moveX(200);
                                     abilityUsed = false;
                                 }
                                 break;

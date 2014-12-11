@@ -33,6 +33,7 @@ public class Slime extends GameObject {
 	private ProgressBar bar;
 	private Timer timer;
 	private int goals = 0;
+        protected float opacity = 1f;
 	protected static boolean paused;
 
 	/**
@@ -104,11 +105,11 @@ public class Slime extends GameObject {
 		switch(direction) {
 		case 0:
 			if(img != null)
-				img.draw(location.x,location.y, width, height);
+				img.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
 			break;
 		case 1:
 			if(flipped != null)
-				flipped.draw(location.x,location.y, width, height);
+				flipped.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
 			break;
 		}
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
@@ -117,6 +118,11 @@ public class Slime extends GameObject {
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, Color.black);
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals);
 	}
+        
+        public boolean facingRight()
+        {
+            return direction == 0;
+        }
 
 	@Override
 	public void update(int delta) {
@@ -202,6 +208,9 @@ public class Slime extends GameObject {
 		INDIAN("indianslime",1000),
 		NATURE("natureslime", 1000),
                 RUNNER("runnerslime", 1000),
+                GHOST("ghostslime", 1000),
+                FIRE("fireslime", 1000),
+                TRAFFIC("trafficslime", 1000),
 		TEST5("svetty",1000);
 
 		private String img;

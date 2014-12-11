@@ -87,13 +87,13 @@ public final class SlimeAbilityUtil {
                                 {
                                     System.out.println("ghost right"); 
                                     
-                                        p2.moveX(-200);
+                                        p2.makeInvisible();
                                    
                                     abilityUsed = true;
                                  }
                                 else
                                 {
-                                    p2.moveX(100);
+                                    p2.makeInvisible();
                                     abilityUsed = false;
                                 }
                                 break;
@@ -183,13 +183,13 @@ public final class SlimeAbilityUtil {
                                 {
                                     System.out.println("ghost right"); 
                                     
-                                        p1.moveX(-200);
+                                        p1.makeInvisible(); 
                                    
                                     abilityUsed = true;
                                  }
                                 else
                                 {
-                                    p1.moveX(200);
+                                    p1.makeInvisible();
                                     abilityUsed = false;
                                 }
                                 break;

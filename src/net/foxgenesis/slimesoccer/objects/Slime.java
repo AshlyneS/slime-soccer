@@ -90,6 +90,14 @@ public class Slime extends GameObject {
 		else
 			indianJump = true; 
 	}
+        
+        public void makeInvisible() {
+            if(opacity == 0f)
+                opacity = 1f;
+            else
+                opacity = 0f; 
+        }
+                
 
 	/**
 	 * Gets the type of slime

@@ -26,7 +26,7 @@ public class Slime extends GameObject {
 	private final Type type;
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	protected final boolean controlled, secondary;
-	private boolean canJump = true,abilityCheck = true, indianJump = true;
+	private boolean canJump = true,abilityCheck = true, indianJump = true, pausedMove = false;
 	private int direction = 0, goals = 0;
 	private Font font;
 	private double cooldown = 0.5;
@@ -153,6 +153,12 @@ public class Slime extends GameObject {
 	public int getDirection() {
 		return direction;
 	}
+        
+        @Override
+        public void updatePosition(GameObject[] objects) {
+            if(!pausedMove)
+                super.updatePosition(objects);
+        }
 
 	@Override
 	public void update(int delta) {
@@ -211,6 +217,14 @@ public class Slime extends GameObject {
 	public boolean isSolid() {
 		return paused;
 	}
+        
+        /**
+         * Sets whether the slime should move or not
+         * @param state - should slime move
+         */
+        public void setPaused(boolean state) {
+            pausedMove = state;
+        }
 
 	/**
 	 * Checks if the slime is using secondary controls

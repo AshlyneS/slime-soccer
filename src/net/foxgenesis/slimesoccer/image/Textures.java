@@ -36,7 +36,7 @@ public final class Textures {
 					System.out.println("\t  |found texture: [" + a.getName().substring(0,a.getName().lastIndexOf(".")) + "]");
 					textures.put(a.getName().substring(0,a.getName().lastIndexOf(".")), new Image(a.toString()));
 				}
-			} catch(SlickException e) {
+			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}

@@ -109,6 +109,8 @@ public final class SlimeAbilityUtil {
                                 },user.getType());
                             }
                         break;
+                        case SCIENTIST:
+                            break;
 			case DEFAULT:  
 				break;
 			default:
@@ -117,6 +119,11 @@ public final class SlimeAbilityUtil {
 		}
 	}
 
+        /**
+         * undoes activation of certain slime abilities
+         * @param run 
+         * @param type - type of slime 
+         */
 	private static void undo(final Runnable run, Type type) {
 		timer.schedule(new TimerTask() {
 			@Override

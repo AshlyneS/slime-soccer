@@ -261,6 +261,7 @@ public class Slime extends GameObject {
                 MONK("monkslime", 1000),
                 WATER("waterslime", 1000),
                 BOXER("boxerslime", 1000),
+                SCIENTIST("scientistslime", 1000),
 		TEST5("svetty",1000);
 
 		private String img;

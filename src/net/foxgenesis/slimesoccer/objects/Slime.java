@@ -3,6 +3,7 @@ package net.foxgenesis.slimesoccer.objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.foxgenesis.slimesoccer.Settings;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
@@ -24,7 +25,6 @@ public class Slime extends GameObject {
 	private final Image img;
 	private Image flipped;
 	private final Type type;
-	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	protected final boolean controlled, secondary;
 	private boolean canJump = true,abilityCheck = true, indianJump = true, pausedMove = false;
 	private int direction = 0, goals = 0;
@@ -172,11 +172,11 @@ public class Slime extends GameObject {
 		flipped.rotate(-img.getRotation());
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
-				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
+				velocity.x = velocity.x + Settings.SPEED < Settings.MAX_SPEED?velocity.x+=Settings.SPEED:Settings.MAX_SPEED;
 				direction = 1;
 			}
 			else if(KeyboardInput.keys[secondary?Keyboard.KEY_LEFT:Keyboard.KEY_A]) {
-				velocity.x = velocity.x - SPEED > -MAX_SPEED?velocity.x-=SPEED:-MAX_SPEED;
+				velocity.x = velocity.x - Settings.SPEED > -Settings.MAX_SPEED?velocity.x-=Settings.SPEED:-Settings.MAX_SPEED;
 				direction = 0;
 			}
 			else
@@ -184,17 +184,17 @@ public class Slime extends GameObject {
 					//{
 					if(canJump)
 						if(velocity.x > 0)
-							if(velocity.x - SPEED/2 < 0)
+							if(velocity.x - Settings.SPEED/2 < 0)
 								velocity.x -= velocity.x;
 							else
-								velocity.x-=SPEED/2;
+								velocity.x-=Settings.SPEED/2;
 						else if(velocity.x < 0)
-							if(velocity.x + SPEED/2 > 0)
+							if(velocity.x + Settings.SPEED/2 > 0)
 								velocity.x -= velocity.x;
 							else
-								velocity.x+=SPEED/2;
+								velocity.x+=Settings.SPEED/2;
 			if(indianJump && KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
-				velocity.y = JUMP_VELOCITY;
+				velocity.y = Settings.JUMP_VELOCITY;
 				canJump = false;
 			}
 

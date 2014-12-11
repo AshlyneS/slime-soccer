@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.foxgenesis.slimesoccer.Settings;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
@@ -15,10 +16,12 @@ import net.foxgenesis.slimesoccer.ui.component.PopUp.ActionHandler;
 import net.foxgenesis.slimesoccer.ui.component.SoccerGameMenu;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.fills.GradientFill;
 
 /**
  * SoccerGame is a scene that contains players and a soccerball
@@ -58,6 +61,12 @@ public class SoccerGame extends Scene {
 		for(GameObject a: objects)
 			if(a != null)
 				a.render(g);
+		if(Settings.DISPLAY_BOUNDS)
+			for(GameObject a: objects)
+				if(a != null) {
+					g.setColor(Color.red);
+					g.fill(a.getBounds(), new GradientFill(a.getLocation().x, a.getLocation().y, Color.white, a.getLocation().x+a.getWidth(), a.getLocation().y + a.getHeight(), Color.pink));
+				}
 		menu.draw(g);
 		if(getImage) {
 			try {

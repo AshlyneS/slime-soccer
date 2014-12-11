@@ -6,6 +6,7 @@ import net.foxgenesis.slimesoccer.SlimeSoccer;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -27,7 +28,7 @@ public abstract class GameObject
 	protected Vector2f location = new Vector2f(), velocity = new Vector2f();
 	protected float rotation = 0f;
 	protected float width,height;
-	protected Polygon bounds;
+	protected Shape bounds;
 
 	/**
 	 * Create a new GameObject with given width and height
@@ -37,12 +38,13 @@ public abstract class GameObject
 	public GameObject(float width, float height) {
 		this.width = width;
 		this.height = height;
-		bounds = new Polygon();
-		bounds.setClosed(true);
-		bounds.addPoint(location.x,location.y);
-		bounds.addPoint(location.x,location.y+height);
-		bounds.addPoint(location.x+width,location.y+height);
-		bounds.addPoint(location.x+width,location.y);
+		Polygon b = new Polygon();
+		b.setClosed(true);
+		b.addPoint(location.x,location.y);
+		b.addPoint(location.x,location.y+height);
+		b.addPoint(location.x+width,location.y+height);
+		b.addPoint(location.x+width,location.y);
+		bounds = b;
 	}
 
 	/**
@@ -89,7 +91,7 @@ public abstract class GameObject
 	 * Get the polygon bounds of the game object
 	 * @return object bounds
 	 */
-	public Polygon getBounds() {
+	public Shape getBounds() {
 		return bounds;
 	}
 
@@ -160,6 +162,7 @@ public abstract class GameObject
 			if(y != null)
 				onCollide(y,1);
 		}
+		bounds.setLocation(location);
 	}
 
 	private GameObject[] updateX(GameObject[] objects) {

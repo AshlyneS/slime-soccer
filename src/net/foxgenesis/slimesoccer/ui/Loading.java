@@ -56,7 +56,7 @@ public class Loading extends Scene {
 
 	@Override
 	public void draw(GameContainer container, Graphics g) {
-		String title = "Slime Soccer", input = "PRESS RETURN";
+		String title = "Slime Soccer", input = "PRESS ENTER";
 		g.drawImage(background, 0, 0, container.getWidth(), 
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		ball.rotate((float) (Math.cos(0.05 * update2)/2 * ball.getWidth()/2));

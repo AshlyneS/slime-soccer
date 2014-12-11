@@ -1,6 +1,10 @@
 package net.foxgenesis.slimesoccer.util;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import net.foxgenesis.slimesoccer.objects.Ball;
 import net.foxgenesis.slimesoccer.objects.Slime;
+import net.foxgenesis.slimesoccer.objects.Slime.Type;
 import net.foxgenesis.slimesoccer.ui.Scene;
 import net.foxgenesis.slimesoccer.ui.SoccerGame;
 
@@ -10,7 +14,7 @@ import net.foxgenesis.slimesoccer.ui.SoccerGame;
  * @editor Seth
  */
 public final class SlimeAbilityUtil {
-	
+	private static final Timer timer = new Timer();
 	/**
 	 * Handles the abilities of all slimes
 	 * @param slime - Slime to handle ability for
@@ -29,73 +33,55 @@ public final class SlimeAbilityUtil {
 				user = (Slime)game.getObjects()[SoccerGame.PLAYER2];
 			}
 
-			boolean abilityUsed = false; 
 			switch(user.getType()) {
 			case SPONGE:
-				if(!abilityUsed) {
-					//ystem.out.println("sponge left");
-					user.setSize(300,300);
-					user.getLocation().y = 200;
-					abilityUsed = true; 
-					break;
-				}
-				user.setSize(100, 100);
-				user.getLocation().y = -200; 
-				abilityUsed = false; 
+				user.setSize(300,300);
+				user.getLocation().y = 200;
+				undo(new Runnable() {
+					@Override
+					public void run() {
+						user.setSize(100, 100);
+						user.getLocation().y = -200; 
+					}
+				}, user.getType());
 				break;
 			case DISCO: 
-				if(!abilityUsed) {    
-					System.out.println("disco left");
-					//    p1.getImage().setRotation(90); 
-					user.getLocation().x = 200;
-					user.setSize(200,user.getHeight());
-					abilityUsed = true;
-					break;
-				}
-				user.setSize(100, user.getHeight());
-				user.setRotation(0);
-				abilityUsed = false; 
-				break;
+				//    p1.getImage().setRotation(90); 
+				user.getLocation().x = 200;
+				user.setSize(200,user.getHeight());
+				undo(new Runnable() {
+					@Override
+					public void run() {
+						user.setSize(100, user.getHeight());
+						user.setRotation(0);
+					}
+				}, user.getType());
 			case INDIAN:
-				if(!abilityUsed) {
-					System.out.println("indian left");
-					target.changeJump(); 
-					abilityUsed = true; 
-					break;
-				}
-				target.changeJump();
-				abilityUsed = false;
+				target.changeJump(); 
+				undo(new Runnable() {
+					@Override
+					public void run() {
+						target.changeJump();
+					}
+				}, user.getType());
 				break;
 			case RUNNER:
-				if(!abilityUsed) {
-					System.out.println("runner left");
-					if(user.getDirection() == 0)
-						user.getLocation().x = 200;
-					else
-						user.getLocation().x = 200;
-					abilityUsed = true;
-					break;
-				}
-				//abilityUsed = false;
+				if(user.getDirection() == 0)
+					user.getLocation().x = 200;
+				else
+					user.getLocation().x = 400;
 				break;
 			case GHOST:
-				if(!abilityUsed) {
-					System.out.println("ghost right"); 
-					target.setOpacity(0f);
-					abilityUsed = true;
-					break;
-				}
-				target.setOpacity(1f);
-				abilityUsed = false;
+				target.setOpacity(0f);
+				undo(new Runnable() {
+					@Override
+					public void run() {
+						target.setOpacity(1f);
+					}
+				}, user.getType());
 				break;
 			case TRAFFIC:
-				if(!abilityUsed) {
-					b.getVelocity().x = b.getVelocity().y = 0f; 
-					abilityUsed = true; 
-					break;
-				}
 				b.getVelocity().x = b.getVelocity().y = 0f; 
-				abilityUsed = false;
 				break;
 			case FIRE:
 				b.getVelocity().x *= 1.5f; 
@@ -107,5 +93,14 @@ public final class SlimeAbilityUtil {
 				break;
 			}
 		}
+	}
+
+	private static void undo(final Runnable run, Type type) {
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				run.run();
+			}
+		}, type.getDuration());
 	}
 }

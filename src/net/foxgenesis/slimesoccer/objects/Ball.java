@@ -69,6 +69,19 @@ public class Ball extends GameObject {
 				else
 					velocity.x+=GameObject.GRAVITY_FACTOR/FRICTION_RESISTANCE_FACTOR;
 	}
+        
+        public void stopBall() {
+            velocity.x = 0f; 
+            velocity.y = 0f; 
+        }
+        
+        public void fireBall() {
+            velocity.x = velocity.x * 1.5f; 
+            velocity.y = velocity.y * 1.5f;
+        }
+        
+        
+                
 
 	@Override
 	public boolean isSolid() {

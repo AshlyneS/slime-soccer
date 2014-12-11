@@ -22,7 +22,7 @@ public final class SlimeAbilityUtil {
                                     
                                     p1.modifyHeight(300);
                                     p1.modifyWidth(300);
-                                        p1.moveY(200);
+                                    p1.moveY(200);
                                     abilityUsed = true; 
                                 }
                                 else
@@ -81,8 +81,8 @@ public final class SlimeAbilityUtil {
                                 {
                                     //abilityUsed = false;
                                 }
-                            break;
-                                case GHOST:
+                                break;
+                            case GHOST:
                               if(!abilityUsed)
                                 {
                                     System.out.println("ghost right"); 
@@ -97,6 +97,23 @@ public final class SlimeAbilityUtil {
                                     abilityUsed = false;
                                 }
                                 break;
+                            case TRAFFIC:
+                              if(!abilityUsed)
+                              {
+                                  b.stopBall();
+                                  abilityUsed = true; 
+                              }
+                              else
+                              {
+                                  b.stopBall();
+                                  abilityUsed = false;
+                              }
+                              break;
+                            case FIRE:
+                                b.fireBall();
+                              
+                                        break;
+                                        
                             case DEFAULT:  
                                 break;
                             }
@@ -193,6 +210,21 @@ public final class SlimeAbilityUtil {
                                     abilityUsed = false;
                                 }
                                 break;
+                          case TRAFFIC:
+                              if(!abilityUsed)
+                              {
+                                  b.stopBall();
+                                  abilityUsed = true; 
+                              }
+                              else
+                              {
+                                  b.stopBall();
+                                  abilityUsed = false;
+                              }
+                              break; 
+                          case FIRE:
+                              b.fireBall(); 
+                              break;
                             case DEFAULT:  
                                 break;
                             }

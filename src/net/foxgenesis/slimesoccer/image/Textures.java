@@ -21,7 +21,7 @@ public final class Textures {
 		System.out.println("loading all textures...");
 		loadFiles(new File("textures"));
 		try {
-			confetti = Textures.createGif("falling confetti.gif", 20);
+			confetti = Textures.createGif("falling confetti.gif", 30);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

@@ -243,6 +243,10 @@ public class Slime extends GameObject {
 		GHOST("ghostslime", 1000),
 		FIRE("fireslime", 1000),
 		TRAFFIC("trafficslime", 1000),
+                ICE("iceeslime", 1000),
+                MONK("monkslime", 1000),
+                WATER("waterslime", 1000),
+                BOXER("boxerslime", 1000),
 		TEST5("svetty",1000);
 
 		private String img;

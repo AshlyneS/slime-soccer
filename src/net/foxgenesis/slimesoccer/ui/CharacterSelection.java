@@ -17,6 +17,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+/**
+ * CharacterSelection is the scene in which players choose what character they want to play as
+ * @author Seth
+ */
 public class CharacterSelection extends Scene {
 	private Type t1,t2;
 	private Image background, image;
@@ -30,6 +34,10 @@ public class CharacterSelection extends Scene {
 	private Button go;
 	private Button back;
 
+	/**
+	 * Create a new CharacterSelection scene with a given game type to pass to soccergame
+	 * @param gameType - game type
+	 */
 	public CharacterSelection(int gameType) {
 		super();
 		background = Textures.get("mainBackground");

@@ -52,10 +52,18 @@ public class ProgressBar extends Component {
 		return text;
 	}
 
+	/**
+	 * Sets whether the bar should slowly increase/decrease its values
+	 * @param state - smooth values
+	 */
 	public void setSmoothValues(boolean state) {
 		smoothValue = state;
 	}
 
+	/**
+	 * Checks whether the bar slowly changes its values
+	 * @return is smooth values
+	 */
 	public boolean isSmoothValues() {
 		return smoothValue;
 	}

@@ -10,7 +10,6 @@ import net.foxgenesis.slimesoccer.ui.SoccerGame;
 import net.foxgenesis.slimesoccer.util.TextBounce;
 
 import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -42,17 +41,20 @@ public class Goal extends GameObject {
 		if(side == SoccerGame.GOAL_RIGHT) {
 			img = img.getFlippedCopy(true, false);
 		}
-		if(Bounds.contains("goal") == false)
-			System.err.println("failed to get bounds!");
-		else
-			bounds = Bounds.get("goal");
 		this.side = side;
 	}
 
+	/**
+	 * Get which side the goal is on
+	 * @return goal side
+	 */
 	public int getSide() {
 		return side;
 	}
 
+	/**
+	 * Add a goal to the goal count for this goal
+	 */
 	public void addGoal() {
 		if(rand.nextInt(10) > 5) {
 			app.stop();
@@ -67,14 +69,13 @@ public class Goal extends GameObject {
 		goal = true;
 	}
 
-	@Override
-	public boolean contains(float x, float y) {
-		if(x > location.x && x < location.x + width)
-			if(y > location.y && y < location.y + height)
-				return true;
-		return false;
-	}
-
+	/**
+	 * Made to check for the ball. checks within a given radius instead of box
+	 * @param x - x location
+	 * @param y - y location
+	 * @param radius - radius to check
+	 * @return if any point is inside this object
+	 */
 	public boolean contains(float x, float y, float radius) {
 		if(x + radius > location.x && x - radius < location.x + width)
 			if(y + radius > location.y && y - radius < location.y + height)
@@ -101,7 +102,8 @@ public class Goal extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		img.draw(location.x,location.y,width,height);
-		conf.draw(0, 0, SlimeSoccer.getWidth(),SlimeSoccer.getHeight(),new Color(1f,1f,1f,opacity));
+		if(opacity > 0f)
+			conf.draw(0, 0, SlimeSoccer.getWidth(),SlimeSoccer.getHeight());
 		if(goal)
 			text.render(g);
 	}

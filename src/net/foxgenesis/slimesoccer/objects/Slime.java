@@ -27,12 +27,12 @@ public class Slime extends GameObject {
 	private static final float MAX_SPEED = 5f, SPEED = 0.3f, JUMP_VELOCITY = -5f;
 	protected final boolean controlled, secondary;
 	private boolean canJump = true,abilityCheck = true, indianJump = true;
-	private int direction = 0;
+	private int direction = 0, goals = 0;
 	private Font font;
 	private double cooldown = 0.5;
 	private ProgressBar bar;
 	private Timer timer;
-	private int goals = 0;
+	protected float opacity = 1f;
 	protected static boolean paused;
 
 	/**
@@ -54,7 +54,7 @@ public class Slime extends GameObject {
 		super(100, 100);
 		img = Textures.get(type.img).getScaledCopy((int)width,(int)height);
 		flipped = img.getFlippedCopy(true,false);
-                img.rotate(90);
+		img.rotate(90);
 		this.type = type;
 		font = Fonts.get("hiero");
 		this.controlled = controlled;
@@ -71,23 +71,51 @@ public class Slime extends GameObject {
 			bar.setInvertedPercentage(true);
 	}
 
+	/**
+	 * Get the current images for the slime
+	 * @return slime images
+	 */
 	public Image[] getImages() {
 		return new Image[]{img,flipped};
 	}
 
+	/**
+	 * Get the amount of goals the slime has made
+	 * @return goal count
+	 */
 	public int getGoalCount() {
 		return goals;
 	}
 
+	/**
+	 * Set the amount of goals the slime has made
+	 * @param count - goal count
+	 */
 	public void setGoalCount(int count) {
 		goals = count;
 	}
 
+	/**
+	 * Toggle indian jump
+	 */
 	public void changeJump() {
-		if(indianJump)
-			indianJump = false; 
-		else
-			indianJump = true; 
+		indianJump = !indianJump;
+	}
+	
+	/**
+	 * Set the display opacity for the slime
+	 * @param opacity - display opacity
+	 */
+	public void setOpacity(float opacity) {
+		this.opacity = opacity;
+	}
+
+	/**
+	 * Get the current display opacity of the slime
+	 * @return display opacity
+	 */
+	public float getOpacity() {
+		return opacity;
 	}
 
 	/**
@@ -104,11 +132,11 @@ public class Slime extends GameObject {
 		switch(direction) {
 		case 0:
 			if(img != null)
-				img.draw(location.x,location.y, width, height);
+				img.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
 			break;
 		case 1:
 			if(flipped != null)
-				flipped.draw(location.x,location.y, width, height);
+				flipped.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
 			break;
 		}
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
@@ -116,6 +144,14 @@ public class Slime extends GameObject {
 
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, Color.black);
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals);
+	}
+
+	/**
+	 * Gets the direction that the slime is facing. 0 = RIGHT, 1 = LEFT
+	 * @return slime direction
+	 */
+	public int getDirection() {
+		return direction;
 	}
 
 	@Override
@@ -126,7 +162,7 @@ public class Slime extends GameObject {
 		img.setRotation(this.getRotation());
 		flipped = img.getFlippedCopy(true, false);
 		flipped.rotate(-img.getRotation());
-                
+
 		if(controlled) {
 			if(KeyboardInput.keys[secondary?Keyboard.KEY_RIGHT:Keyboard.KEY_D]) {
 				velocity.x = velocity.x + SPEED < MAX_SPEED?velocity.x+=SPEED:MAX_SPEED;
@@ -137,8 +173,8 @@ public class Slime extends GameObject {
 				direction = 0;
 			}
 			else
-                           // if(indianJump)
-                            //{
+				// if(indianJump)
+				//{
 				if(canJump)
 					if(velocity.x > 0)
 						if(velocity.x - SPEED/2 < 0)
@@ -150,13 +186,10 @@ public class Slime extends GameObject {
 							velocity.x -= velocity.x;
 						else
 							velocity.x+=SPEED/2;
-                                if(indianJump)
-                                {
-			if(KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
+			if(indianJump && KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
 				velocity.y = JUMP_VELOCITY;
 				canJump = false;
 			}
-                            }
 
 			if(abilityCheck && canUseAbility() && KeyboardInput.keys[secondary?Keyboard.KEY_SPACE:Keyboard.KEY_1]) {
 				abilityCheck = false;
@@ -167,10 +200,7 @@ public class Slime extends GameObject {
 						abilityCheck = true;
 					}
 				}, 1000);
-				if(secondary)
-					type.secondAbilityActivated(this);
-				else
-					type.firstAbilityActivated(this);
+				SlimeAbilityUtil.handleFirstAbility(this);
 			}
 			if(outOfBounds(location.x,location.y + velocity.y,false,true))
 				canJump = true;
@@ -180,6 +210,14 @@ public class Slime extends GameObject {
 	@Override
 	public boolean isSolid() {
 		return paused;
+	}
+
+	/**
+	 * Checks if the slime is using secondary controls
+	 * @return is slime player two
+	 */
+	public boolean isSecondaryControls() {
+		return secondary;
 	}
 
 	/**
@@ -201,7 +239,10 @@ public class Slime extends GameObject {
 		DISCO("discoslime",1000),
 		INDIAN("indianslime",1000),
 		NATURE("natureslime", 1000),
-                RUNNER("runnerslime", 1000),
+		RUNNER("runnerslime", 1000),
+		GHOST("ghostslime", 1000),
+		FIRE("fireslime", 1000),
+		TRAFFIC("trafficslime", 1000),
 		TEST5("svetty",1000);
 
 		private String img;
@@ -215,20 +256,18 @@ public class Slime extends GameObject {
 			this.duration = duration;
 		}
 
-		private void firstAbilityActivated(Slime slime) {
-			SlimeAbilityUtil.handleFirstAbility(slime);
-		}
-
-		private void secondAbilityActivated(Slime slime) {
-			SlimeAbilityUtil.handleSecondAbility(slime);
-		}
-
-
-
+		/**
+		 * Get the texture name used for the slime
+		 * @return slime texture name
+		 */
 		public String getTextureName() {
 			return img;
 		}
 
+		/**
+		 * Get the duration for the ability
+		 * @return ability duration
+		 */
 		public long getDuration() {
 			return duration;
 		}

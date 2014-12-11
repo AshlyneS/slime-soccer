@@ -6,9 +6,17 @@ import java.util.HashMap;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
+/**
+ * Sounds load all game sounds
+ * @author Seth
+ */
 public final class Sounds {
 
 	private static HashMap<String, Sound> sounds = new HashMap<>();
+	
+	/**
+	 * Load all game sounds
+	 */
 	public static void init(){
 		System.out.println("loading all sounds...");
 		loadFiles(new File("sounds"));
@@ -35,9 +43,9 @@ public final class Sounds {
 	}
 
 	/**
-	 * Get an Image for a id
-	 * @param string - id of image
-	 * @return Image
+	 * Get a Sound for a id
+	 * @param string - id of sound
+	 * @return wanted sound
 	 */
 	public static Sound get(String string) {
 		if(sounds.containsKey(string))
@@ -47,14 +55,18 @@ public final class Sounds {
 	}
 
 	/**
-	 * Check if texture manager contains an image
-	 * @param string - id of image
-	 * @return is texture loaded
+	 * Check if the sound manager contains an sound
+	 * @param string - id of sound
+	 * @return is sound loaded
 	 */
 	public static boolean contains(String string) {
 		return sounds.containsKey(string);
 	}
 
+	/**
+	 * Get the current list of sounds loaded
+	 * @return sounds loaded
+	 */
 	public static String[] getKeyList() {
 		return sounds.keySet().toArray(new String[]{});
 	}

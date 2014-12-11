@@ -20,11 +20,6 @@ public final class Textures {
 	public static void init(){
 		System.out.println("loading all textures...");
 		loadFiles(new File("textures"));
-		try {
-			confetti = Textures.createGif("falling confetti.gif", 20);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
 		System.out.println("textures loaded!");
 	}
 
@@ -70,10 +65,21 @@ public final class Textures {
 		return textures.containsKey(string);
 	}
 
+	/**
+	 * Gets the current keys that are loaded
+	 * @return texture key list
+	 */
 	public static String[] getKeyList() {
 		return textures.keySet().toArray(new String[]{});
 	}
 
+	/**
+	 * Create an Animation from a given starting key and duration
+	 * @param key - key to look for
+	 * @param frameDuration - duration for each frame
+	 * @return created Animation from layers
+	 * @throws SlickException
+	 */
 	public static Animation createGif(String key, int frameDuration) throws SlickException {
 		System.out.println("Creating animation from key \"" + key + "\"...");
 		ArrayList<Image> imgs = new ArrayList<>();
@@ -102,7 +108,7 @@ public final class Textures {
 				for(int i=0; i<img.getWidth(); i++)
 					for(int j=0; j<img.getHeight(); j++) {
 						Color c = img.getColor(i,j);
-						if(c.getRed() + c.getBlue() + c.getGreen() < 475) {
+						if(c.getRed() + c.getBlue() + c.getGreen() < 600) {
 							g.setColor(img.getColor(i,j));
 							g.fillRect(i,j,1,1);
 						}

@@ -6,7 +6,10 @@ import net.foxgenesis.slimesoccer.ui.component.Button.Action;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-
+/**
+ * Popup is a popup window that displays text and or a menu
+ * @author Seth
+ */
 public class PopUp extends Component {
 
 	protected String text, title;
@@ -16,6 +19,13 @@ public class PopUp extends Component {
 	public static final int EXIT = 0, OK = 1, YES = 2, NO = 3;
 	protected ActionHandler handler;
 	protected boolean autoSize = true;
+	
+	/**
+	 * Create a new PopUp with given text, title and type
+	 * @param text - text to display
+	 * @param title - title of window
+	 * @param type - type of dialog
+	 */
 	public PopUp(String text, String title, Type type) {
 		super();
 		this.text = text;
@@ -56,10 +66,19 @@ public class PopUp extends Component {
 		setVisible(false);
 	}
 
+	/**
+	 * Create a new PopUp with a given text and type
+	 * @param text - text to display
+	 * @param type - type of dialog
+	 */
 	public PopUp(String text, Type type) {
 		this(text,"",type);
 	}
 
+	/**
+	 * Get the current text of the dialog
+	 * @return current text
+	 */
 	public String getText() {
 		return text;
 	}
@@ -72,26 +91,46 @@ public class PopUp extends Component {
 				a.setVisible(state);
 	}
 
+	/**
+	 * Get the type of dialog
+	 * @return type of dialog
+	 */
 	public Type getType() {
 		return type;
 	}
 
+	/**
+	 * Set the current text of the dialog
+	 * @param text - current text
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
+	/**
+	 * Listen to an input
+	 * @param input - input to listen to
+	 */
 	public void listen(Input input) {
 		for(Button a:buttons)
 			if(a != null)
 				a.listen(input);
 	}
 
+	/**
+	 * Stop listening to an input
+	 * @param input - input to stop listening to
+	 */
 	public void mute(Input input) {
 		for(Button a:buttons)
 			if(a != null)
 				a.mute(input);
 	}
 
+	/**
+	 * Sets the action handler that will handle actions from this component
+	 * @param handler
+	 */
 	public void setActionHandler(ActionHandler handler) {
 		this.handler = handler;
 	}
@@ -137,6 +176,10 @@ public class PopUp extends Component {
 	}
 
 	public static interface ActionHandler {
+		/**
+		 * Called on button events from PopUp
+		 * @param button - button number
+		 */
 		public void actionEvent(int button);
 	}
 }

@@ -6,7 +6,6 @@ import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
 import net.foxgenesis.slimesoccer.io.KeyboardInput;
-import net.foxgenesis.slimesoccer.objects.Bounds;
 import net.foxgenesis.slimesoccer.sound.Sounds;
 import net.foxgenesis.slimesoccer.ui.component.ProgressBar;
 
@@ -106,13 +105,12 @@ public class Loading extends Scene {
 			}
 			break;
 		case 3:
-			updateString = "loading object bounds...";
+			updateString = "loading sounds...";
 			Sounds.init();
-			SlimeSoccer.music.loop();
-			Scene.store("mainMenu", new MainMenu());
 			break;
 		case 4:
-			Bounds.init();
+			SlimeSoccer.music.loop();
+			Scene.store("mainMenu", new MainMenu());
 		}
 		bar.setValue(step+=1);
 		bar.setSize(gc.getWidth()/3*2,20);

@@ -41,10 +41,6 @@ public class Goal extends GameObject {
 		if(side == SoccerGame.GOAL_RIGHT) {
 			img = img.getFlippedCopy(true, false);
 		}
-		if(Bounds.contains("goal") == false)
-			System.err.println("failed to get bounds!");
-		else
-			bounds = Bounds.get("goal");
 		this.side = side;
 	}
 

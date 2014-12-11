@@ -48,10 +48,17 @@ public class Goal extends GameObject {
 		this.side = side;
 	}
 
+	/**
+	 * Get which side the goal is on
+	 * @return goal side
+	 */
 	public int getSide() {
 		return side;
 	}
 
+	/**
+	 * Add a goal to the goal count for this goal
+	 */
 	public void addGoal() {
 		if(rand.nextInt(10) > 5) {
 			app.stop();
@@ -66,14 +73,13 @@ public class Goal extends GameObject {
 		goal = true;
 	}
 
-	@Override
-	public boolean contains(float x, float y) {
-		if(x > location.x && x < location.x + width)
-			if(y > location.y && y < location.y + height)
-				return true;
-		return false;
-	}
-
+	/**
+	 * Made to check for the ball. checks within a given radius instead of box
+	 * @param x - x location
+	 * @param y - y location
+	 * @param radius - radius to check
+	 * @return if any point is inside this object
+	 */
 	public boolean contains(float x, float y, float radius) {
 		if(x + radius > location.x && x - radius < location.x + width)
 			if(y + radius > location.y && y - radius < location.y + height)

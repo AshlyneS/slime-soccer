@@ -10,10 +10,17 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Polygon;
 
+/**
+ * Bounds loads pre-made object bounds
+ * @author Seth
+ */
 public final class Bounds {
 
 	private static final HashMap<String, Polygon> bounds = new HashMap<>();
 
+	/**
+	 * Load all bounds files
+	 */
 	public static synchronized void init() {
 		System.out.println("Loading bounds...");
 		loadFiles(new File("bounds"));
@@ -44,15 +51,29 @@ public final class Bounds {
 		}
 	}
 
-
+	/**
+	 * Get a bounds from a given key
+	 * @param key - bounds key
+	 * @return object bounds
+	 */
 	public static Polygon get(String key) {
 		return bounds.get(key);
 	}
-	
+
+	/**
+	 * check if bounds is currently loaded
+	 * @param key - key to check with
+	 * @return if bounds is loaded
+	 */
 	public static boolean contains(String key) {
 		return bounds.containsKey(key);
 	}
 
+	/**
+	 * Used in creating bounds files. get a boolean array for an image
+	 * @param image - image to create from
+	 * @return boolean area used for .bnd creation
+	 */
 	public static boolean[][] getBoundsForImage(Image image) {
 		boolean[][] points = new boolean[image.getWidth()][image.getHeight()];
 		for(int i=0; i<image.getWidth(); i++)
@@ -62,6 +83,11 @@ public final class Bounds {
 		return points;
 	}
 
+	/**
+	 * creates a .bnd representation from given boolean array
+	 * @param bounds - boolean array to create from
+	 * @return .bnd string
+	 */
 	public static String toString(boolean[][] bounds) {
 		String output = "Bounds{";
 		for(int i=0; i<bounds.length; i++)
@@ -77,6 +103,11 @@ public final class Bounds {
 		return s < 128;
 	}
 
+	/**
+	 * Create a bounds from a given string
+	 * @param p - string to create from
+	 * @return created bounds
+	 */
 	public static Polygon parse(String p) {
 		if(p.startsWith("Bounds{")) {
 			String b = p.substring("Bounds{".length());
@@ -93,7 +124,6 @@ public final class Bounds {
 			}
 			return poly;
 		}
-		else
-			return null;
+		return null;
 	}
 }

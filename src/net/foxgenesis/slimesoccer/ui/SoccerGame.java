@@ -30,7 +30,6 @@ public class SoccerGame extends Scene {
 	public static final int PLAYER1 = 0,PLAYER2 = 1, BALL = 2, GOAL_LEFT = 3, GOAL_RIGHT = 4, SINGLE_PLAYER=0, DUEL=1, MULTIPLAYER=2;
 	private Image background, image;
 	private final int gameType;
-	//private Thread collThread;
 	private SoccerGameMenu menu;
 	private Timer timer;
 	private boolean canFire = true, getImage = false, toMain = false;
@@ -50,24 +49,6 @@ public class SoccerGame extends Scene {
 		});
 		this.gameType = gameType;
 		timer = new Timer();
-//		collThread = new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				while(true) {
-//					if(!menu.isVisible())
-//						for(GameObject a:objects)
-//							if(a != null) {
-//								a.update(0);
-//								a.updatePosition(a instanceof Ball?objects:new GameObject[]{objects[GOAL_LEFT],objects[GOAL_RIGHT]});
-//							}
-//					try {
-//						Thread.sleep(1000/60); //update collisions 60 times per second
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		},"Collision Thread");
 	}
 
 	@Override
@@ -108,6 +89,10 @@ public class SoccerGame extends Scene {
 		}
 	}
 
+	/**
+	 * Get the curret gamemode
+	 * @return gamemode
+	 */
 	public int getGameType() {
 		return gameType;
 	}
@@ -134,10 +119,13 @@ public class SoccerGame extends Scene {
 
 	@Override
 	void unload(Scene scene) {
-		//collThread.stop();
 		menu.mute(SlimeSoccer.getInput());
 	}
 
+	/**
+	 * Get all the game objects from the game
+	 * @return game objects
+	 */
 	public GameObject[] getObjects() {
 		return objects;
 	}

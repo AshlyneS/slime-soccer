@@ -63,6 +63,11 @@ public final class Fonts {
 		return fonts.get(key);
 	}
 
+	/**
+	 * Gets a true type font from a given key
+	 * @param key - key to check
+	 * @return wanted font
+	 */
 	public static TrueTypeFont getTrueFont(String key) {
 		return trueFonts.get(key);
 	}

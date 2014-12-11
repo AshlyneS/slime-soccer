@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
  * Component is a base framework for all UI components
  * @author Seth
  */
-public class Component {
+public abstract class Component {
 
 	private Vector2f location,sLocation,sVelocity;
 	protected float width,height;
@@ -26,10 +26,18 @@ public class Component {
 		return width;
 	}
 
+	/**
+	 * Checks whether the component moves over time
+	 * @return is smooth moving
+	 */
 	public boolean isSmoothMoving() {
 		return smoothMoving;
 	}
 
+	/**
+	 * Sets whether the object should move over time
+	 * @param state - should move over time
+	 */
 	public void setSmoothMoving(boolean state) {
 		smoothMoving = state;
 	}
@@ -42,6 +50,10 @@ public class Component {
 		return height;
 	}
 
+	/**
+	 * Get the location of the component
+	 * @return component location
+	 */
 	public Vector2f getLocation() {
 		return location;
 	}

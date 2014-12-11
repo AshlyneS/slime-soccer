@@ -70,10 +70,21 @@ public final class Textures {
 		return textures.containsKey(string);
 	}
 
+	/**
+	 * Gets the current keys that are loaded
+	 * @return texture key list
+	 */
 	public static String[] getKeyList() {
 		return textures.keySet().toArray(new String[]{});
 	}
 
+	/**
+	 * Create an Animation from a given starting key and duration
+	 * @param key - key to look for
+	 * @param frameDuration - duration for each frame
+	 * @return created Animation from layers
+	 * @throws SlickException
+	 */
 	public static Animation createGif(String key, int frameDuration) throws SlickException {
 		System.out.println("Creating animation from key \"" + key + "\"...");
 		ArrayList<Image> imgs = new ArrayList<>();

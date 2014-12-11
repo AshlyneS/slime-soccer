@@ -71,26 +71,49 @@ public class Slime extends GameObject {
 			bar.setInvertedPercentage(true);
 	}
 
+	/**
+	 * Get the current images for the slime
+	 * @return slime images
+	 */
 	public Image[] getImages() {
 		return new Image[]{img,flipped};
 	}
 
+	/**
+	 * Get the amount of goals the slime has made
+	 * @return goal count
+	 */
 	public int getGoalCount() {
 		return goals;
 	}
 
+	/**
+	 * Set the amount of goals the slime has made
+	 * @param count - goal count
+	 */
 	public void setGoalCount(int count) {
 		goals = count;
 	}
 
+	/**
+	 * Toggle indian jump
+	 */
 	public void changeJump() {
 		indianJump = !indianJump;
 	}
 	
+	/**
+	 * Set the display opacity for the slime
+	 * @param opacity - display opacity
+	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
 	}
 
+	/**
+	 * Get the current display opacity of the slime
+	 * @return display opacity
+	 */
 	public float getOpacity() {
 		return opacity;
 	}
@@ -189,6 +212,10 @@ public class Slime extends GameObject {
 		return paused;
 	}
 
+	/**
+	 * Checks if the slime is using secondary controls
+	 * @return is slime player two
+	 */
 	public boolean isSecondaryControls() {
 		return secondary;
 	}
@@ -229,10 +256,18 @@ public class Slime extends GameObject {
 			this.duration = duration;
 		}
 
+		/**
+		 * Get the texture name used for the slime
+		 * @return slime texture name
+		 */
 		public String getTextureName() {
 			return img;
 		}
 
+		/**
+		 * Get the duration for the ability
+		 * @return ability duration
+		 */
 		public long getDuration() {
 			return duration;
 		}

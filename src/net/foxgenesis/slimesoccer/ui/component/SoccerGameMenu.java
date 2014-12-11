@@ -5,9 +5,17 @@ import net.foxgenesis.slimesoccer.ui.component.Button.Action;
 
 import org.newdawn.slick.Color;
 
+/**
+ * SoccerGameMenu is the ingame menu
+ * @author Seth
+ */
 public class SoccerGameMenu extends PopUp {
 
 	public static int MAIN_MENU = 1;
+	
+	/**
+	 * Create a new SoccerGameMenu
+	 */
 	public SoccerGameMenu() {
 		super("PAUSED", "Menu", Type.MENU);
 		autoSize = false;

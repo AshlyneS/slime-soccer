@@ -59,6 +59,11 @@ public abstract class GameObject
 		return rotation;
 	}
 	
+	/**
+	 * Set the size of the game object
+	 * @param width - width of the object
+	 * @param height - height of the object
+	 */
 	public void setSize(float width, float height) {
 		this.width = width;
 		this.height = height;
@@ -78,6 +83,10 @@ public abstract class GameObject
 		bounds.setLocation(location);
 	}
 
+	/**
+	 * Get the polygon bounds of the game object
+	 * @return object bounds
+	 */
 	public Polygon getBounds() {
 		return bounds;
 	}

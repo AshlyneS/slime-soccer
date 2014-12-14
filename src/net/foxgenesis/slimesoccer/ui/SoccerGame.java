@@ -60,7 +60,12 @@ public class SoccerGame extends Scene {
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		for(GameObject a: objects)
 			if(a != null)
-				a.render(g);
+				if(Settings.ANAGLYPH)
+					a.draw3D(g);
+				else {
+					a.render(g, null);
+					a.renderGUI(g, null);
+				}
 		if(Settings.DISPLAY_BOUNDS)
 			for(GameObject a: objects)
 				if(a != null) {

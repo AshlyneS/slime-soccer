@@ -2,6 +2,8 @@ package net.foxgenesis.slimesoccer.util;
 
 import java.util.ArrayList;
 
+import net.foxgenesis.slimesoccer.Settings;
+
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -44,11 +46,12 @@ public class TextBounce {
 	 * Render the individual characters to the graphics context
 	 * 
 	 * @param g Graphics context to which items should be rendered
+	 * @param color 
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g, Color color) {
 		for (int i=0;i<characters.size();i++) {
 			Character c = characters.get(i);
-			c.render(g);
+			c.render(g,color);
 		}      
 	}
 
@@ -87,10 +90,14 @@ public class TextBounce {
 			counter += speed;
 		}
 
-		public void render(Graphics g) {
+		public void render(Graphics g, Color filter) {
 			/* Sin calculation borrowed from Cute Planet Puzzle by Kev Glass */
 			font.drawString(x+5, y + (float)(-30+(Math.sin(counter+(id*100)) * bounceHeight) + 5), c, Color.black);
+			if(Settings.ANAGLYPH)
+				font.drawString(x-Settings.GUI_DISTANCE, y + (float)(-30+(Math.sin(counter+(id*100)) * bounceHeight)), c,Settings.RED);
 			font.drawString(x, y + (float)(-30+(Math.sin(counter+(id*100)) * bounceHeight)), c);
+			if(Settings.ANAGLYPH)
+				font.drawString(x+Settings.GUI_DISTANCE, y + (float)(-30+(Math.sin(counter+(id*100)) * bounceHeight)), c,Settings.CYAN);
 		}   
 	}
 }

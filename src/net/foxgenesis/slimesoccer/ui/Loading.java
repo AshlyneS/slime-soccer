@@ -2,6 +2,7 @@ package net.foxgenesis.slimesoccer.ui;
 
 import java.util.HashMap;
 
+import net.foxgenesis.slimesoccer.Settings;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
@@ -17,6 +18,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import static net.foxgenesis.slimesoccer.Settings.CYAN;
+import static net.foxgenesis.slimesoccer.Settings.RED;
+import static net.foxgenesis.slimesoccer.Settings.GUI_DISTANCE;
 
 /**
  * Loading is the loading screen at the start of the game
@@ -60,16 +64,34 @@ public class Loading extends Scene {
 		g.drawImage(background, 0, 0, container.getWidth(), 
 				container.getHeight(), 0, 0, background.getWidth(), background.getHeight());
 		ball.rotate((float) (Math.cos(0.05 * update2)/2 * ball.getWidth()/2));
+		if(Settings.ANAGLYPH)
+			g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
+					- (float)(hiero.getHeight(title)*2 * Math.sin(0.05 * update2))-GUI_DISTANCE,50, RED);
 		g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
 				- (float)(hiero.getHeight(title)*2 * Math.sin(0.05 * update2)),50);
+		if(Settings.ANAGLYPH)
+			g.drawImage(ball,container.getWidth()/2 - ball.getWidth()/2
+					- (float)(hiero.getHeight(title)*2 * Math.sin(0.05 * update2))+GUI_DISTANCE,50, CYAN);
 		g.pushTransform();
 		g.translate(0, -80);
+		if(Settings.ANAGLYPH)
+			hiero.drawString(container.getWidth()/2-hiero.getWidth(title)/2-GUI_DISTANCE,
+					container.getHeight()/2-hiero.getHeight(title)/2, title, RED);
 		hiero.drawString(container.getWidth()/2-hiero.getWidth(title)/2,
 				container.getHeight()/2-hiero.getHeight(title)/2, title);
+		if(Settings.ANAGLYPH)
+			hiero.drawString(container.getWidth()/2-hiero.getWidth(title)/2+GUI_DISTANCE,
+					container.getHeight()/2-hiero.getHeight(title)/2, title, CYAN);
 		if(bar.isVisible())
 			bar.draw(g);
-		else
+		else {
+			if(Settings.ANAGLYPH)
+				hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2+10-GUI_DISTANCE,container.getHeight()-100, input, update > 15/2?Color.red.multiply(RED):Color.orange.multiply(RED));
 			hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2+10,container.getHeight()-100, input, update > 15/2?Color.red:Color.orange);
+			if(Settings.ANAGLYPH)
+				hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2+10+GUI_DISTANCE,container.getHeight()-100, input, update > 15/2?Color.red.multiply(CYAN):Color.orange.multiply(CYAN));
+
+		}
 		g.popTransform();
 		if(getImage) {
 			try {

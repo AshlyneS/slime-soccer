@@ -34,6 +34,7 @@ public class Slime extends GameObject {
 	private Timer timer;
 	protected float opacity = 1f;
 	protected static boolean paused;
+	private Color color;
 
 	/**
 	 * Create a new Slime with a type and controlled parameters
@@ -127,24 +128,30 @@ public class Slime extends GameObject {
 	}
 
 	@Override
-	public void render(Graphics g) {
-		bar.draw(g);
+	public void render(Graphics g, Color filter) {
 		switch(direction) {
 		case 0:
 			if(img != null)
-				img.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
+				img.draw(location.x,location.y, width, height, filter == null?color:filter);
 			break;
 		case 1:
 			if(flipped != null)
-				flipped.draw(location.x,location.y, width, height, new Color(1f,1f,1f,opacity));
+				flipped.draw(location.x,location.y, width, height, filter == null?color:filter);
 			break;
 		}
-		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), Color.black);
-		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name());
-
-		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, Color.black);
-		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals);
 	}
+	
+	@Override
+	public void renderGUI(Graphics g, Color filter) {
+		bar.draw(g);
+		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), filter != null?Color.black.multiply(filter):Color.black);
+		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name(), filter != null?filter:Color.white);
+
+		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, filter != null?Color.black.multiply(filter):Color.black);
+		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals, filter != null?filter:Color.white);
+	}
+	
+	
 
 	/**
 	 * Gets the direction that the slime is facing. 0 = RIGHT, 1 = LEFT
@@ -163,6 +170,7 @@ public class Slime extends GameObject {
 	@Override
 	public void update(int delta) {
 		super.update(delta);
+		color = new Color(1f,1f,1f,opacity);
 		bar.update(delta);
 		bar.setValue(bar.getValue()+(secondary?cooldown:-cooldown));
 		img.setCenterOfRotation(img.getWidth()/2,img.getHeight()/2);
@@ -181,18 +189,18 @@ public class Slime extends GameObject {
 			}
 			else
 				// if(indianJump)
-					//{
-					if(canJump)
-						if(velocity.x > 0)
-							if(velocity.x - Settings.SPEED/2 < 0)
-								velocity.x -= velocity.x;
-							else
-								velocity.x-=Settings.SPEED/2;
-						else if(velocity.x < 0)
-							if(velocity.x + Settings.SPEED/2 > 0)
-								velocity.x -= velocity.x;
-							else
-								velocity.x+=Settings.SPEED/2;
+				//{
+				if(canJump)
+					if(velocity.x > 0)
+						if(velocity.x - Settings.SPEED/2 < 0)
+							velocity.x -= velocity.x;
+						else
+							velocity.x-=Settings.SPEED/2;
+					else if(velocity.x < 0)
+						if(velocity.x + Settings.SPEED/2 > 0)
+							velocity.x -= velocity.x;
+						else
+							velocity.x+=Settings.SPEED/2;
 			if(indianJump && KeyboardInput.keys[secondary?Keyboard.KEY_UP:Keyboard.KEY_W] && canJump) {
 				velocity.y = Settings.JUMP_VELOCITY;
 				canJump = false;

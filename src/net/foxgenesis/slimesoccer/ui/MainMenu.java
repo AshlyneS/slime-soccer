@@ -118,7 +118,7 @@ public class MainMenu extends Scene{
 		singlePlayer.draw(g);
 		multiPlayer.draw(g);
 		info.draw(g);
-		title.render(g);
+		title.render(g, Color.white);
 		if(infoPop.getLocation().y != SlimeSoccer.getHeight()+30)
 			infoPop.draw(g);
 		if(getImage) {

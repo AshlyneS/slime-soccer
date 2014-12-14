@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
+import static net.foxgenesis.slimesoccer.Settings.CYAN;
+import static net.foxgenesis.slimesoccer.Settings.RED;
+import static net.foxgenesis.slimesoccer.Settings.GUI_DISTANCE;
 
 /**
  * GameObject is the base class for all game objects
@@ -29,6 +33,7 @@ public abstract class GameObject
 	protected float rotation = 0f;
 	protected float width,height;
 	protected Shape bounds;
+	protected float distanceX = 10f, distanceY = 0f;
 
 	/**
 	 * Create a new GameObject with given width and height
@@ -72,12 +77,35 @@ public abstract class GameObject
 		this.width = width;
 		this.height = height;
 	}
+	
+	public void draw3D(Graphics g) {
+		g.pushTransform();
+		g.translate(-distanceX, distanceY);
+		render(g, RED);
+		g.popTransform();
+		render(g, null);
+		g.pushTransform();
+		g.translate(distanceX, -distanceY);
+		render(g, CYAN);
+		g.popTransform();
+		g.pushTransform();
+		g.translate(-GUI_DISTANCE, 0);
+		renderGUI(g, RED);
+		g.popTransform();
+		renderGUI(g, null);
+		g.pushTransform();
+		g.translate(GUI_DISTANCE, 0);
+		renderGUI(g, CYAN);
+		g.popTransform();
+	}
 
 	/**
 	 * Render the object with given graphics
 	 * @param g - graphics to draw with
 	 */
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics g, Color imageFilter);
+	
+	public void renderGUI(Graphics g, Color filter){}
 
 	/**
 	 * Called on frame udpate

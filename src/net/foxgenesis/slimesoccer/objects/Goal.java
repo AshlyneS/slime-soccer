@@ -10,6 +10,7 @@ import net.foxgenesis.slimesoccer.ui.SoccerGame;
 import net.foxgenesis.slimesoccer.util.TextBounce;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -100,11 +101,11 @@ public class Goal extends GameObject {
 	}
 
 	@Override
-	public void render(Graphics g) {
-		img.draw(location.x,location.y,width,height);
+	public void render(Graphics g, Color filter) {
+		img.draw(location.x,location.y,width,height, filter != null?filter:Color.white);
 		if(opacity > 0f)
-			conf.draw(0, 0, SlimeSoccer.getWidth(),SlimeSoccer.getHeight());
+			conf.draw(0, 0, SlimeSoccer.getWidth(),SlimeSoccer.getHeight(),filter != null?filter:Color.white);
 		if(goal)
-			text.render(g);
+			text.render(g,filter != null?filter:Color.white);
 	}
 }

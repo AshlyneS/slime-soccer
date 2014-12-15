@@ -72,7 +72,10 @@ public class SoccerGame extends Scene {
 					g.setColor(Color.red);
 					g.fill(a.getBounds(), new GradientFill(a.getLocation().x, a.getLocation().y, Color.white, a.getLocation().x+a.getWidth(), a.getLocation().y + a.getHeight(), Color.pink));
 				}
-		menu.draw(g);
+		if(Settings.ANAGLYPH)
+			menu.draw3D(g);
+		else
+			menu.draw(g,null);
 		if(getImage) {
 			try {
 				image = new Image(container.getWidth(),container.getHeight());

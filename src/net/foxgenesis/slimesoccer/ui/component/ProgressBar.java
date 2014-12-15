@@ -197,16 +197,28 @@ public class ProgressBar extends Component {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		super.draw(g);
-		g.setColor(background);
+	public void draw(Graphics g, Color filter) {
+		super.draw(g, filter);
+		if(filter != null)
+			g.setColor(filter);
+		else
+			g.setColor(background);
 		g.fillRect(getLocation().x, getLocation().y, getWidth(), getHeight());
-		g.setColor(foreground);
+		if(filter != null)
+			g.setColor(filter);
+		else
+			g.setColor(foreground);
 		g.fillRect(getLocation().x, getLocation().y, (int)(getWidth()/max*value), getHeight());
-		g.setColor(Color.black);
+		if(filter != null)
+			g.setColor(filter);
+		else
+			g.setColor(Color.black);
 		g.drawRect(getLocation().x, getLocation().y, getWidth(), getHeight());
 		if(pText) {
-			g.setColor(Color.white);
+			if(filter != null)
+				g.setColor(filter);
+			else
+				g.setColor(Color.white);
 			g.drawString(text, getLocation().x+getWidth()/2-g.getFont().getWidth(text)/2, getLocation().y+getHeight()+5);
 		}
 	}

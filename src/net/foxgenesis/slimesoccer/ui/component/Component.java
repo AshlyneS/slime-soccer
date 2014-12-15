@@ -1,5 +1,10 @@
 package net.foxgenesis.slimesoccer.ui.component;
 
+import static net.foxgenesis.slimesoccer.Settings.CYAN;
+import static net.foxgenesis.slimesoccer.Settings.GUI_DISTANCE;
+import static net.foxgenesis.slimesoccer.Settings.RED;
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -160,8 +165,29 @@ public abstract class Component {
 	 * Draws the component with given graphics
 	 * @param g - graphics to draw with
 	 */
-	public void draw(Graphics g) {
+	public void draw(Graphics g, Color filter) {
 		if(!visible)
 			return;
+	}
+	
+	public void draw3D(Graphics g) {
+		g.pushTransform();
+		g.translate(-GUI_DISTANCE, 0);
+		draw(g, RED);
+		g.popTransform();
+		draw(g, null);
+		g.pushTransform();
+		g.translate(GUI_DISTANCE, 0);
+		draw(g, CYAN);
+		g.popTransform();
+		g.pushTransform();
+		g.translate(-GUI_DISTANCE, 0);
+		draw(g, RED);
+		g.popTransform();
+		draw(g, null);
+		g.pushTransform();
+		g.translate(GUI_DISTANCE, 0);
+		draw(g, CYAN);
+		g.popTransform();
 	}
 }

@@ -147,7 +147,7 @@ public class PopUp extends Component {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics g, Color filter) {
 		if(!isVisible())
 			return;
 		g.setColor(fadeScreen);

@@ -83,7 +83,10 @@ public class Loading extends Scene {
 			hiero.drawString(container.getWidth()/2-hiero.getWidth(title)/2+GUI_DISTANCE,
 					container.getHeight()/2-hiero.getHeight(title)/2, title, CYAN);
 		if(bar.isVisible())
-			bar.draw(g);
+			if(Settings.ANAGLYPH)
+				bar.draw3D(g);
+			else
+				bar.draw(g, null);
 		else {
 			if(Settings.ANAGLYPH)
 				hiero.drawString(container.getWidth()/2-hiero.getWidth(input)/2+10-GUI_DISTANCE,container.getHeight()-100, input, update > 15/2?Color.red.multiply(RED):Color.orange.multiply(RED));

@@ -143,18 +143,21 @@ public class Slime extends GameObject {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void renderGUI(Graphics g, Color filter) {
-		bar.draw(g);
+		if(Settings.ANAGLYPH)
+			bar.draw(g, filter);
+		else
+			bar.draw(g,null);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-5:15, 55, type.name(), filter != null?Color.black.multiply(filter):Color.black);
 		font.drawString(secondary?SlimeSoccer.getWidth()-font.getWidth(type.name())-10:10, 50, type.name(), filter != null?filter:Color.white);
 
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-40:35), 55, ""+goals, filter != null?Color.black.multiply(filter):Color.black);
 		font.drawString(SlimeSoccer.getWidth()/2 - font.getWidth(""+goals)/2 - (secondary?-35:40), 50, ""+goals, filter != null?filter:Color.white);
 	}
-	
-	
+
+
 
 	/**
 	 * Gets the direction that the slime is facing. 0 = RIGHT, 1 = LEFT

@@ -2,6 +2,7 @@ package net.foxgenesis.slimesoccer.ui;
 
 import java.util.HashMap;
 
+import net.foxgenesis.slimesoccer.Settings;
 import net.foxgenesis.slimesoccer.SlimeSoccer;
 import net.foxgenesis.slimesoccer.font.Fonts;
 import net.foxgenesis.slimesoccer.image.Textures;
@@ -84,7 +85,7 @@ public class MainMenu extends Scene{
 			}
 		});
 
-		
+
 		infoPop = new PopUp("Welcome to Slime Soccer!\nCurrently only Duel gamemode is available.", PopUp.Type.DIALOG);
 		infoPop.setLocation(SlimeSoccer.getWidth()/2-infoPop.getWidth()/2,SlimeSoccer.getHeight()/2-infoPop.getHeight()/2);
 		infoPop.listen(SlimeSoccer.getInput());
@@ -120,7 +121,10 @@ public class MainMenu extends Scene{
 		info.draw(g);
 		title.render(g, Color.white);
 		if(infoPop.getLocation().y != SlimeSoccer.getHeight()+30)
-			infoPop.draw(g);
+			if(Settings.ANAGLYPH)
+				infoPop.draw3D(g);
+			else
+				infoPop.draw(g, null);
 		if(getImage) {
 			try {
 				image = new Image(container.getWidth(),container.getHeight());
@@ -174,7 +178,7 @@ public class MainMenu extends Scene{
 	private Button createButton(String title) {
 		return createButton(title,true);
 	}
-	
+
 	private Button createButton(String title, final boolean enabled) {
 		Button b = new Button(title){
 			@Override

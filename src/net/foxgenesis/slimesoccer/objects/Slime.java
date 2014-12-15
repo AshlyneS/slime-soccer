@@ -29,7 +29,7 @@ public class Slime extends GameObject {
 	private boolean canJump = true,abilityCheck = true, indianJump = true, pausedMove = false;
 	private int direction = 0, goals = 0;
 	private Font font;
-	private double cooldown = 0.5;
+	private double cooldown = 0.05;
 	private ProgressBar bar;
 	private Timer timer;
 	protected float opacity = 1f;
@@ -64,10 +64,13 @@ public class Slime extends GameObject {
 		bar = new ProgressBar();
 		bar.setPrintText(false);
 		bar.setSize(SlimeSoccer.getWidth()/2-60, 20);
+		bar.setMaximumValue(100);
 		bar.setLocation(secondary?SlimeSoccer.getWidth()-bar.getWidth()-10f:10f, 50f);
 		bar.setBackground(secondary?Color.black:Color.green);
 		bar.setForeground(secondary?Color.green:Color.black);
-		bar.setValue(50);
+		bar.setValue(secondary?bar.getMaximumValue():0);
+		bar.setSmoothValues(false);
+		cooldown = bar.getMaximumValue()/(type.duration);
 		if(!secondary)
 			bar.setInvertedPercentage(true);
 	}

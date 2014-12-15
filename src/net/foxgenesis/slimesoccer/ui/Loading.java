@@ -48,8 +48,8 @@ public class Loading extends Scene {
 		bar = new ProgressBar();
 		bar.setVisible(true);
 		bar.setMaximumValue(6);
-		bar.setText("This bar doesn't do anything! lawl :P");
 		bar.setText("loading textures...");
+		bar.setSmoothValues(false);
 		bar.setAction(new Runnable() {
 			@Override
 			public void run() {

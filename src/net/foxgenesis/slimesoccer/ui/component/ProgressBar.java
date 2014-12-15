@@ -9,10 +9,10 @@ import org.newdawn.slick.Graphics;
  * @author Seth
  */
 public class ProgressBar extends Component {
-	private double value,max,min,smooth;
+	private double value,max,min,smooth,smoothUpdate;
 	private Color foreground,background;
 	private Runnable run;
-	private boolean pText=true, invert = false, smoothValue = true;
+	private boolean pText=true, invert = false, smoothValue = false;
 	private String text;
 
 	/**
@@ -113,12 +113,23 @@ public class ProgressBar extends Component {
 	 * @param value
 	 */
 	public void setValue(double value) {
+		setValue(value,1000);
+	}
+
+	/**
+	 * Sets the current value of the progress bar
+	 * @param value
+	 */
+	public void setValue(double value, long time) {
 		if(value>max)
 			value = max;
 		else if(value < min)
 			value = min;
-		if(smoothValue)
+		if(smoothValue) {
+			double xD = Math.abs(value - this.value);
+			smoothUpdate = xD/(time/100);
 			smooth = value;
+		}
 		else 
 			this.value = value;
 	}
@@ -178,10 +189,11 @@ public class ProgressBar extends Component {
 				run.run();
 				run = null;
 			}
-		if(value < smooth)
-			value+=1;
-		else if(value > smooth)
-			value-=1;
+		if(smoothValue)
+			if(value < smooth)
+				value+=smoothUpdate;
+			else if(value > smooth)
+				value-=smoothUpdate;
 	}
 
 	@Override

@@ -108,7 +108,7 @@ public final class SlimeAbilityUtil {
 					},user.getType());
 				}
 				break;
-			case TEST5:
+			case SVETTY:
 				game.getObjects()[SoccerGame.BALL2] = new Ball();
 				undo(new Runnable() {
 					@Override

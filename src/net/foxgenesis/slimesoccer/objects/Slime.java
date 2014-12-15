@@ -260,7 +260,6 @@ public class Slime extends GameObject {
 	 */
 	public static enum Type {
 		DEFAULT("defaultslime",1000),
-		GOAL("goal",1000),
 		SPONGE("spongeslime",1000),
 		DISCO("discoslime",1000),
 		INDIAN("indianslime",1000),
@@ -273,7 +272,7 @@ public class Slime extends GameObject {
 		MONK("monkslime", 1000),
 		WATER("waterslime", 1000),
 		BOXER("boxerslime", 1000),
-		TEST5("svetty",6000);
+		SVETTY("svetty",6000);
 
 		private String img;
 		private long duration;
